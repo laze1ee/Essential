@@ -1,6 +1,7 @@
 package essential.progresive;
 
 import essential.datetime.Time;
+import essential.functional.Has2;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import essential.functional.Do1;
@@ -71,15 +72,15 @@ public static @NotNull Object refLot(@NotNull Lot lt, int index) {
     throw new RuntimeException(String.format(Msg.INDEX_OUT, index, lt));
 }
 
-public static @NotNull Object cadr(@NotNull Lot lt) {
+public static @NotNull Object car1(@NotNull Lot lt) {
     return refLot(lt, 1);
 }
 
-public static @NotNull Object caddr(@NotNull Lot lt) {
+public static @NotNull Object car2(@NotNull Lot lt) {
     return refLot(lt, 2);
 }
 
-public static @NotNull Object ca3dr(@NotNull Lot lt) {
+public static @NotNull Object car3(@NotNull Lot lt) {
     return refLot(lt, 3);
 }
 
@@ -226,6 +227,20 @@ public static boolean isBelong(Object datum, @NotNull Lot lt) {
         throw new RuntimeException(String.format(Msg.BREADTH_CIRCLE, lt));
     } else {
         return Mate.isBelong(datum, lt);
+    }
+}
+
+public static boolean isBelong(Has2 fn, Object datum, @NotNull Lot lt) {
+    if (lt.isBreadthCircle()) {
+        throw new RuntimeException(String.format(Msg.BREADTH_CIRCLE, lt));
+    } else {
+        while (!lt.isEmpty()) {
+            if (fn.apply(datum, car(lt))) {
+                return true;
+            }
+            lt = cdr(lt);
+        }
+        return false;
     }
 }
 //endregion

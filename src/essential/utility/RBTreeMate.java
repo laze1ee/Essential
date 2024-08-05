@@ -45,7 +45,7 @@ private static void leftRotate(RBTree tree, Lot path) {
     if (cdr(path).isEmpty()) {
         tree.root = up;
     } else {
-        RBNode p = (RBNode) cadr(path);
+        RBNode p = (RBNode) car1(path);
         if (isLeftOf(x, p)) {
             p.left = up;
         } else {
@@ -65,7 +65,7 @@ private static void rightRotate(RBTree tree, Lot path) {
     if (cdr(path).isEmpty()) {
         tree.root = up;
     } else {
-        RBNode p = (RBNode) cadr(path);
+        RBNode p = (RBNode) car1(path);
         if (isLeftOf(x, p)) {
             p.left = up;
         } else {
@@ -100,9 +100,9 @@ record InsertFixing(RBTree tree, Lot path) {
     }
 
     private void _job(@NotNull Lot path) {
-        if (2 < path.length() && ((RBNode) cadr(path)).isRed()) {
-            RBNode p = (RBNode) cadr(path);
-            RBNode pp = (RBNode) caddr(path);
+        if (2 < path.length() && ((RBNode) car1(path)).isRed()) {
+            RBNode p = (RBNode) car1(path);
+            RBNode pp = (RBNode) car2(path);
             if (isLeftOf(p, pp)) {
                 RBNode u = pp.right;
                 if (u.isRed()) {
@@ -145,7 +145,7 @@ private static void transplant(RBTree tree, @NotNull Lot path, RBNode node) {
     if (1 == path.length()) {
         tree.root = node;
     } else {
-        RBNode p = (RBNode) cadr(path);
+        RBNode p = (RBNode) car1(path);
         if (isLeftOf(car(path), p)) {
             p.left = node;
         } else {
