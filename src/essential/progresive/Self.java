@@ -22,19 +22,19 @@ private static class Detecting {
     }
 
     Lot process() {
-        _job(datum);
+        job(datum);
         return identical;
     }
 
-    private void _job(Object datum) {
+    void job(Object datum) {
         if (datum instanceof Few fw) {
-            _collectArray(fw.data);
+            collectArray(fw.data);
         } else if (datum instanceof Pair pair) {
-            _collectPair(pair);
+            collectPair(pair);
         }
     }
 
-    private void _collectArray(Object[] arr) {
+    void collectArray(Object[] arr) {
         if (Mate.isBelong(arr, collector)) {
             if (!Mate.isBelong(arr, identical)) {
                 identical = cons(arr, identical);
@@ -42,12 +42,12 @@ private static class Detecting {
         } else {
             collector = cons(arr, collector);
             for (Object datum : arr) {
-                _job(datum);
+                job(datum);
             }
         }
     }
 
-    private void _collectPair(Lot pair) {
+    void collectPair(Lot pair) {
         if (!(pair instanceof LotEnd)) {
             if (Mate.isBelong(pair, collector)) {
                 if (!Mate.isBelong(pair, identical)) {
@@ -55,8 +55,8 @@ private static class Detecting {
                 }
             } else {
                 collector = cons(pair, collector);
-                _job(car(pair));
-                _collectPair(cdr(pair));
+                job(car(pair));
+                collectPair(cdr(pair));
             }
         }
     }
@@ -81,22 +81,22 @@ private static class Labeling {
     }
 
     Object process() {
-        return _job(datum);
+        return job(datum);
     }
 
-    Object _job(Object datum) {
+    Object job(Object datum) {
         if (datum instanceof Few fw) {
-            return _jobArray(fw.data);
+            return jobArray(fw.data);
         } else if (datum instanceof Pair pair) {
-            return _jobPair(pair);
+            return jobPair(pair);
         } else {
             return datum;
         }
     }
 
     @Contract("_ -> new")
-    private @NotNull Fer _jobArray(Object[] arr) {
-        Few cyc = _find(arr);
+    @NotNull Fer jobArray(Object[] arr) {
+        Few cyc = find(arr);
         if (cyc != null &&
             (boolean) ref1(cyc)) {
             return new FewMark((int) ref2(cyc));
@@ -104,60 +104,57 @@ private static class Labeling {
             set1(cyc, true);
             set2(cyc, count);
             count = count + 1;
-            Object[] ooo = _batchArray(arr);
+            Object[] ooo = batchArray(arr);
             return new FewSelf(ooo, (int) ref2(cyc));
         } else {
-            Object[] ooo = _batchArray(arr);
+            Object[] ooo = batchArray(arr);
             return new Few(ooo);
         }
     }
 
-    Object @NotNull [] _batchArray(Object @NotNull [] arr) {
+    Object @NotNull [] batchArray(Object @NotNull [] arr) {
         int n = arr.length;
         Object[] ooo = new Object[n];
         for (int i = 0; i < n; i = i + 1) {
-            ooo[i] = _job(arr[i]);
+            ooo[i] = job(arr[i]);
         }
         return ooo;
     }
 
     @Contract("_ -> new")
-    @NotNull
-    Lot _jobPair(@NotNull Lot pair) {
-        Few cyc = _find(pair);
+    @NotNull Lot jobPair(@NotNull Lot pair) {
+        Few cyc = find(pair);
         if (cyc != null && (boolean) ref1(cyc)) {
             return new LotMark((int) ref2(cyc));
         } else if (cyc != null) {
             set1(cyc, true);
             set2(cyc, count);
             count = count + 1;
-            return new PairSelf(_job(car(pair)), _jobNext(cdr(pair)), (int) ref2(cyc));
+            return new PairSelf(job(car(pair)), jobNext(cdr(pair)), (int) ref2(cyc));
         } else {
-            return new PairLinkHead(_job(car(pair)), _jobNext(cdr(pair)));
+            return new PairLinkHead(job(car(pair)), jobNext(cdr(pair)));
         }
     }
 
     @Contract("_ -> new")
-    @NotNull
-    Lot _jobNext(@NotNull Lot pair) {
+    @NotNull Lot jobNext(@NotNull Lot pair) {
         if (pair.isEmpty()) {
             return new LotEnd();
         }
-        Few cyc = _find(pair);
+        Few cyc = find(pair);
         if (cyc != null && (boolean) ref1(cyc)) {
             return new LotMark((int) ref2(cyc));
         } else if (cyc != null) {
             set1(cyc, true);
             set2(cyc, count);
             count = count + 1;
-            return new PairSelf(_job(car(pair)), _jobNext(cdr(pair)), (int) ref2(cyc));
+            return new PairSelf(job(car(pair)), jobNext(cdr(pair)), (int) ref2(cyc));
         } else {
-            return new PairLink(_job(car(pair)), _jobNext(cdr(pair)));
+            return new PairLink(job(car(pair)), jobNext(cdr(pair)));
         }
     }
 
-    @Nullable
-    Few _find(Object datum) {
+    @Nullable Few find(Object datum) {
         Lot col = identical;
         while (!col.isEmpty()) {
             Few item = (Few) car(col);

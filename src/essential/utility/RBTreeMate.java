@@ -95,11 +95,11 @@ static Lot maximum(@NotNull RBNode node, Lot path) {
 record InsertFixing(RBTree tree, Lot path) {
 
     void process() {
-        _job(path);
+        job(path);
         tree.root.color = false;
     }
 
-    private void _job(@NotNull Lot path) {
+    private void job(@NotNull Lot path) {
         if (2 < path.length() && ((RBNode) car1(path)).isRed()) {
             RBNode p = (RBNode) car1(path);
             RBNode pp = (RBNode) car2(path);
@@ -109,7 +109,7 @@ record InsertFixing(RBTree tree, Lot path) {
                     p.color = false;
                     u.color = false;
                     pp.color = true;
-                    _job(cddr(path));
+                    job(cddr(path));
                 } else {
                     if (isRightOf(car(path), p)) {
                         leftRotate(tree, cdr(path));
@@ -125,7 +125,7 @@ record InsertFixing(RBTree tree, Lot path) {
                     p.color = false;
                     u.color = false;
                     pp.color = true;
-                    _job(cddr(path));
+                    job(cddr(path));
                 } else {
                     if (isLeftOf(car(path), p)) {
                         rightRotate(tree, cdr(path));
@@ -205,11 +205,11 @@ private static class DeleteFixing {
 
     void process() {
         x = (RBNode) car(path);
-        _job(cdr(path));
+        job(cdr(path));
         x.color = false;
     }
 
-    private void _job(@NotNull Lot path) {
+    void job(@NotNull Lot path) {
         if (!path.isEmpty() && x.isBlack()) {
             RBNode p = (RBNode) car(path);
             if (isLeftOf(x, p)) {
@@ -224,7 +224,7 @@ private static class DeleteFixing {
                 if (s.left.isBlack() && s.right.isBlack()) {
                     s.color = true;
                     x = p;
-                    _job(cdr(path));
+                    job(cdr(path));
                 } else {
                     if (s.right.isBlack()) {
                         rightRotate(tree, cons(s, path));
@@ -249,7 +249,7 @@ private static class DeleteFixing {
                 if (s.left.isBlack() && s.right.isBlack()) {
                     s.color = true;
                     x = p;
-                    _job(cdr(path));
+                    job(cdr(path));
                 } else {
                     if (s.left.isBlack()) {
                         leftRotate(tree, cons(s, path));
@@ -270,30 +270,30 @@ private static class DeleteFixing {
 
 static class Traveling {
 
-    Lot col;
+    private Lot col;
 
     Traveling() {
         col = lot();
     }
 
     Lot process(RBNode node) {
-        _job(node);
+        job(node);
         return col;
     }
 
-    private void _job(@NotNull RBNode node) {
+    private void job(@NotNull RBNode node) {
         if (!node.isNil()) {
-            _job(node.right);
+            job(node.right);
             col = cons(lot(node.key, node.value), col);
-            _job(node.left);
+            job(node.left);
         }
     }
 }
 
 static class Filter {
 
-    Lot col;
-    final Has1 fn;
+    private Lot col;
+    private final Has1 fn;
 
     Filter(Has1 fn) {
         col = lot();
@@ -301,19 +301,18 @@ static class Filter {
     }
 
     Lot process(RBNode node) {
-        _job(node);
+        job(node);
         return col;
     }
 
-    private void _job(@NotNull RBNode node) {
+    private void job(@NotNull RBNode node) {
         if (!node.isNil()) {
-            _job(node.right);
+            job(node.right);
             if (fn.apply(node.value)) {
                 col = cons(lot(node.key, node.value), col);
             }
-            _job(node.left);
+            job(node.left);
         }
     }
 }
 }
-

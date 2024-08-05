@@ -10,7 +10,7 @@ import static essential.progresive.Pr.*;
 public class Queue {
 
 // #(dequeue-lot enqueue-lot)
-final Few pipe;
+private final Few pipe;
 
 public Queue(@NotNull Object @NotNull ... args) {
     Lot item = fewToLot(few(args));

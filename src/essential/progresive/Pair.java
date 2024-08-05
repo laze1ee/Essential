@@ -12,17 +12,13 @@ Pair(Object data, Lot next) {
 
 @Override
 public String toString() {
-    if (next instanceof LotEnd) {
-        return "()";
+    Lot identical = Self.detect(this);
+    if (identical.isEmpty()) {
+        Lot link = Mate.toPairLink(this);
+        return link.toString();
     } else {
-        Lot identical = Self.detect(this);
-        if (identical.isEmpty()) {
-            Lot link = Mate.toPairLink(this);
-            return link.toString();
-        } else {
-            Object link = Self.label(this, identical);
-            return link.toString();
-        }
+        Object link = Self.label(this, identical);
+        return link.toString();
     }
 }
 
@@ -40,7 +36,8 @@ public boolean equals(Object datum) {
             Object link2 = Self.label(pair, identical2);
             return link1.equals(link2);
         }
-    } else
+    } else {
         return false;
+    }
 }
 }
