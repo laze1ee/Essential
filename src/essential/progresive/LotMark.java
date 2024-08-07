@@ -1,10 +1,10 @@
 package essential.progresive;
 
-class FerMark extends Fer {
+class LotMark extends Lot {
 
 final int count;
 
-FerMark(int count) {
+LotMark(int count) {
     this.count = count;
 }
 
@@ -15,8 +15,8 @@ public String toString() {
 
 @Override
 public boolean equals(Object datum) {
-    if (datum instanceof FerMark fm) {
-        return count == fm.count;
+    if (datum instanceof LotMark mark) {
+        return count == mark.count;
     } else {
         return false;
     }

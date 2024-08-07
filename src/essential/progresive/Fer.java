@@ -1,4 +1,3 @@
 package essential.progresive;
 
-class Fer {
-}
+class Fer {}

@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import static essential.progresive.Pr.*;
 
 
-class Identical {
+class Self {
 
 private static class Detecting {
 
@@ -48,7 +48,7 @@ private static class Detecting {
     }
 
     private void _collectPair(Lot pair) {
-        if (!(pair instanceof PairEnd)) {
+        if (!(pair instanceof LotEnd)) {
             if (Mate.isBelong(pair, collector)) {
                 if (!Mate.isBelong(pair, identical)) {
                     identical = cons(pair, identical);
@@ -99,13 +99,13 @@ private static class Labeling {
         Few cyc = _find(arr);
         if (cyc != null &&
             (boolean) ref1(cyc)) {
-            return new FerMark((int) ref2(cyc));
+            return new FewMark((int) ref2(cyc));
         } else if (cyc != null) {
             set1(cyc, true);
             set2(cyc, count);
             count = count + 1;
             Object[] ooo = _batchArray(arr);
-            return new FerId(ooo, (int) ref2(cyc));
+            return new FewSelf(ooo, (int) ref2(cyc));
         } else {
             Object[] ooo = _batchArray(arr);
             return new Few(ooo);
@@ -124,19 +124,35 @@ private static class Labeling {
     @Contract("_ -> new")
     @NotNull
     Lot _jobPair(@NotNull Lot pair) {
-        if (pair.isEmpty()) {
-            return new PairEnd();
-        }
         Few cyc = _find(pair);
         if (cyc != null && (boolean) ref1(cyc)) {
-            return new PairMark((int) ref2(cyc));
+            return new LotMark((int) ref2(cyc));
         } else if (cyc != null) {
             set1(cyc, true);
             set2(cyc, count);
             count = count + 1;
-            return new PairId(_job(car(pair)), _jobPair(cdr(pair)), (int) ref2(cyc));
+            return new PairSelf(_job(car(pair)), _jobNext(cdr(pair)), (int) ref2(cyc));
         } else {
-            return new PairLink(_job(car(pair)), _jobPair(cdr(pair)));
+            return new PairLinkHead(_job(car(pair)), _jobNext(cdr(pair)));
+        }
+    }
+
+    @Contract("_ -> new")
+    @NotNull
+    Lot _jobNext(@NotNull Lot pair) {
+        if (pair.isEmpty()) {
+            return new LotEnd();
+        }
+        Few cyc = _find(pair);
+        if (cyc != null && (boolean) ref1(cyc)) {
+            return new LotMark((int) ref2(cyc));
+        } else if (cyc != null) {
+            set1(cyc, true);
+            set2(cyc, count);
+            count = count + 1;
+            return new PairSelf(_job(car(pair)), _jobNext(cdr(pair)), (int) ref2(cyc));
+        } else {
+            return new PairLink(_job(car(pair)), _jobNext(cdr(pair)));
         }
     }
 

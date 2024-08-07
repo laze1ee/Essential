@@ -16,5 +16,4 @@ static final String JACKPOT = "congratulation! you encounter the same checksum w
 // Comparison
 static final String UNDEFINED_ARR_COMPARE = "undefined array type %s and %s for comparing in size";
 static final String UNDEFINED_COMPARE = "undefined type %s and %s for comparing in size";
-
 }

@@ -1,9 +1,8 @@
 package essential.progresive;
 
-class PairEnd extends Lot {
-
+class LotEnd extends Lot {
 @Override
 public boolean equals(Object datum) {
-    return datum instanceof PairEnd;
+    return datum instanceof LotEnd;
 }
 }

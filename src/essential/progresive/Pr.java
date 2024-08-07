@@ -20,9 +20,9 @@ public class Pr {
 public static @NotNull Lot lot(@NotNull Object @NotNull ... args) {
     int bound = args.length;
     if (bound == 0) {
-        return new PairEnd();
+        return new LotEnd();
     } else {
-        Lot lt = new PairEnd();
+        Lot lt = new LotEnd();
         for (int i = bound - 1; 0 <= i; i -= 1) {
             lt = new Pair(args[i], lt);
         }
@@ -106,7 +106,7 @@ public static @NotNull Lot reverse(@NotNull Lot lt) {
     } else if (lt.isBreadthCircle()) {
         throw new RuntimeException(String.format(Msg.BREADTH_CIRCLE, lt));
     } else {
-        Lot item = new Pair(car(lt), new PairEnd());
+        Lot item = new Pair(car(lt), new LotEnd());
         lt = cdr(lt);
         while (!lt.isEmpty()) {
             item = new Pair(car(lt), item);
@@ -136,7 +136,7 @@ public static @NotNull Lot lotHead(@NotNull Lot lt, int index) {
     if (lt.isBreadthCircle() ||
         (0 <= index && index <= Mate.length(lt))) {
         if (index == 0) {
-            return new PairEnd();
+            return new LotEnd();
         } else {
             Lot _head = lot(car(lt));
             Lot ooo = _head;

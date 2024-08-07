@@ -1,11 +1,11 @@
 package essential.progresive;
 
-class FerId extends Fer {
+class FewSelf extends Fer {
 
 final Object[] array;
 final int count;
 
-FerId(Object[] array, int count) {
+FewSelf(Object[] array, int count) {
     this.array = array;
     this.count = count;
 }
@@ -17,7 +17,7 @@ public String toString() {
 
 @Override
 public boolean equals(Object datum) {
-    if (datum instanceof FerId fc) {
+    if (datum instanceof FewSelf fc) {
         return count == fc.count &&
                Mate.objectArrayEqual(array, fc.array);
     } else {

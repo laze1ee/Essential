@@ -15,11 +15,11 @@ Few(Object[] data) {
 
 @Override
 public String toString() {
-    Lot same = Identical.detect(this);
-    if (same.isEmpty()) {
+    Lot identical = Self.detect(this);
+    if (identical.isEmpty()) {
         return String.format("#(%s)", Mate.consArray(data, data.length));
     } else {
-        Object datum = Identical.label(this, same);
+        Object datum = Self.label(this, identical);
         return datum.toString();
     }
 }
@@ -27,16 +27,16 @@ public String toString() {
 @Override
 public boolean equals(Object datum) {
     if (datum instanceof Few fw) {
-        Lot i1 = Identical.detect(this);
-        Lot i2 = Identical.detect(fw);
+        Lot i1 = Self.detect(this);
+        Lot i2 = Self.detect(fw);
         if (i1.isEmpty() && i2.isEmpty() &&
             data.length == fw.data.length) {
             return Mate.objectArrayEqual(data, fw.data);
         } else if (!i1.isEmpty() && !i2.isEmpty() &&
                    Mate.length(i1) == Mate.length(i2) &&
                    this.data.length == fw.data.length) {
-            Object o1 = Identical.label(this, i1);
-            Object o2 = Identical.label(fw, i2);
+            Object o1 = Self.label(this, i1);
+            Object o2 = Self.label(fw, i2);
             return o1.equals(o2);
         } else {
             return false;
