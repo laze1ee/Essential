@@ -1,4 +1,4 @@
-package essential.utility;
+package essential.utilities;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -72,47 +72,47 @@ public static long binaryToInteger(byte[] bin, int start, int bound, boolean lit
 }
 
 
-//region Coding
+//region Encoding
 public static final String UNSUPPORTED = "unsupported data type %s for coding";
 
 public static byte[] encode(Object datum) {
     if (datum instanceof Boolean b) {
-        return codeBoolean(b);
+        return encodeBoolean(b);
     } else if (datum instanceof Integer in) {
-        return codeInt(in);
+        return encodeInt(in);
     } else if (datum instanceof Long l) {
-        return codeLong(l);
+        return encodeLong(l);
     } else if (datum instanceof Double d) {
-        return codeDouble(d);
+        return encodeDouble(d);
     } else if (datum instanceof Character c) {
-        return codeChar(c);
+        return encodeChar(c);
     } else if (datum instanceof String str) {
-        return codeString(str);
+        return encodeString(str);
 
     } else if (datum instanceof int[] ins) {
-        return codeInts(ins);
+        return encodeInts(ins);
     } else if (datum instanceof long[] ls) {
-        return codeLongs(ls);
+        return encodeLongs(ls);
     } else if (datum instanceof double[] ds) {
-        return codeDoubles(ds);
+        return encodeDoubles(ds);
 
     } else if (datum instanceof Symbol sym) {
-        return codeSymbol(sym);
+        return encodeSymbol(sym);
     } else if (datum instanceof Lot lt) {
-        return codeLot(lt);
+        return encodeLot(lt);
     } else if (datum instanceof Few fw) {
-        return codeFew(fw);
+        return encodeFew(fw);
 
     } else if (datum instanceof Time t) {
-        return codeTime(t);
+        return encodeTime(t);
     } else if (datum instanceof Date d) {
-        return codeDate(d);
+        return encodeDate(d);
     } else {
         throw new RuntimeException(String.format(UNSUPPORTED, datum));
     }
 }
 
-public static byte @NotNull [] codeSize(long size) {
+public static byte @NotNull [] encodeSize(long size) {
     byte[] bs1 = integerToBinary(size, 8, false);
     bs1 = Share.trim(bs1);
     byte[] bs2 = new byte[bs1.length + 1];
@@ -121,7 +121,7 @@ public static byte @NotNull [] codeSize(long size) {
     return bs2;
 }
 
-public static byte @NotNull [] codeBoolean(boolean b) {
+public static byte @NotNull [] encodeBoolean(boolean b) {
     if (b) {
         return new byte[]{LABEL_BOOLEAN_TRUE};
     } else {
@@ -129,7 +129,7 @@ public static byte @NotNull [] codeBoolean(boolean b) {
     }
 }
 
-public static byte @NotNull [] codeInt(int n) {
+public static byte @NotNull [] encodeInt(int n) {
     byte[] ooo = integerToBinary(n, 4, false);
     byte[] bin = new byte[5];
     bin[0] = LABEL_INT;
@@ -137,7 +137,7 @@ public static byte @NotNull [] codeInt(int n) {
     return bin;
 }
 
-public static byte @NotNull [] codeLong(long n) {
+public static byte @NotNull [] encodeLong(long n) {
     byte[] ooo = integerToBinary(n, 8, false);
     byte[] bin = new byte[9];
     bin[0] = LABEL_LONG;
@@ -145,7 +145,7 @@ public static byte @NotNull [] codeLong(long n) {
     return bin;
 }
 
-public static byte @NotNull [] codeDouble(double n) {
+public static byte @NotNull [] encodeDouble(double n) {
     long bits = Double.doubleToLongBits(n);
     byte[] ooo = integerToBinary(bits, 8, false);
     byte[] bin = new byte[9];
@@ -154,7 +154,7 @@ public static byte @NotNull [] codeDouble(double n) {
     return bin;
 }
 
-public static byte @NotNull [] codeChar(char c) {
+public static byte @NotNull [] encodeChar(char c) {
     byte[] ooo = integerToBinary(c, 3, false);
     byte[] bin = new byte[4];
     bin[0] = LABEL_CHAR;
@@ -162,7 +162,7 @@ public static byte @NotNull [] codeChar(char c) {
     return bin;
 }
 
-public static byte @NotNull [] codeString(@NotNull String str) {
+public static byte @NotNull [] encodeString(@NotNull String str) {
     byte[] b_str = str.getBytes(StandardCharsets.UTF_8);
     byte[] bin = new byte[b_str.length + 2];
     bin[0] = LABEL_STRING;
@@ -170,8 +170,8 @@ public static byte @NotNull [] codeString(@NotNull String str) {
     return bin;
 }
 
-public static byte @NotNull [] codeInts(int @NotNull [] ins) {
-    byte[] size = codeSize(ins.length);
+public static byte @NotNull [] encodeInts(int @NotNull [] ins) {
+    byte[] size = encodeSize(ins.length);
     byte[] bin = new byte[1 + size.length + 4 * ins.length];
     bin[0] = LABEL_INTS;
     System.arraycopy(size, 0, bin, 1, size.length);
@@ -182,8 +182,8 @@ public static byte @NotNull [] codeInts(int @NotNull [] ins) {
     return bin;
 }
 
-public static byte @NotNull [] codeLongs(long @NotNull [] ls) {
-    byte[] size = codeSize(ls.length);
+public static byte @NotNull [] encodeLongs(long @NotNull [] ls) {
+    byte[] size = encodeSize(ls.length);
     byte[] bin = new byte[1 + size.length + 8 * ls.length];
     bin[0] = LABEL_LONGS;
     System.arraycopy(size, 0, bin, 1, size.length);
@@ -194,8 +194,8 @@ public static byte @NotNull [] codeLongs(long @NotNull [] ls) {
     return bin;
 }
 
-public static byte @NotNull [] codeDoubles(double @NotNull [] ds) {
-    byte[] size = codeSize(ds.length);
+public static byte @NotNull [] encodeDoubles(double @NotNull [] ds) {
+    byte[] size = encodeSize(ds.length);
     byte[] bin = new byte[1 + size.length + 8 * ds.length];
     bin[0] = LABEL_DOUBLES;
     System.arraycopy(size, 0, bin, 1, size.length);
@@ -207,15 +207,15 @@ public static byte @NotNull [] codeDoubles(double @NotNull [] ds) {
     return bin;
 }
 
-public static byte @NotNull [] codeSymbol(@NotNull Symbol sym) {
-    byte[] b_str = sym.toRaw().getBytes(StandardCharsets.UTF_8);
+public static byte @NotNull [] encodeSymbol(@NotNull Symbol sym) {
+    byte[] b_str = sym.toString().getBytes(StandardCharsets.UTF_8);
     byte[] bin = new byte[b_str.length + 2];
     bin[0] = LABEL_SYMBOL;
     System.arraycopy(b_str, 0, bin, 1, b_str.length);
     return bin;
 }
 
-public static byte @NotNull [] codeLot(@NotNull Lot lt) {
+public static byte @NotNull [] encodeLot(@NotNull Lot lt) {
     if (lt.isEmpty()) {
         return new byte[]{LABEL_LOT_BEGIN, LABEL_LOT_END};
     } else {
@@ -259,9 +259,9 @@ private static int sizeOf(@NotNull Lot bins) {
     return n;
 }
 
-public static byte @NotNull [] codeFew(@NotNull Few fw) {
+public static byte @NotNull [] encodeFew(@NotNull Few fw) {
     if (fw.length() == 0) {
-        byte[] size = codeSize(0);
+        byte[] size = encodeSize(0);
         byte[] bin = new byte[1 + size.length];
         bin[0] = LABEL_FEW;
         System.arraycopy(size, 0, bin, 1, size.length);
@@ -278,7 +278,7 @@ public static byte @NotNull [] codeFew(@NotNull Few fw) {
 }
 
 public static byte @NotNull [] connectFew(@NotNull Lot lt) {
-    byte[] size = codeSize(lt.length());
+    byte[] size = encodeSize(lt.length());
     byte[] bin = new byte[1 + size.length + sizeOf(lt)];
     bin[0] = LABEL_FEW;
     System.arraycopy(size, 0, bin, 1, size.length);
@@ -293,7 +293,7 @@ public static byte @NotNull [] connectFew(@NotNull Lot lt) {
     return bin;
 }
 
-public static byte @NotNull [] codeTime(@NotNull Time t) {
+public static byte @NotNull [] encodeTime(@NotNull Time t) {
     byte[] bin = new byte[13];
     bin[0] = LABEL_TIME;
     byte[] b_sec = integerToBinary(t.second(), 8, false);
@@ -303,7 +303,7 @@ public static byte @NotNull [] codeTime(@NotNull Time t) {
     return bin;
 }
 
-public static byte @NotNull [] codeDate(@NotNull Date d) {
+public static byte @NotNull [] encodeDate(@NotNull Date d) {
     byte[] bin = new byte[19];
     bin[0] = LABEL_DATE;
     byte[] ooo = integerToBinary(d.year(), 4, false);

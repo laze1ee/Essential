@@ -1,13 +1,13 @@
 package essential.progresive;
 
 import essential.datetime.Time;
-import essential.functional.Has2;
+import essential.functional.IsWithTwo;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import essential.functional.Do1;
-import essential.functional.Has1;
-import essential.utility.CheckSum;
-import essential.utility.RBTree;
+import essential.functional.DoWithOne;
+import essential.functional.IsWithOne;
+import essential.utilities.CheckSum;
+import essential.utilities.RBTree;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -52,6 +52,10 @@ public static @NotNull Object caar(@NotNull Lot lt) {
 
 public static @NotNull Lot cddr(@NotNull Lot lt) {
     return cdr(cdr(lt));
+}
+
+public static @NotNull Lot cdar(@NotNull Lot lt) {
+    return cdr((Lot) car(lt));
 }
 
 @Contract("_, _ -> new")
@@ -196,7 +200,7 @@ public static @NotNull Few lotToFew(@NotNull Lot lt) {
     return fw;
 }
 
-public static @NotNull Lot filterLot(Has1 fn, @NotNull Lot lt) {
+public static @NotNull Lot filterLot(IsWithOne fn, @NotNull Lot lt) {
     if (lt.isBreadthCircle()) {
         throw new RuntimeException(String.format(Msg.BREADTH_CIRCLE, lt));
     }
@@ -210,7 +214,7 @@ public static @NotNull Lot filterLot(Has1 fn, @NotNull Lot lt) {
     return reverse(col);
 }
 
-public static @NotNull Lot mapLot(Do1 fn, @NotNull Lot lt) {
+public static @NotNull Lot mapLot(DoWithOne fn, @NotNull Lot lt) {
     if (lt.isBreadthCircle()) {
         throw new RuntimeException(String.format(Msg.BREADTH_CIRCLE, lt));
     }
@@ -230,7 +234,7 @@ public static boolean isBelong(Object datum, @NotNull Lot lt) {
     }
 }
 
-public static boolean isBelong(Has2 fn, Object datum, @NotNull Lot lt) {
+public static boolean isBelong(IsWithTwo fn, Object datum, @NotNull Lot lt) {
     if (lt.isBreadthCircle()) {
         throw new RuntimeException(String.format(Msg.BREADTH_CIRCLE, lt));
     } else {
@@ -358,7 +362,7 @@ public static @NotNull Lot fewToLot(@NotNull Few fw) {
 }
 
 @Contract("_, _ -> new")
-public static @NotNull Few mapFew(Do1 fn, @NotNull Few fw) {
+public static @NotNull Few mapFew(DoWithOne fn, @NotNull Few fw) {
     int bound = fw.data.length;
     Object[] arr = new Object[bound];
     for (int i = 0; i < bound; i += 1) {

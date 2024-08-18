@@ -1,8 +1,8 @@
-package essential.utility;
+package essential.utilities;
 
 import org.jetbrains.annotations.NotNull;
-import essential.functional.Has1;
-import essential.functional.Has2;
+import essential.functional.IsWithOne;
+import essential.functional.IsWithTwo;
 import essential.progresive.Lot;
 
 import static essential.progresive.Pr.*;
@@ -10,11 +10,11 @@ import static essential.progresive.Pr.*;
 
 public class RBTree {
 
-final Has2 less;
-final Has2 greater;
+final IsWithTwo less;
+final IsWithTwo greater;
 RBNode root;
 
-public RBTree(Has2 less, Has2 greater) {
+public RBTree(IsWithTwo less, IsWithTwo greater) {
     this.less = less;
     this.greater = greater;
     root = new RBNode();
@@ -120,8 +120,8 @@ public static Lot travel(@NotNull RBTree tree) {
     return inst.process(tree.root);
 }
 
-public static Lot filter(Has1 fn, @NotNull RBTree tree) {
-    RBTreeMate.Filter inst = new RBTreeMate.Filter(fn);
+public static Lot filter(IsWithOne fn, @NotNull RBTree tree) {
+    RBTreeMate.Filtering inst = new RBTreeMate.Filtering(fn);
     return inst.process(tree.root);
 }
 }

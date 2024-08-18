@@ -1,6 +1,6 @@
 package essential.progresive;
 
-class FewSelf extends Fer {
+class FewSelf extends Fev {
 
 final Object[] array;
 final int count;

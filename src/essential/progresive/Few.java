@@ -1,11 +1,11 @@
 package essential.progresive;
 
 
-import essential.utility.Binary;
-import essential.utility.CheckSum;
+import essential.utilities.Binary;
+import essential.utilities.CheckSum;
 
 
-public class Few extends Fer {
+public class Few extends Fev {
 
 final Object[] data;
 

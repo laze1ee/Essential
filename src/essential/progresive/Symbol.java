@@ -1,6 +1,6 @@
 package essential.progresive;
 
-import essential.utility.RBTree;
+import essential.utilities.RBTree;
 
 
 public class Symbol {
@@ -16,28 +16,7 @@ Symbol(int checksum) {
 
 @Override
 public String toString() {
-    String str = (String) RBTree.ref(tree, checksum);
-    if (str.isEmpty()) {
-        return "||";
-    } else {
-        StringBuilder builder = new StringBuilder();
-        int bound = str.length();
-        char c = str.charAt(0);
-        if (Character.isDigit(c) || Mate.isScalar(c)) {
-            builder.append(String.format("\\u%X;", (int) c));
-        } else {
-            builder.append(c);
-        }
-        for (int i = 1; i < bound; i = i + 1) {
-            c = str.charAt(i);
-            if (Mate.isScalar(c)) {
-                builder.append(String.format("\\u%X;", (int) c));
-            } else {
-                builder.append(c);
-            }
-        }
-        return builder.toString();
-    }
+    return (String) RBTree.ref(tree, checksum);
 }
 
 @Override
@@ -52,9 +31,5 @@ public boolean equals(Object datum) {
 @Override
 public int hashCode() {
     return checksum;
-}
-
-public String toRaw() {
-    return (String) RBTree.ref(tree, checksum);
 }
 }

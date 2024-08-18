@@ -1,6 +1,6 @@
 package test;
 
-import essential.utility.CheckSum;
+import essential.utilities.CheckSum;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;

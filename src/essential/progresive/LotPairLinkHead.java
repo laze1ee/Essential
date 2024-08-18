@@ -1,19 +1,19 @@
 package essential.progresive;
 
-class PairLinkHead extends PairLink {
+class LotPairLinkHead extends LotPairLink {
 
-PairLinkHead(Object data, Lot next) {
+LotPairLinkHead(Object data, Lot next) {
     super(data, next);
 }
 
 @Override
 public String toString() {
-    return String.format("(%s)", new PairLink(data, next));
+    return String.format("(%s)", new LotPairLink(data, next));
 }
 
 @Override
 public boolean equals(Object datum) {
-    if (datum instanceof PairLinkHead head) {
+    if (datum instanceof LotPairLinkHead head) {
         return data.equals(head.data) &&
                next.equals(head.next);
     } else {

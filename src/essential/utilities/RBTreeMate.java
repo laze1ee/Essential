@@ -1,7 +1,7 @@
-package essential.utility;
+package essential.utilities;
 
 import org.jetbrains.annotations.NotNull;
-import essential.functional.Has1;
+import essential.functional.IsWithOne;
 import essential.progresive.Lot;
 
 import static essential.progresive.Pr.*;
@@ -37,10 +37,8 @@ private static boolean isRightOf(Object node1, @NotNull RBNode node2) {
 private static void leftRotate(RBTree tree, Lot path) {
     RBNode x = (RBNode) car(path);
     RBNode up = x.right;
-    RBNode b = up.left;
-
+    x.right = up.left;
     up.left = x;
-    x.right = b;
 
     if (cdr(path).isEmpty()) {
         tree.root = up;
@@ -57,10 +55,8 @@ private static void leftRotate(RBTree tree, Lot path) {
 private static void rightRotate(RBTree tree, Lot path) {
     RBNode x = (RBNode) car(path);
     RBNode up = x.left;
-    RBNode b = up.right;
-
+    x.left = up.right;
     up.right = x;
-    x.left = b;
 
     if (cdr(path).isEmpty()) {
         tree.root = up;
@@ -172,17 +168,17 @@ static boolean delete(@NotNull RBTree tree, Object key) {
             path = cons(x, cdr(path));
         } else {
             Lot min_path = minimum(deleted.right, lot());
-            RBNode alternate = (RBNode) car(min_path);
-            color = alternate.color;
-            x = alternate.right;
-            if (!isRightOf(alternate, deleted)) {
+            RBNode replace = (RBNode) car(min_path);
+            color = replace.color;
+            x = replace.right;
+            if (!isRightOf(replace, deleted)) {
                 transplant(tree, min_path, x);
-                alternate.right = deleted.right;
+                replace.right = deleted.right;
             }
-            transplant(tree, path, alternate);
-            alternate.left = deleted.left;
-            alternate.color = deleted.color;
-            path = append(cons(x, cdr(min_path)), cons(alternate, cdr(path)));
+            transplant(tree, path, replace);
+            replace.left = deleted.left;
+            replace.color = deleted.color;
+            path = append(cons(x, cdr(min_path)), cons(replace, cdr(path)));
         }
         if (!color) {       // is the deleted color black?
             DeleteFixing fixer = new DeleteFixing(tree, path);
@@ -282,20 +278,31 @@ static class Traveling {
     }
 
     private void job(@NotNull RBNode node) {
-        if (!node.isNil()) {
-            job(node.right);
+        Lot acc = lot(node);
+        node = node.right;
+        while (!acc.isEmpty()) {
+            while (!node.isNil()) {
+                acc = cons(node, acc);
+                node = node.right;
+            }
+            node = (RBNode) car(acc);
             col = cons(lot(node.key, node.value), col);
-            job(node.left);
+            acc = cdr(acc);
+            node = node.left;
+            while (!node.isNil()) {
+                acc = cons(node, acc);
+                node = node.right;
+            }
         }
     }
 }
 
-static class Filter {
+static class Filtering {
 
     private Lot col;
-    private final Has1 fn;
+    private final IsWithOne fn;
 
-    Filter(Has1 fn) {
+    Filtering(IsWithOne fn) {
         col = lot();
         this.fn = fn;
     }
@@ -306,12 +313,23 @@ static class Filter {
     }
 
     private void job(@NotNull RBNode node) {
-        if (!node.isNil()) {
-            job(node.right);
+        Lot acc = lot(node);
+        node = node.right;
+        while (!acc.isEmpty()) {
+            while (!node.isNil()) {
+                acc = cons(node, acc);
+                node = node.right;
+            }
+            node = (RBNode) car(acc);
             if (fn.apply(node.value)) {
                 col = cons(lot(node.key, node.value), col);
             }
-            job(node.left);
+            acc = cdr(acc);
+            node = node.left;
+            while (!node.isNil()) {
+                acc = cons(node, acc);
+                node = node.right;
+            }
         }
     }
 }

@@ -1,7 +1,7 @@
 package essential.datetime;
 
-import essential.utility.Binary;
-import essential.utility.CheckSum;
+import essential.utilities.Binary;
+import essential.utilities.CheckSum;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 

@@ -1,6 +1,6 @@
 package essential.progresive;
 
-class FewMark extends Fer {
+class FewMark extends Fev {
 
 final int count;
 

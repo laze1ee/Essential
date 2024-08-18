@@ -95,7 +95,7 @@ private static class Labeling {
     }
 
     @Contract("_ -> new")
-    @NotNull Fer jobArray(Object[] arr) {
+    @NotNull Fev jobArray(Object[] arr) {
         Few cyc = find(arr);
         if (cyc != null &&
             (boolean) ref1(cyc)) {
@@ -130,9 +130,9 @@ private static class Labeling {
             set1(cyc, true);
             set2(cyc, count);
             count = count + 1;
-            return new PairSelf(job(car(pair)), jobNext(cdr(pair)), (int) ref2(cyc));
+            return new LotPairSelf(job(car(pair)), jobNext(cdr(pair)), (int) ref2(cyc));
         } else {
-            return new PairLinkHead(job(car(pair)), jobNext(cdr(pair)));
+            return new LotPairLinkHead(job(car(pair)), jobNext(cdr(pair)));
         }
     }
 
@@ -148,9 +148,9 @@ private static class Labeling {
             set1(cyc, true);
             set2(cyc, count);
             count = count + 1;
-            return new PairSelf(job(car(pair)), jobNext(cdr(pair)), (int) ref2(cyc));
+            return new LotPairSelf(job(car(pair)), jobNext(cdr(pair)), (int) ref2(cyc));
         } else {
-            return new PairLink(job(car(pair)), jobNext(cdr(pair)));
+            return new LotPairLink(job(car(pair)), jobNext(cdr(pair)));
         }
     }
 

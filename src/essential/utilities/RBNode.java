@@ -1,4 +1,4 @@
-package essential.utility;
+package essential.utilities;
 
 import static essential.progresive.Pr.*;
 
@@ -43,7 +43,9 @@ public boolean equals(Object datum) {
 
 
 boolean isNil() {
-    return eq(key, false) && !color;
+    return key instanceof Boolean &&
+           left == null &&
+           right == null;
 }
 
 boolean isRed() {

@@ -1,7 +1,7 @@
 package essential.progresive;
 
-import essential.utility.Binary;
-import essential.utility.CheckSum;
+import essential.utilities.Binary;
+import essential.utilities.CheckSum;
 
 
 public class Lot {

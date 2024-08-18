@@ -1,4 +1,4 @@
-package essential.utility;
+package essential.utilities;
 
 import org.jetbrains.annotations.NotNull;
 

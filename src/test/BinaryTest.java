@@ -3,7 +3,7 @@ package test;
 import essential.datetime.Date;
 import essential.datetime.Time;
 import essential.progresive.Lot;
-import essential.utility.Binary;
+import essential.utilities.Binary;
 import org.junit.jupiter.api.Test;
 
 import static essential.progresive.Pr.*;

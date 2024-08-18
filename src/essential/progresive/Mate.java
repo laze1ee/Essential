@@ -12,12 +12,12 @@ class Mate {
 
 //region Lot
 static @NotNull Lot toPairLink(Lot lt) {
-    PairLink _head = new PairLinkHead(car(lt), new LotEnd());
-    PairLink item = _head;
+    LotPairLink _head = new LotPairLinkHead(car(lt), new LotEnd());
+    LotPairLink item = _head;
     lt = cdr(lt);
     while (!lt.isEmpty()) {
-        item.next = new PairLink(car(lt), new LotEnd());
-        item = (PairLink) item.next;
+        item.next = new LotPairLink(car(lt), new LotEnd());
+        item = (LotPairLink) item.next;
         lt = cdr(lt);
     }
     return _head;
@@ -45,19 +45,14 @@ static boolean isBelong(Object datum, @NotNull Lot lt) {
 
 
 //region Symbol
-private static final char[] occupant = new char[]{'\"', '\'', '#', ',', ';', '\\', '|',
-                                                  '(', ')', '[', ']', '{', '}'};
-
-private static boolean isCharPresent(char c) {
-    int i = 0;
-    while (i < occupant.length && c != occupant[i]) {
-        i = i + 1;
-    }
-    return i < occupant.length;
-}
-
 static boolean isScalar(char c) {
-    return c <= 0x1F || Character.isWhitespace(c) || isCharPresent(c);
+    if (c <= 0x1F || Character.isWhitespace(c)) {
+        return true;
+    } else {
+        return c == '\"' || c == '\'' || c == '#' || c == ',' ||
+               c == ';' || c == '\\' || c == '|' ||
+               c == '(' || c == ')' || c == '[' || c == ']' || c == '{' || c == '}';
+    }
 }
 //endregion
 
