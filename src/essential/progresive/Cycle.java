@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import static essential.progresive.Pr.*;
 
 
-class Self {
+class Cycle {
 
 private static class Detecting {
 
@@ -29,8 +29,8 @@ private static class Detecting {
     void job(Object datum) {
         if (datum instanceof Few fw) {
             collectArray(fw.data);
-        } else if (datum instanceof Pair pair) {
-            collectPair(pair);
+        } else if (datum instanceof LotPair lotPair) {
+            collectPair(lotPair);
         }
     }
 
@@ -48,15 +48,18 @@ private static class Detecting {
     }
 
     void collectPair(Lot pair) {
-        if (!(pair instanceof LotEnd)) {
-            if (Mate.isBelong(pair, collector)) {
+        while (true) {
+            if (pair instanceof LotEnd) {
+                break;
+            } else if (Mate.isBelong(pair, collector)) {
                 if (!Mate.isBelong(pair, identical)) {
                     identical = cons(pair, identical);
                 }
+                break;
             } else {
                 collector = cons(pair, collector);
                 job(car(pair));
-                collectPair(cdr(pair));
+                pair = cdr(pair);
             }
         }
     }
@@ -87,8 +90,8 @@ private static class Labeling {
     Object job(Object datum) {
         if (datum instanceof Few fw) {
             return jobArray(fw.data);
-        } else if (datum instanceof Pair pair) {
-            return jobPair(pair);
+        } else if (datum instanceof LotPair lotPair) {
+            return jobPair(lotPair);
         } else {
             return datum;
         }
@@ -103,9 +106,9 @@ private static class Labeling {
         } else if (cyc != null) {
             set1(cyc, true);
             set2(cyc, count);
-            count = count + 1;
+            count += 1;
             Object[] ooo = batchArray(arr);
-            return new FewSelf(ooo, (int) ref2(cyc));
+            return new FewCyc(ooo, (int) ref2(cyc));
         } else {
             Object[] ooo = batchArray(arr);
             return new Few(ooo);
@@ -129,8 +132,8 @@ private static class Labeling {
         } else if (cyc != null) {
             set1(cyc, true);
             set2(cyc, count);
-            count = count + 1;
-            return new LotPairSelf(job(car(pair)), jobNext(cdr(pair)), (int) ref2(cyc));
+            count += 1;
+            return new LotPairCyc(job(car(pair)), jobNext(cdr(pair)), (int) ref2(cyc));
         } else {
             return new LotPairLinkHead(job(car(pair)), jobNext(cdr(pair)));
         }
@@ -147,8 +150,8 @@ private static class Labeling {
         } else if (cyc != null) {
             set1(cyc, true);
             set2(cyc, count);
-            count = count + 1;
-            return new LotPairSelf(job(car(pair)), jobNext(cdr(pair)), (int) ref2(cyc));
+            count += 1;
+            return new LotPairCyc(job(car(pair)), jobNext(cdr(pair)), (int) ref2(cyc));
         } else {
             return new LotPairLink(job(car(pair)), jobNext(cdr(pair)));
         }

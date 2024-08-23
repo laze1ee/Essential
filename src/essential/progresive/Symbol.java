@@ -1,13 +1,12 @@
 package essential.progresive;
 
-import essential.utilities.RBTree;
+import essential.utilities.AVLTree;
 
 
 public class Symbol {
 
-static final RBTree tree = new RBTree((m, n) -> (int) m < (int) n,
-                                      (m, n) -> (int) m > (int) n);
-
+static final AVLTree tree = new AVLTree((m, n) -> (int) m < (int) n,
+                                        (m, n) -> (int) m > (int) n);
 final int checksum;
 
 Symbol(int checksum) {
@@ -16,7 +15,7 @@ Symbol(int checksum) {
 
 @Override
 public String toString() {
-    return (String) RBTree.ref(tree, checksum);
+    return (String) AVLTree.ref(tree, checksum);
 }
 
 @Override

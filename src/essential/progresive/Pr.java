@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import essential.functional.DoWithOne;
 import essential.functional.IsWithOne;
 import essential.utilities.CheckSum;
-import essential.utilities.RBTree;
+import essential.utilities.AVLTree;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -24,7 +24,7 @@ public static @NotNull Lot lot(@NotNull Object @NotNull ... args) {
     } else {
         Lot lt = new LotEnd();
         for (int i = bound - 1; 0 <= i; i -= 1) {
-            lt = new Pair(args[i], lt);
+            lt = new LotPair(args[i], lt);
         }
         return lt;
     }
@@ -34,7 +34,7 @@ public static @NotNull Object car(@NotNull Lot lt) {
     if (lt.isEmpty()) {
         throw new RuntimeException(Msg.LOT_EMPTY);
     } else {
-        return ((Pair) lt).data;
+        return ((LotPair) lt).data;
     }
 }
 
@@ -42,7 +42,7 @@ public static @NotNull Lot cdr(@NotNull Lot lt) {
     if (lt.isEmpty()) {
         throw new RuntimeException(Msg.LOT_EMPTY);
     } else {
-        return ((Pair) lt).next;
+        return ((LotPair) lt).next;
     }
 }
 
@@ -60,7 +60,7 @@ public static @NotNull Lot cdar(@NotNull Lot lt) {
 
 @Contract("_, _ -> new")
 public static @NotNull Lot cons(@NotNull Object datum, @NotNull Lot lt) {
-    return new Pair(datum, lt);
+    return new LotPair(datum, lt);
 }
 
 public static @NotNull Object refLot(@NotNull Lot lt, int index) {
@@ -92,7 +92,7 @@ public static void setCar(@NotNull Lot lt, @NotNull Object datum) {
     if (lt.isEmpty()) {
         throw new RuntimeException(Msg.LOT_EMPTY);
     } else {
-        ((Pair) lt).data = datum;
+        ((LotPair) lt).data = datum;
     }
 }
 
@@ -100,7 +100,7 @@ public static void setCdr(@NotNull Lot lt1, @NotNull Lot lt2) {
     if (lt1.isEmpty()) {
         throw new RuntimeException(Msg.LOT_EMPTY);
     } else {
-        ((Pair) lt1).next = lt2;
+        ((LotPair) lt1).next = lt2;
     }
 }
 
@@ -110,10 +110,10 @@ public static @NotNull Lot reverse(@NotNull Lot lt) {
     } else if (lt.isBreadthCircle()) {
         throw new RuntimeException(String.format(Msg.BREADTH_CIRCLE, lt));
     } else {
-        Lot item = new Pair(car(lt), new LotEnd());
+        Lot item = new LotPair(car(lt), new LotEnd());
         lt = cdr(lt);
         while (!lt.isEmpty()) {
-            item = new Pair(car(lt), item);
+            item = new LotPair(car(lt), item);
             lt = cdr(lt);
         }
         return item;
@@ -380,9 +380,9 @@ public static @NotNull Symbol symbol(@NotNull String str) {
         throw new RuntimeException(String.format(Msg.INVALID_STRING, stringOf(str)));
     } else {
         int checksum = CheckSum.fletcher32(str.getBytes(StandardCharsets.UTF_8));
-        boolean success = RBTree.insert(Symbol.tree, checksum, str);
+        boolean success = AVLTree.insert(Symbol.tree, checksum, str);
         if (!success) {
-            String present = (String) RBTree.ref(Symbol.tree, checksum);
+            String present = (String) AVLTree.ref(Symbol.tree, checksum);
             if (!str.equals(present)) {
                 throw new RuntimeException(String.format(Msg.JACKPOT, str, present));
             }

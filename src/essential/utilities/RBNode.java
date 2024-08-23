@@ -1,5 +1,7 @@
 package essential.utilities;
 
+import org.jetbrains.annotations.NotNull;
+
 import static essential.progresive.Pr.*;
 
 
@@ -54,5 +56,13 @@ boolean isRed() {
 
 boolean isBlack() {
     return !color;
+}
+
+boolean isLeftOf(@NotNull RBNode node) {
+    return eq(this, node.left);
+}
+
+boolean isRightOf(@NotNull RBNode node) {
+    return eq(this, node.right);
 }
 }

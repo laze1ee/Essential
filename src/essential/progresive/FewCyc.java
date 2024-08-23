@@ -1,11 +1,11 @@
 package essential.progresive;
 
-class FewSelf extends Fev {
+class FewCyc extends Fev {
 
 final Object[] array;
 final int count;
 
-FewSelf(Object[] array, int count) {
+FewCyc(Object[] array, int count) {
     this.array = array;
     this.count = count;
 }
@@ -17,9 +17,9 @@ public String toString() {
 
 @Override
 public boolean equals(Object datum) {
-    if (datum instanceof FewSelf fc) {
-        return count == fc.count &&
-               Mate.objectArrayEqual(array, fc.array);
+    if (datum instanceof FewCyc cyc) {
+        return count == cyc.count &&
+               Mate.objectArrayEqual(array, cyc.array);
     } else {
         return false;
     }

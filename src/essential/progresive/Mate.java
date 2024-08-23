@@ -44,19 +44,6 @@ static boolean isBelong(Object datum, @NotNull Lot lt) {
 //endregion
 
 
-//region Symbol
-static boolean isScalar(char c) {
-    if (c <= 0x1F || Character.isWhitespace(c)) {
-        return true;
-    } else {
-        return c == '\"' || c == '\'' || c == '#' || c == ',' ||
-               c == ';' || c == '\\' || c == '|' ||
-               c == '(' || c == ')' || c == '[' || c == ']' || c == '{' || c == '}';
-    }
-}
-//endregion
-
-
 //region To String
 static @NotNull String stringOfChar(char c) {
     switch (c) {

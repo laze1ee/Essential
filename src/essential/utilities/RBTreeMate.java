@@ -26,14 +26,6 @@ static @NotNull Lot pathOf(@NotNull RBTree tree, Object key) {
     return cons(node, path);
 }
 
-private static boolean isLeftOf(Object node1, @NotNull RBNode node2) {
-    return eq(node1, node2.left);
-}
-
-private static boolean isRightOf(Object node1, @NotNull RBNode node2) {
-    return eq(node1, node2.right);
-}
-
 private static void leftRotate(RBTree tree, Lot path) {
     RBNode x = (RBNode) car(path);
     RBNode up = x.right;
@@ -44,7 +36,7 @@ private static void leftRotate(RBTree tree, Lot path) {
         tree.root = up;
     } else {
         RBNode p = (RBNode) car1(path);
-        if (isLeftOf(x, p)) {
+        if (x.isLeftOf(p)) {
             p.left = up;
         } else {
             p.right = up;
@@ -62,7 +54,7 @@ private static void rightRotate(RBTree tree, Lot path) {
         tree.root = up;
     } else {
         RBNode p = (RBNode) car1(path);
-        if (isLeftOf(x, p)) {
+        if (x.isLeftOf(p)) {
             p.left = up;
         } else {
             p.right = up;
@@ -99,7 +91,7 @@ record InsertFixing(RBTree tree, Lot path) {
         if (2 < path.length() && ((RBNode) car1(path)).isRed()) {
             RBNode p = (RBNode) car1(path);
             RBNode pp = (RBNode) car2(path);
-            if (isLeftOf(p, pp)) {
+            if (p.isLeftOf(pp)) {
                 RBNode u = pp.right;
                 if (u.isRed()) {
                     p.color = false;
@@ -107,7 +99,7 @@ record InsertFixing(RBTree tree, Lot path) {
                     pp.color = true;
                     job(cddr(path));
                 } else {
-                    if (isRightOf(car(path), p)) {
+                    if (((RBNode) car(path)).isRightOf(p)) {
                         leftRotate(tree, cdr(path));
                         p = (RBNode) car(path);
                     }
@@ -123,7 +115,7 @@ record InsertFixing(RBTree tree, Lot path) {
                     pp.color = true;
                     job(cddr(path));
                 } else {
-                    if (isLeftOf(car(path), p)) {
+                    if (((RBNode) car(path)).isLeftOf(p)) {
                         rightRotate(tree, cdr(path));
                         p = (RBNode) car(path);
                     }
@@ -142,7 +134,7 @@ private static void transplant(RBTree tree, @NotNull Lot path, RBNode node) {
         tree.root = node;
     } else {
         RBNode p = (RBNode) car1(path);
-        if (isLeftOf(car(path), p)) {
+        if (((RBNode) car(path)).isLeftOf(p)) {
             p.left = node;
         } else {
             p.right = node;
@@ -171,7 +163,7 @@ static boolean delete(@NotNull RBTree tree, Object key) {
             RBNode replace = (RBNode) car(min_path);
             color = replace.color;
             x = replace.right;
-            if (!isRightOf(replace, deleted)) {
+            if (!replace.isRightOf(deleted)) {
                 transplant(tree, min_path, x);
                 replace.right = deleted.right;
             }
@@ -208,7 +200,7 @@ private static class DeleteFixing {
     void job(@NotNull Lot path) {
         if (!path.isEmpty() && x.isBlack()) {
             RBNode p = (RBNode) car(path);
-            if (isLeftOf(x, p)) {
+            if (x.isLeftOf(p)) {
                 RBNode s = p.right;
                 if (s.isRed()) {
                     leftRotate(tree, path);

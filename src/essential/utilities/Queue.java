@@ -9,7 +9,6 @@ import static essential.progresive.Pr.*;
 
 public class Queue {
 
-// #(dequeue-lot enqueue-lot)
 private final Few pipe;
 
 public Queue(@NotNull Object @NotNull ... args) {

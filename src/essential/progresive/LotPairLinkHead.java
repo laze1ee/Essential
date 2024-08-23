@@ -14,7 +14,7 @@ public String toString() {
 @Override
 public boolean equals(Object datum) {
     if (datum instanceof LotPairLinkHead head) {
-        return data.equals(head.data) &&
+        return Pr.equal(data, head.data) &&
                next.equals(head.next);
     } else {
         return false;
