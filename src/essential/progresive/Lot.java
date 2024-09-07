@@ -20,23 +20,16 @@ public boolean isEmpty() {
 }
 
 public int length() {
-    if (this.isBreadthCircle()) {
+    int n = Mate.theHareAndTortoise(this);
+    if (n == -1) {
         throw new RuntimeException(String.format(Msg.BREADTH_CIRCLE, this));
     } else {
-        return Mate.length(this);
+        return n;
     }
 }
 
 public boolean isBreadthCircle() {
-    Lot col = Pr.lot(this);
-    Lot lt = this;
-    while (!lt.isEmpty()) {
-        if (Mate.isBelong(Pr.cdr(lt), col)) {
-            return true;
-        }
-        col = Pr.cons(Pr.cdr(lt), col);
-        lt = Pr.cdr(lt);
-    }
-    return false;
+    int n = Mate.theHareAndTortoise(this);
+    return n == -1;
 }
 }

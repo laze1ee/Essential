@@ -3,7 +3,7 @@ package essential.progresive;
 class LotPairCyc extends Lot {
 
 final Object data;
-Lot next;
+final Lot next;
 final int count;
 
 LotPairCyc(Object data, Lot next, int count) {

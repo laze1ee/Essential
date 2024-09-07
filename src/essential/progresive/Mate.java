@@ -41,6 +41,31 @@ static boolean isBelong(Object datum, @NotNull Lot lt) {
     }
     return false;
 }
+
+static int theHareAndTortoise(@NotNull Lot lt) {
+    if (lt.isEmpty()) {
+        return 0;
+    } else if (cdr(lt).isEmpty()) {
+        return 1;
+    } else {
+        Lot hare = cddr(lt);
+        Lot tortoise = lt;
+        int index = 0;
+        while (true) {
+            if (hare.isEmpty()) {
+                return (index + 1) * 2;
+            } else if (cdr(hare).isEmpty()) {
+                return (index + 1) * 2 + 1;
+            } else if (hare == tortoise) {
+                return -1;
+            } else {
+                hare = cddr(hare);
+                tortoise = cdr(tortoise);
+                index += 1;
+            }
+        }
+    }
+}
 //endregion
 
 

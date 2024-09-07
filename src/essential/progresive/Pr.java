@@ -303,6 +303,22 @@ public static @NotNull Object ref5(Few fw) {
     return refFew(fw, 5);
 }
 
+public static @NotNull Object ref6(Few fw) {
+    return refFew(fw, 6);
+}
+
+public static @NotNull Object ref7(Few fw) {
+    return refFew(fw, 7);
+}
+
+public static @NotNull Object ref8(Few fw) {
+    return refFew(fw, 8);
+}
+
+public static @NotNull Object ref9(Few fw) {
+    return refFew(fw, 9);
+}
+
 public static void setFew(@NotNull Few fw, int index, Object datum) {
     if (0 <= index && index < fw.data.length) {
         fw.data[index] = datum;
@@ -550,7 +566,7 @@ public static @NotNull String hexOfBytes(byte @NotNull [] bs) {
 
 @SuppressWarnings("SpellCheckingInspection")
 private static final char[] CHARS_SET =
-        "_-ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz".toCharArray();
+"_-ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz".toCharArray();
 
 public static @NotNull String randomString(int length) {
     Random rd = new Random();
