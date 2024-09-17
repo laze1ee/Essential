@@ -24,7 +24,7 @@ PrTest() {
 
 @Test
 void refLot() {
-    RuntimeException e = assertThrows(RuntimeException.class, () -> Pr.refLot(l1, -5));
+    RuntimeException e = assertThrows(RuntimeException.class, () -> Pr.lotRef(l1, -5));
     System.out.println(e.getMessage());
 }
 

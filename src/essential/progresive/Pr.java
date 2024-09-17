@@ -63,7 +63,7 @@ public static @NotNull Lot cons(@NotNull Object datum, @NotNull Lot lt) {
     return new LotPair(datum, lt);
 }
 
-public static @NotNull Object refLot(@NotNull Lot lt, int index) {
+public static @NotNull Object lotRef(@NotNull Lot lt, int index) {
     int i = index;
     Lot item = lt;
     while (0 <= i && !item.isEmpty()) {
@@ -77,15 +77,15 @@ public static @NotNull Object refLot(@NotNull Lot lt, int index) {
 }
 
 public static @NotNull Object car1(@NotNull Lot lt) {
-    return refLot(lt, 1);
+    return lotRef(lt, 1);
 }
 
 public static @NotNull Object car2(@NotNull Lot lt) {
-    return refLot(lt, 2);
+    return lotRef(lt, 2);
 }
 
 public static @NotNull Object car3(@NotNull Lot lt) {
-    return refLot(lt, 3);
+    return lotRef(lt, 3);
 }
 
 public static void setCar(@NotNull Lot lt, @NotNull Object datum) {
@@ -194,7 +194,7 @@ public static @NotNull Few lotToFew(@NotNull Lot lt) {
     int bound = Mate.length(lt);
     Few fw = makeFew(bound, 0);
     for (int i = 0; i < bound; i += 1) {
-        setFew(fw, i, car(lt));
+        fewSet(fw, i, car(lt));
         lt = cdr(lt);
     }
     return fw;
@@ -271,7 +271,7 @@ public static @NotNull Few makeFew(int length) {
     return makeFew(length, 0);
 }
 
-public static @NotNull Object refFew(@NotNull Few fw, int index) {
+public static @NotNull Object fewRef(@NotNull Few fw, int index) {
     if (0 <= index && index < fw.data.length) {
         return fw.data[index];
     } else {
@@ -280,46 +280,46 @@ public static @NotNull Object refFew(@NotNull Few fw, int index) {
 }
 
 public static @NotNull Object ref0(Few fw) {
-    return refFew(fw, 0);
+    return fewRef(fw, 0);
 }
 
 public static @NotNull Object ref1(Few fw) {
-    return refFew(fw, 1);
+    return fewRef(fw, 1);
 }
 
 public static @NotNull Object ref2(Few fw) {
-    return refFew(fw, 2);
+    return fewRef(fw, 2);
 }
 
 public static @NotNull Object ref3(Few fw) {
-    return refFew(fw, 3);
+    return fewRef(fw, 3);
 }
 
 public static @NotNull Object ref4(Few fw) {
-    return refFew(fw, 4);
+    return fewRef(fw, 4);
 }
 
 public static @NotNull Object ref5(Few fw) {
-    return refFew(fw, 5);
+    return fewRef(fw, 5);
 }
 
 public static @NotNull Object ref6(Few fw) {
-    return refFew(fw, 6);
+    return fewRef(fw, 6);
 }
 
 public static @NotNull Object ref7(Few fw) {
-    return refFew(fw, 7);
+    return fewRef(fw, 7);
 }
 
 public static @NotNull Object ref8(Few fw) {
-    return refFew(fw, 8);
+    return fewRef(fw, 8);
 }
 
 public static @NotNull Object ref9(Few fw) {
-    return refFew(fw, 9);
+    return fewRef(fw, 9);
 }
 
-public static void setFew(@NotNull Few fw, int index, Object datum) {
+public static void fewSet(@NotNull Few fw, int index, Object datum) {
     if (0 <= index && index < fw.data.length) {
         fw.data[index] = datum;
     } else {
@@ -328,27 +328,27 @@ public static void setFew(@NotNull Few fw, int index, Object datum) {
 }
 
 public static void set0(Few fw, Object datum) {
-    setFew(fw, 0, datum);
+    fewSet(fw, 0, datum);
 }
 
 public static void set1(Few fw, Object datum) {
-    setFew(fw, 1, datum);
+    fewSet(fw, 1, datum);
 }
 
 public static void set2(Few fw, Object datum) {
-    setFew(fw, 2, datum);
+    fewSet(fw, 2, datum);
 }
 
 public static void set3(Few fw, Object datum) {
-    setFew(fw, 3, datum);
+    fewSet(fw, 3, datum);
 }
 
 public static void set4(Few fw, Object datum) {
-    setFew(fw, 4, datum);
+    fewSet(fw, 4, datum);
 }
 
 public static void set5(Few fw, Object datum) {
-    setFew(fw, 5, datum);
+    fewSet(fw, 5, datum);
 }
 
 public static void fillFew(@NotNull Few fw, @NotNull Object datum) {

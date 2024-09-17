@@ -270,7 +270,7 @@ public static byte @NotNull [] encodeFew(@NotNull Few fw) {
         Lot col = lot();
         int n = fw.length();
         for (int i = 0; i < n; i = i + 1) {
-            col = cons(encode(refFew(fw, i)), col);
+            col = cons(encode(fewRef(fw, i)), col);
         }
         col = reverse(col);
         return connectFew(col);
@@ -379,6 +379,7 @@ public static long decodeSize(byte @NotNull [] bin, int start) {
 
 public static final String UNMATCHED_LABEL = "unmatched binary label %s for decoding";
 
+@SuppressWarnings("DuplicatedCode")
 private static class Decoding {
 
     final byte[] bin;
@@ -470,7 +471,7 @@ private static class Decoding {
             datum = makeFew(size, 0);
             for (int i = 0; i < size; i = i + 1) {
                 Object ooo = process();
-                setFew((Few) datum, i, ooo);
+                fewSet((Few) datum, i, ooo);
             }
         }
         case LABEL_TIME -> {

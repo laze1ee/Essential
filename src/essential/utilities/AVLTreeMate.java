@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import static essential.progresive.Pr.*;
 
 
+@SuppressWarnings("DuplicatedCode")
 class AVLTreeMate {
 
 static @NotNull Lot pathOf(@NotNull AVLTree tree, Object key) {
@@ -182,6 +183,7 @@ static class Traveling {
     }
 }
 
+@SuppressWarnings("DuplicatedCode")
 static class Filtering {
 
     private Lot col;

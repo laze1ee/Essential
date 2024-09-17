@@ -15,7 +15,7 @@ final Few f2;
 FewTest() {
     f1 =  few(true, false, 1 , 3);
     f2 = copyFew(f1);
-    setFew(f2, 1, f2);
+    fewSet(f2, 1, f2);
 }
 
 
@@ -29,7 +29,7 @@ void testToString() {
 void testEquals() {
     Few fw = copyFew(f1);
     assertEquals(f1, fw);
-    setFew(fw, 1, fw);
+    fewSet(fw, 1, fw);
     assertEquals(fw, f2);
 }
 

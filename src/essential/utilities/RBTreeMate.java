@@ -7,6 +7,7 @@ import essential.progresive.Lot;
 import static essential.progresive.Pr.*;
 
 
+@SuppressWarnings("DuplicatedCode")
 class RBTreeMate {
 
 static @NotNull Lot pathOf(@NotNull RBTree tree, Object key) {
@@ -289,6 +290,7 @@ static class Traveling {
     }
 }
 
+@SuppressWarnings("DuplicatedCode")
 static class Filtering {
 
     private Lot col;
