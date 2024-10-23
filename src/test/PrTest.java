@@ -17,7 +17,7 @@ final Few f1;
 
 PrTest() {
     l1 = lot(1, 2, 3);
-    l2 = copyLot(l1);
+    l2 = lotCopy(l1);
     setCdr(cddr(l2), l2);
     f1 = few(1, 2, 3);
 }
@@ -70,7 +70,7 @@ void filterLot() {
 
 @Test
 void mapLot() {
-    Lot m1 = Pr.mapLot((a) -> (int) a * (int) a, l1);
+    Lot m1 = Pr.lotMap((a) -> (int) a * (int) a, l1);
     Lot m2 = Pr.lot(1, 4, 9);
     assertEquals(m1, m2);
 }
@@ -91,7 +91,7 @@ void fewToLot() {
 
 @Test
 void mapFew() {
-    Few f2 = Pr.mapFew((a) -> (int) a * 10, f1);
+    Few f2 = Pr.fewMap((a) -> (int) a * 10, f1);
     Few f3 = few(10, 20, 30);
     assertEquals(f2, f3);
 }

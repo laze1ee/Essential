@@ -46,6 +46,16 @@ public boolean equals(Object datum) {
     }
 }
 
+public boolean less(@NotNull Time t) {
+    if (this.second() < t.second()) {
+        return true;
+    } else if (this.second() == t.second()) {
+        return this.nanosecond() < t.nanosecond();
+    } else {
+        return false;
+    }
+}
+
 @Override
 public int hashCode() {
     byte[] bin = Binary.encode(this);

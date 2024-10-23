@@ -1,11 +1,11 @@
 package essential.progresive;
 
-
 import essential.utilities.Binary;
 import essential.utilities.CheckSum;
+import essential.utilities.RBTree;
 
 
-public class Few extends Fev {
+public class Few{
 
 final Object[] data;
 
@@ -15,29 +15,24 @@ Few(Object[] data) {
 
 @Override
 public String toString() {
-    Lot identical = Cycle.detect(this);
+    RBTree identical = Identical.detect(this);
     if (identical.isEmpty()) {
-        return String.format("#(%s)", Mate.consArray(data, data.length));
+        return Stringing.fewString(this);
     } else {
-        Object datum = Cycle.label(this, identical);
-        return datum.toString();
+        return Stringing.identicalString(this, identical);
     }
 }
 
 @Override
 public boolean equals(Object datum) {
     if (datum instanceof Few fw) {
-        Lot i1 = Cycle.detect(this);
-        Lot i2 = Cycle.detect(fw);
-        if (i1.isEmpty() && i2.isEmpty() &&
-            data.length == fw.data.length) {
-            return Mate.objectArrayEqual(data, fw.data);
-        } else if (!i1.isEmpty() && !i2.isEmpty() &&
-                   Mate.length(i1) == Mate.length(i2) &&
+        RBTree identical1 = Identical.detect(this);
+        RBTree identical2 = Identical.detect(fw);
+        if (identical1.isEmpty() && identical2.isEmpty()) {
+            return Equaling.fewEqual(this, fw);
+        } else if (!identical1.isEmpty() && !identical2.isEmpty() &&
                    this.data.length == fw.data.length) {
-            Object o1 = Cycle.label(this, i1);
-            Object o2 = Cycle.label(fw, i2);
-            return o1.equals(o2);
+            return Equaling.identicalEqual(this, identical1, fw, identical2);
         } else {
             return false;
         }

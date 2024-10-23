@@ -1,6 +1,6 @@
 # Essential
 
-Essential is a core component of the Bach interpreter, mainly designed to
+Essential is a core component of the Plum interpreter, mainly designed to
 implement two Lisp containers: list and vector. To avoid naming conflicts, the
 term "Lot" is used for list, and "Few" is used for vector.
 

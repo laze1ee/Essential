@@ -1,11 +1,11 @@
 package essential.progresive;
 
 import essential.datetime.Time;
-import essential.functional.IsWithTwo;
+import essential.functional.Predicate2;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import essential.functional.DoWithOne;
-import essential.functional.IsWithOne;
+import essential.functional.Do1;
+import essential.functional.Predicate1;
 import essential.utilities.CheckSum;
 import essential.utilities.AVLTree;
 
@@ -108,7 +108,7 @@ public static @NotNull Lot reverse(@NotNull Lot lt) {
     if (lt.isEmpty()) {
         return lt;
     } else if (lt.isBreadthCircle()) {
-        throw new RuntimeException(String.format(Msg.BREADTH_CIRCLE, lt));
+        throw new RuntimeException(String.format(Msg.CIRCULAR_BREADTH, lt));
     } else {
         Lot item = new LotPair(car(lt), new LotEnd());
         lt = cdr(lt);
@@ -124,7 +124,7 @@ public static @NotNull Lot append(@NotNull Lot lt1, @NotNull Lot lt2) {
     if (lt1.isEmpty()) {
         return lt2;
     } else if (lt1.isBreadthCircle()) {
-        throw new RuntimeException(String.format(Msg.BREADTH_CIRCLE, lt1));
+        throw new RuntimeException(String.format(Msg.CIRCULAR_BREADTH, lt1));
     } else {
         Lot ooo = reverse(lt1);
         Lot eee = lt2;
@@ -169,11 +169,11 @@ public static @NotNull Lot lotTail(@NotNull Lot lt, int index) {
     }
 }
 
-public static @NotNull Lot copyLot(@NotNull Lot lt) {
+public static @NotNull Lot lotCopy(@NotNull Lot lt) {
     if (lt.isEmpty()) {
         return lot();
     } else if (lt.isBreadthCircle()) {
-        throw new RuntimeException(String.format(Msg.BREADTH_CIRCLE, lt));
+        throw new RuntimeException(String.format(Msg.CIRCULAR_BREADTH, lt));
     } else {
         Lot _head = lot(car(lt));
         Lot ooo = _head;
@@ -189,7 +189,7 @@ public static @NotNull Lot copyLot(@NotNull Lot lt) {
 
 public static @NotNull Few lotToFew(@NotNull Lot lt) {
     if (lt.isBreadthCircle()) {
-        throw new RuntimeException(String.format(Msg.BREADTH_CIRCLE, lt));
+        throw new RuntimeException(String.format(Msg.CIRCULAR_BREADTH, lt));
     }
     int bound = Mate.length(lt);
     Few fw = makeFew(bound, 0);
@@ -200,9 +200,9 @@ public static @NotNull Few lotToFew(@NotNull Lot lt) {
     return fw;
 }
 
-public static @NotNull Lot filterLot(IsWithOne fn, @NotNull Lot lt) {
+public static @NotNull Lot filterLot(Predicate1 fn, @NotNull Lot lt) {
     if (lt.isBreadthCircle()) {
-        throw new RuntimeException(String.format(Msg.BREADTH_CIRCLE, lt));
+        throw new RuntimeException(String.format(Msg.CIRCULAR_BREADTH, lt));
     }
     Lot col = lot();
     while (!lt.isEmpty()) {
@@ -214,9 +214,9 @@ public static @NotNull Lot filterLot(IsWithOne fn, @NotNull Lot lt) {
     return reverse(col);
 }
 
-public static @NotNull Lot mapLot(DoWithOne fn, @NotNull Lot lt) {
+public static @NotNull Lot lotMap(Do1 fn, @NotNull Lot lt) {
     if (lt.isBreadthCircle()) {
-        throw new RuntimeException(String.format(Msg.BREADTH_CIRCLE, lt));
+        throw new RuntimeException(String.format(Msg.CIRCULAR_BREADTH, lt));
     }
     Lot col = lot();
     while (!lt.isEmpty()) {
@@ -228,15 +228,15 @@ public static @NotNull Lot mapLot(DoWithOne fn, @NotNull Lot lt) {
 
 public static boolean isBelong(Object datum, @NotNull Lot lt) {
     if (lt.isBreadthCircle()) {
-        throw new RuntimeException(String.format(Msg.BREADTH_CIRCLE, lt));
+        throw new RuntimeException(String.format(Msg.CIRCULAR_BREADTH, lt));
     } else {
         return Mate.isBelong(datum, lt);
     }
 }
 
-public static boolean isBelong(IsWithTwo fn, Object datum, @NotNull Lot lt) {
+public static boolean isBelong(Predicate2 fn, Object datum, @NotNull Lot lt) {
     if (lt.isBreadthCircle()) {
-        throw new RuntimeException(String.format(Msg.BREADTH_CIRCLE, lt));
+        throw new RuntimeException(String.format(Msg.CIRCULAR_BREADTH, lt));
     } else {
         while (!lt.isEmpty()) {
             if (fn.apply(datum, car(lt))) {
@@ -256,10 +256,10 @@ public static @NotNull Few few(@NotNull Object @NotNull ... args) {
 }
 
 @Contract("_, _ -> new")
-public static @NotNull Few makeFew(int length, @NotNull Object value) {
+public static @NotNull Few makeFew(int length, @NotNull Object datum) {
     if (0 <= length) {
         Object[] arr = new Object[length];
-        Arrays.fill(arr, value);
+        Arrays.fill(arr, datum);
         return new Few(arr);
     } else {
         throw new RuntimeException(String.format(Msg.LEN_NON_NATURAL, length));
@@ -361,7 +361,7 @@ public static void copyInto(@NotNull Few src, int src_pos, @NotNull Few dest, in
 }
 
 @Contract("_ -> new")
-public static @NotNull Few copyFew(@NotNull Few fw) {
+public static @NotNull Few fewCopy(@NotNull Few fw) {
     int bound = fw.data.length;
     Object[] arr = new Object[bound];
     System.arraycopy(fw.data, 0, arr, 0, bound);
@@ -378,7 +378,7 @@ public static @NotNull Lot fewToLot(@NotNull Few fw) {
 }
 
 @Contract("_, _ -> new")
-public static @NotNull Few mapFew(DoWithOne fn, @NotNull Few fw) {
+public static @NotNull Few fewMap(Do1 fn, @NotNull Few fw) {
     int bound = fw.data.length;
     Object[] arr = new Object[bound];
     for (int i = 0; i < bound; i += 1) {
@@ -469,59 +469,59 @@ public static boolean equal(Object datum1, Object datum2) {
 
 /**
  * The types supported to compare size:
- * <ul><li>Symbol</li>
- * <li>Number</li>
+ * <ul><li>Number</li>
  * <li>String</li>
+ * <li>Symbol</li>
  * <li>Time</li>
  * <li>boolean[], byte[], int[], long[], double[]</li></ul>
  */
-public static boolean less(Object o1, Object o2) {
-    if (o1 instanceof Symbol sym1 &&
-        o2 instanceof Symbol sym2) {
+public static boolean less(Object datum1, Object datum2) {
+    if (datum1 instanceof Symbol sym1 &&
+        datum2 instanceof Symbol sym2) {
         return sym1.checksum < sym2.checksum;
-    } else if (o1 instanceof Number n1 &&
-               o2 instanceof Number n2) {
+    } else if (datum1 instanceof Number n1 &&
+               datum2 instanceof Number n2) {
         return Mate.numberLess(n1, n2);
-    } else if (o1 instanceof String s1 &&
-               o2 instanceof String s2) {
+    } else if (datum1 instanceof String s1 &&
+               datum2 instanceof String s2) {
         int m = s1.compareTo(s2);
         return m < 0;
-    } else if (o1 instanceof Time t1 &&
-               o2 instanceof Time t2) {
-        return Mate.timeLess(t1, t2);
-    } else if (o1.getClass().isArray() &&
-               o2.getClass().isArray()) {
-        if (o1 instanceof boolean[] bs1 &&
-            o2 instanceof boolean[] bs2) {
+    } else if (datum1 instanceof Time t1 &&
+               datum2 instanceof Time t2) {
+        return t1.less(t2);
+    } else if (datum1.getClass().isArray() &&
+               datum2.getClass().isArray()) {
+        if (datum1 instanceof boolean[] bs1 &&
+            datum2 instanceof boolean[] bs2) {
             int r = Arrays.compare(bs1, bs2);
             return r < 0;
-        } else if (o1 instanceof byte[] bs1 &&
-                   o2 instanceof byte[] bs2) {
+        } else if (datum1 instanceof byte[] bs1 &&
+                   datum2 instanceof byte[] bs2) {
             int r = Arrays.compare(bs1, bs2);
             return r < 0;
-        } else if (o1 instanceof int[] ins1 &&
-                   o2 instanceof int[] ins2) {
+        } else if (datum1 instanceof int[] ins1 &&
+                   datum2 instanceof int[] ins2) {
             int r = Arrays.compare(ins1, ins2);
             return r < 0;
-        } else if (o1 instanceof long[] ls1 &&
-                   o2 instanceof long[] ls2) {
+        } else if (datum1 instanceof long[] ls1 &&
+                   datum2 instanceof long[] ls2) {
             int r = Arrays.compare(ls1, ls2);
             return r < 0;
-        } else if (o1 instanceof double[] ds1 &&
-                   o2 instanceof double[] ds2) {
+        } else if (datum1 instanceof double[] ds1 &&
+                   datum2 instanceof double[] ds2) {
             int r = Arrays.compare(ds1, ds2);
             return r < 0;
         } else {
             throw new RuntimeException(String.format(Msg.UNDEFINED_ARR_COMPARE,
-                                                     stringOf(o1), stringOf(o2)));
+                                                     stringOf(datum1), stringOf(datum2)));
         }
     } else {
-        throw new RuntimeException(String.format(Msg.UNDEFINED_COMPARE, o1, o2));
+        throw new RuntimeException(String.format(Msg.UNDEFINED_COMPARE, datum1, datum2));
     }
 }
 
-public static boolean greater(Object o1, Object o2) {
-    return less(o2, o1);
+public static boolean greater(Object datum1, Object datum2) {
+    return less(datum2, datum1);
 }
 //endregion
 

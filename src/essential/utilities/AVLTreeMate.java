@@ -1,6 +1,7 @@
 package essential.utilities;
 
-import essential.functional.IsWithOne;
+import essential.functional.Do1;
+import essential.functional.Predicate1;
 import essential.progresive.Lot;
 import org.jetbrains.annotations.NotNull;
 
@@ -183,13 +184,12 @@ static class Traveling {
     }
 }
 
-@SuppressWarnings("DuplicatedCode")
 static class Filtering {
 
     private Lot col;
-    private final IsWithOne fn;
+    private final Predicate1 fn;
 
-    Filtering(IsWithOne fn) {
+    Filtering(Predicate1 fn) {
         col = lot();
         this.fn = fn;
     }
@@ -211,6 +211,34 @@ static class Filtering {
             if (fn.apply(node.value)) {
                 col = cons(lot(node.key, node.value), col);
             }
+            acc = cdr(acc);
+            node = node.left;
+            while (!node.isNil()) {
+                acc = cons(node, acc);
+                node = node.right;
+            }
+        }
+    }
+}
+
+static class MapSetting {
+
+    private final Do1 fn;
+
+    MapSetting(Do1 fn) {
+        this.fn = fn;
+    }
+
+    void process(AVLNode node) {
+        Lot acc = lot(node);
+        node = node.right;
+        while (!acc.isEmpty()) {
+            while (!node.isNil()) {
+                acc = cons(node, acc);
+                node = node.right;
+            }
+            node = (AVLNode) car(acc);
+            node.value = fn.apply(node.value);
             acc = cdr(acc);
             node = node.left;
             while (!node.isNil()) {

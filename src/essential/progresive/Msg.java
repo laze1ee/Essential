@@ -3,7 +3,7 @@ package essential.progresive;
 class Msg {
 
 // Lot and Few
-static final String BREADTH_CIRCLE = "%s is circular in breadth";
+static final String CIRCULAR_BREADTH = "%s is circular in breadth";
 static final String LOT_EMPTY = "lot () is empty";
 static final String INDEX_OUT = "index %s is out of range for %s";
 static final String LEN_NON_NATURAL = "length %s is not a natural number";

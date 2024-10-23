@@ -1,7 +1,8 @@
 package essential.utilities;
 
-import essential.functional.IsWithOne;
-import essential.functional.IsWithTwo;
+import essential.functional.Do1;
+import essential.functional.Predicate1;
+import essential.functional.Predicate2;
 import essential.progresive.Lot;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,11 +11,11 @@ import static essential.progresive.Pr.*;
 
 public class AVLTree {
 
-final IsWithTwo less;
-final IsWithTwo greater;
+final Predicate2 less;
+final Predicate2 greater;
 AVLNode root;
 
-public AVLTree(IsWithTwo less, IsWithTwo greater) {
+public AVLTree(Predicate2 less, Predicate2 greater) {
     this.less = less;
     this.greater = greater;
     root = new AVLNode();
@@ -119,8 +120,13 @@ public static Lot travel(@NotNull AVLTree tree) {
     return inst.process(tree.root);
 }
 
-public static Lot filter(IsWithOne fn, @NotNull AVLTree tree) {
+public static Lot filter(Predicate1 fn, @NotNull AVLTree tree) {
     AVLTreeMate.Filtering inst = new AVLTreeMate.Filtering(fn);
     return inst.process(tree.root);
+}
+
+public static void mapSet(Do1 fn, @NotNull AVLTree tree) {
+    AVLTreeMate.MapSetting inst = new AVLTreeMate.MapSetting(fn);
+    inst.process(tree.root);
 }
 }
