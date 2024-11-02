@@ -1,462 +1,367 @@
+/*
+ * Copyright (c) 2022-2024. Laze Lee
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at
+ * https://mozilla.org/MPL/2.0/
+ */
+
 package essential.utilities;
 
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import essential.datetime.Date;
-import essential.datetime.Time;
-import essential.progresive.Few;
 import essential.progresive.Lot;
-import essential.progresive.Symbol;
-import essential.Share;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 import static essential.progresive.Pr.*;
 
 
 public class Binary {
 
-public static final byte LABEL_BOOLEAN_FALSE = (byte) 0x80;
-public static final byte LABEL_BOOLEAN_TRUE = (byte) 0x81;
-public static final byte LABEL_INT = (byte) 0x82;
-public static final byte LABEL_LONG = (byte) 0x83;
-public static final byte LABEL_DOUBLE = (byte) 0x84;
-public static final byte LABEL_CHAR = (byte) 0x85;
-public static final byte LABEL_STRING = (byte) 0x86;
+public static final byte BIN_BOOLEAN_TRUE = (byte) 0x80;
+public static final byte BIN_BOOLEAN_FALSE = (byte) 0x8F;
 
-public static final byte LABEL_INTS = (byte) 0x8A;
-public static final byte LABEL_LONGS = (byte) 0x8B;
-public static final byte LABEL_DOUBLES = (byte) 0x8C;
+static final byte BIN_SHORT = (byte) 0x90;
+static final byte BIN_INT = (byte) 0x91;
+static final byte BIN_LONG = (byte) 0x92;
+static final byte BIN_FLOAT = (byte) 0x93;
+static final byte BIN_DOUBLE = (byte) 0x94;
 
-public static final byte LABEL_SYMBOL = (byte) 0x90;
-public static final byte LABEL_LOT_BEGIN = (byte) 0x91;
-public static final byte LABEL_LOT_CONS = (byte) 0x92;
-public static final byte LABEL_LOT_END = (byte) 0x93;
-public static final byte LABEL_FEW = (byte) 0x94;
+static final byte BIN_BOOLEANS = (byte) 0x95;
+static final byte BIN_SHORTS = (byte) 0x96;
+static final byte BIN_INTS = (byte) 0x97;
+static final byte BIN_LONGS = (byte) 0x98;
+static final byte BIN_FLOATS = (byte) 0x99;
+static final byte BIN_DOUBLES = (byte) 0x9A;
 
-public static final byte LABEL_TIME = (byte) 0xA0;
-public static final byte LABEL_DATE = (byte) 0xA1;
+public static final byte BIN_CHAR = (byte) 0xA0;
+public static final byte BIN_STRING = (byte) 0xA1;
+
+static final byte BIN_TIME = (byte) 0xB0;
+static final byte BIN_DATE = (byte) 0xB1;
+
+public static final byte BIN_SHARE_INDEX = (byte) 0xF0;
+public static final byte BIN_LOT = (byte) 0xF1;
+public static final byte BIN_LOT_BEGIN = (byte) 0xF2;
+public static final byte BIN_LOT_END = (byte) 0xF3;
+public static final byte BIN_FEW = (byte) 0xF4;
 
 
-//region Encoding
-public static final String UNSUPPORTED = "unsupported data type %s for encoding";
+//region Encoding and Decoding for Variable Length U32 Integers
+public static byte @NotNull [] encodeU32(int length) {
+    if (length < 0) {
+        throw new IllegalArgumentException(String.format(Msg.NON_NATURAL, length));
+    } else if (length < 0x80) {        // 7 bits
+        return new byte[]{(byte) length};
+    } else if (length < 0x4000) {      // 14 bits
+        byte[] bin = new byte[2];
+        bin[1] = (byte) length;
+        length = length >> 8;
+        bin[0] = (byte) length;
+        bin[0] = (byte) (bin[0] | 0x80);
+        return bin;
+    } else if (length < 0x200000) {    // 21 bits
+        byte[] bin = new byte[3];
+        bin[2] = (byte) length;
+        length = length >> 8;
+        bin[1] = (byte) length;
+        length = length >> 8;
+        bin[0] = (byte) length;
+        bin[0] = (byte) (bin[0] | 0xC0);
+        return bin;
+    } else if (length < 0x10000000) {  // 28 bits
+        byte[] bin = new byte[4];
+        bin[3] = (byte) length;
+        length = length >> 8;
+        bin[2] = (byte) length;
+        length = length >> 8;
+        bin[1] = (byte) length;
+        length = length >> 8;
+        bin[0] = (byte) length;
+        bin[0] = (byte) (bin[0] | 0xE0);
+        return bin;
+    } else {        // 35 bits
+        byte[] bin = new byte[5];
+        bin[4] = (byte) length;
+        length = length >> 8;
+        bin[3] = (byte) length;
+        length = length >> 8;
+        bin[2] = (byte) length;
+        length = length >> 8;
+        bin[1] = (byte) length;
+        bin[0] = (byte) (bin[0] | 0xF0);
+        return bin;
+    }
+}
 
-public static byte[] encode(Object datum) {
-    if (datum instanceof Boolean b) {
-        return encodeBoolean(b);
-    } else if (datum instanceof Integer in) {
-        return encodeInt(in);
-    } else if (datum instanceof Long l) {
-        return encodeLong(l);
-    } else if (datum instanceof Double d) {
-        return encodeDouble(d);
-    } else if (datum instanceof Character c) {
-        return encodeChar(c);
-    } else if (datum instanceof String str) {
-        return encodeString(str);
-
-    } else if (datum instanceof int[] ins) {
-        return encodeInts(ins);
-    } else if (datum instanceof long[] ls) {
-        return encodeLongs(ls);
-    } else if (datum instanceof double[] ds) {
-        return encodeDoubles(ds);
-
-    } else if (datum instanceof Symbol sym) {
-        return encodeSymbol(sym);
-    } else if (datum instanceof Lot lt) {
-        return encodeLot(lt);
-    } else if (datum instanceof Few fw) {
-        return encodeFew(fw);
-
-    } else if (datum instanceof Time t) {
-        return encodeTime(t);
-    } else if (datum instanceof Date d) {
-        return encodeDate(d);
+public static int sizeOfU32(byte @NotNull [] bin, int start) {
+    int bytes = bin[start] & 0xF8;
+    if (bytes < 0x80) {
+        return 1;
+    } else if (bytes < 0xC0) {
+        return 2;
+    } else if (bytes < 0xE0) {
+        return 3;
+    } else if (bytes < 0xF0) {
+        return 4;
     } else {
-        throw new RuntimeException(String.format(UNSUPPORTED, datum));
+        return 5;
     }
 }
 
-public static byte @NotNull [] encodeSize(long size) {
-    byte[] bs1 = Share.integerToBinary(size, 8, false);
-    bs1 = Share.trim(bs1);
-    byte[] bs2 = new byte[bs1.length + 1];
-    bs2[0] = (byte) bs1.length;
-    System.arraycopy(bs1, 0, bs2, 1, bs1.length);
-    return bs2;
-}
-
-public static byte @NotNull [] encodeBoolean(boolean b) {
-    if (b) {
-        return new byte[]{LABEL_BOOLEAN_TRUE};
-    } else {
-        return new byte[]{LABEL_BOOLEAN_FALSE};
+public static int decodeU32(byte @NotNull [] bin, int start, int bound) {
+    int bytes = bound - start;
+    switch (bytes) {
+    case 1 -> {
+        return bin[start];
+    }
+    case 2 -> {
+        byte[] eef = new byte[8];
+        System.arraycopy(bin, start, eef, 6, 2);
+        eef[6] = (byte) (eef[6] & 0x3F);
+        return (int) binaryToI64(eef);
+    }
+    case 3 -> {
+        byte[] eef = new byte[8];
+        System.arraycopy(bin, start, eef, 5, 3);
+        eef[5] = (byte) (eef[5] & 0x1F);
+        return (int) binaryToI64(eef);
+    }
+    case 4 -> {
+        byte[] eef = new byte[8];
+        System.arraycopy(bin, start, eef, 4, 4);
+        eef[4] = (byte) (eef[4] & 0x0F);
+        return (int) binaryToI64(eef);
+    }
+    default -> {
+        byte[] eef = new byte[8];
+        System.arraycopy(bin, start, eef, 3, 5);
+        eef[3] = (byte) (eef[3] & 0x07);
+        return (int) binaryToI64(eef);
+    }
     }
 }
+//endregion
 
-public static byte @NotNull [] encodeInt(int n) {
-    byte[] ooo = Share.integerToBinary(n, 4, false);
-    byte[] bin = new byte[5];
-    bin[0] = LABEL_INT;
-    System.arraycopy(ooo, 0, bin, 1, 4);
-    return bin;
-}
 
-public static byte @NotNull [] encodeLong(long n) {
-    byte[] ooo = Share.integerToBinary(n, 8, false);
-    byte[] bin = new byte[9];
-    bin[0] = LABEL_LONG;
-    System.arraycopy(ooo, 0, bin, 1, 8);
-    return bin;
-}
-
-public static byte @NotNull [] encodeDouble(double n) {
-    long bits = Double.doubleToLongBits(n);
-    byte[] ooo = Share.integerToBinary(bits, 8, false);
-    byte[] bin = new byte[9];
-    bin[0] = LABEL_DOUBLE;
-    System.arraycopy(ooo, 0, bin, 1, 8);
-    return bin;
-}
-
-public static byte @NotNull [] encodeChar(char c) {
-    byte[] ooo = Share.integerToBinary(c, 3, false);
-    byte[] bin = new byte[4];
-    bin[0] = LABEL_CHAR;
-    System.arraycopy(ooo, 0, bin, 1, 3);
-    return bin;
-}
-
-public static byte @NotNull [] encodeString(@NotNull String str) {
-    byte[] b_str = str.getBytes(StandardCharsets.UTF_8);
-    byte[] bin = new byte[b_str.length + 2];
-    bin[0] = LABEL_STRING;
-    System.arraycopy(b_str, 0, bin, 1, b_str.length);
-    return bin;
-}
-
-public static byte @NotNull [] encodeInts(int @NotNull [] ins) {
-    byte[] size = encodeSize(ins.length);
-    byte[] bin = new byte[1 + size.length + 4 * ins.length];
-    bin[0] = LABEL_INTS;
-    System.arraycopy(size, 0, bin, 1, size.length);
-    for (int i = 0; i < ins.length; i += 1) {
-        byte[] ooo = Share.integerToBinary(ins[i], 4, false);
-        System.arraycopy(ooo, 0, bin, 1 + size.length + 4 * i, 4);
-    }
-    return bin;
-}
-
-public static byte @NotNull [] encodeLongs(long @NotNull [] ls) {
-    byte[] size = encodeSize(ls.length);
-    byte[] bin = new byte[1 + size.length + 8 * ls.length];
-    bin[0] = LABEL_LONGS;
-    System.arraycopy(size, 0, bin, 1, size.length);
-    for (int i = 0; i < ls.length; i += 1) {
-        byte[] ooo = Share.integerToBinary(ls[i], 8, false);
-        System.arraycopy(ooo, 0, bin, 1 + size.length + 8 * i, 8);
-    }
-    return bin;
-}
-
-public static byte @NotNull [] encodeDoubles(double @NotNull [] ds) {
-    byte[] size = encodeSize(ds.length);
-    byte[] bin = new byte[1 + size.length + 8 * ds.length];
-    bin[0] = LABEL_DOUBLES;
-    System.arraycopy(size, 0, bin, 1, size.length);
-    for (int i = 0; i < ds.length; i += 1) {
-        long bits = Double.doubleToLongBits(ds[i]);
-        byte[] ooo = Share.integerToBinary(bits, 8, false);
-        System.arraycopy(ooo, 0, bin, 1 + size.length + 8 * i, 8);
-    }
-    return bin;
-}
-
-public static byte @NotNull [] encodeSymbol(@NotNull Symbol sym) {
-    byte[] b_str = sym.toString().getBytes(StandardCharsets.UTF_8);
-    byte[] bin = new byte[b_str.length + 2];
-    bin[0] = LABEL_SYMBOL;
-    System.arraycopy(b_str, 0, bin, 1, b_str.length);
-    return bin;
-}
-
-public static byte @NotNull [] encodeLot(@NotNull Lot lt) {
-    if (lt.isEmpty()) {
-        return new byte[]{LABEL_LOT_BEGIN, LABEL_LOT_END};
-    } else {
-        Lot col = lot();
-        while (!lt.isEmpty()) {
-            col = cons(encode(car(lt)), col);
-            lt = cdr(lt);
+//region Common
+public static byte @NotNull [] trim(byte @NotNull [] big) {
+    int bound = big.length - 1;
+    if (big[0] == 0) {
+        int k = 0;
+        while (k < bound && big[k] == 0) {
+            k += 1;
         }
-        col = reverse(col);
-        return connectLot(col);
+        if (big[k] < 0) {
+            k -= 1;
+        }
+        byte[] ooo = new byte[big.length - k];
+        System.arraycopy(big, k, ooo, 0, big.length - k);
+        return ooo;
+    } else if (big[0] == -1) {
+        int k = 0;
+        while (k < bound && big[k] == -1) {
+            k += 1;
+        }
+        if (big[k] >= 0) {
+            k -= 1;
+        }
+        byte[] ooo = new byte[big.length - k];
+        System.arraycopy(big, k, ooo, 0, big.length - k);
+        return ooo;
+    } else {
+        return big;
     }
 }
 
-public static byte @NotNull [] connectLot(@NotNull Lot lt) {
-    int sz = sizeOf(lt) + lt.length() + 1;
-    byte[] bin = new byte[sz];
-    bin[0] = LABEL_LOT_BEGIN;
-    bin[sz - 1] = LABEL_LOT_END;
-
-    int i = 1;
-    while (!cdr(lt).isEmpty()) {
-        byte[] bs = (byte[]) car(lt);
-        System.arraycopy(bs, 0, bin, i, bs.length);
-        i += bs.length;
-        bin[i] = LABEL_LOT_CONS;
-        i += 1;
-        lt = cdr(lt);
+/**
+ * Convert a long to a byte array in big-endian order.
+ *
+ * @param n the number to convert
+ * @return the byte array
+ */
+public static byte @NotNull [] i64ToBinary(long n) {
+    byte[] bin = new byte[8];
+    for (int i = 7; i >= 0; i -= 1) {
+        bin[i] = (byte) n;
+        n = n >>> 8;
     }
-    byte[] bs = (byte[]) car(lt);
-    System.arraycopy(bs, 0, bin, i, bs.length);
     return bin;
 }
 
-private static int sizeOf(@NotNull Lot bins) {
-    int n = 0;
-    while (!bins.isEmpty()) {
-        byte[] bs = (byte[]) car(bins);
-        n += bs.length;
-        bins = cdr(bins);
+public static byte @NotNull [] extendTo64(byte[] bin, int start, int bound) {
+    int len = bound - start;
+    if (len <= 0 || len > 8) {
+        throw new RuntimeException(String.format(Msg.INVALID_RANGE, start, bound));
+    } else {
+        byte[] eef = new byte[8];
+        for (int i = bound - 1, j = 7; i >= start; i -= 1, j -= 1) {
+            eef[j] = bin[i];
+        }
+        if (bin[start] < 0 && len < 8) {
+            for (int i = 0; i < 8 - len; i += 1) {
+                eef[i] = -1;
+            }
+        }
+        return eef;
+    }
+}
+
+/**
+ * Convert a big-endian byte array to a long.
+ *
+ * @param bin the 8-byte array
+ * @return the long
+ */
+public static long binaryToI64(byte[] bin) {
+    long n = 0;
+    for (int i = 0; i < 8; i += 1) {
+        n = n << 8;
+        n = n | (bin[i] & 0xFF);
     }
     return n;
 }
 
-public static byte @NotNull [] encodeFew(@NotNull Few fw) {
-    if (fw.length() == 0) {
-        byte[] size = encodeSize(0);
-        byte[] bin = new byte[1 + size.length];
-        bin[0] = LABEL_FEW;
-        System.arraycopy(size, 0, bin, 1, size.length);
-        return bin;
+public static byte @NotNull [] encodeBoolean(boolean b) {
+    if (b) {
+        return new byte[]{BIN_BOOLEAN_TRUE};
     } else {
-        Lot col = lot();
-        int n = fw.length();
-        for (int i = 0; i < n; i = i + 1) {
-            col = cons(encode(fewRef(fw, i)), col);
-        }
-        col = reverse(col);
-        return connectFew(col);
+        return new byte[]{BIN_BOOLEAN_FALSE};
     }
 }
 
-public static byte @NotNull [] connectFew(@NotNull Lot lt) {
-    byte[] size = encodeSize(lt.length());
-    byte[] bin = new byte[1 + size.length + sizeOf(lt)];
-    bin[0] = LABEL_FEW;
-    System.arraycopy(size, 0, bin, 1, size.length);
+/**
+ * Returns the UTF-8 encoding of the given char in binary form.
+ *
+ * @param c the char to encode
+ * @return the UTF-8 encoding of the given char in binary form
+ */
+public static byte @NotNull [] charToBinary(int c) {
+    if (c < 0x80) {
+        return new byte[]{(byte) c};
+    } else if (c < 0x800) {
+        byte[] bin = new byte[2];
+        bin[1] = (byte) (0x80 | c & 0x3F);
+        c = c >> 6;
+        bin[0] = (byte) (0xC0 | c & 0x1F);
+        return bin;
+    } else if (c < 0x10000) {
+        byte[] bin = new byte[3];
+        bin[2] = (byte) (0x80 | c & 0x3F);
+        c = c >> 6;
+        bin[1] = (byte) (0x80 | c & 0x3F);
+        c = c >> 6;
+        bin[0] = (byte) (0xE0 | c & 0x0F);
+        return bin;
+    } else {
+        byte[] bin = new byte[4];
+        bin[3] = (byte) (0x80 | c & 0x3F);
+        c = c >> 6;
+        bin[2] = (byte) (0x80 | c & 0x3F);
+        c = c >> 6;
+        bin[1] = (byte) (0x80 | c & 0x3F);
+        c = c >> 6;
+        bin[0] = (byte) (0xF0 | c & 0x07);
+        return bin;
+    }
+}
 
-    int i = 1 + size.length;
-    while (!lt.isEmpty()) {
-        byte[] bs = (byte[]) car(lt);
+public static int sizeOfBinChar(byte @NotNull [] bin, int start) {
+    int bytes = bin[start] & 0xF8;
+    if (bytes < 0x80) {
+        return 1;
+    } else if (bytes < 0xE0) {
+        return 2;
+    } else if (bytes < 0xF0) {
+        return 3;
+    } else {
+        return 4;
+    }
+}
+
+public static char binaryToChar(byte[] bin, int start, int bound) {
+    int bytes = bound - start;
+    switch (bytes) {
+        case 1 -> {
+            return (char) bin[start];
+        }
+        case 2 -> {
+            int c = (bin[start] & 0x1F) << 6;
+            c = c | (bin[start + 1] & 0x3F);
+            return (char) c;
+        }
+        case 3 -> {
+            int c = (bin[start] & 0x0F) << 12;
+            c = c | ((bin[start + 1] & 0x3F) << 6);
+            c = c | (bin[start + 2] & 0x3F);
+            return (char) c;
+        }
+        default -> {
+            int c = (bin[start] & 0x07) << 18;
+            c = c | ((bin[start + 1] & 0x3F) << 12);
+            c = c | ((bin[start + 2] & 0x3F) << 6);
+            c = c | (bin[start + 3] & 0x3F);
+            return (char) c;
+        }
+    }
+}
+
+public static byte @NotNull [] encodeChar(char c) {
+    byte[] ooo = charToBinary(c);
+    byte[] xxx = new byte[ooo.length + 1];
+    xxx[0] = BIN_CHAR;
+    System.arraycopy(ooo, 0, xxx, 1, ooo.length);
+    return xxx;
+}
+
+public static byte @NotNull [] encodeString(@NotNull String str) {
+    Lot col = lot();
+    for (int i = 0; i < str.length(); i += 1) {
+        byte[] bin = charToBinary(str.charAt(i));
+        col = cons(bin, col);
+    }
+    col = reverse(col);
+    byte[] bin = new byte[bytesOfBinaries(col) + 2];
+    bin[0] = BIN_STRING;
+    int i = 1;
+    while (!col.isEmpty()) {
+        byte[] bs = (byte[]) car(col);
         System.arraycopy(bs, 0, bin, i, bs.length);
         i = i + bs.length;
+        col = cdr(col);
+    }
+    return bin;
+}
+
+public static int bytesOfBinaries(@NotNull Lot bins) {
+    int bytes = 0;
+    while (!bins.isEmpty()) {
+        byte[] bs = (byte[]) car(bins);
+        bytes += bs.length;
+        bins = cdr(bins);
+    }
+    return bytes;
+}
+
+public static byte @NotNull [] serializeBinaries(@NotNull Lot lt) {
+    int bytes = bytesOfBinaries(lt);
+    byte[] bin = new byte[bytes];
+    int i = 0;
+    while (!lt.isEmpty()) {
+        byte[] elem = (byte[]) car(lt);
+        System.arraycopy(elem, 0, bin, i, elem.length);
+        i += elem.length;
         lt = cdr(lt);
     }
     return bin;
 }
-
-public static byte @NotNull [] encodeTime(@NotNull Time t) {
-    byte[] bin = new byte[13];
-    bin[0] = LABEL_TIME;
-    byte[] b_sec = Share.integerToBinary(t.second(), 8, false);
-    System.arraycopy(b_sec, 0, bin, 1, 8);
-    byte[] b_nano = Share.integerToBinary(t.nanosecond(), 4, false);
-    System.arraycopy(b_nano, 0, bin, 9, 4);
-    return bin;
-}
-
-public static byte @NotNull [] encodeDate(@NotNull Date d) {
-    byte[] bin = new byte[19];
-    bin[0] = LABEL_DATE;
-    byte[] ooo = Share.integerToBinary(d.year(), 4, false);
-    System.arraycopy(ooo, 0, bin, 1, 4);
-    bin[5] = (byte) d.month();
-    bin[6] = (byte) d.dayOfMonth();
-    bin[7] = (byte) d.dayOfWeek();
-    bin[8] = (byte) d.hour();
-    bin[9] = (byte) d.minute();
-    bin[10] = (byte) d.second();
-    ooo = Share.integerToBinary(d.nanosecond(), 4, false);
-    System.arraycopy(ooo, 0, bin, 11, 4);
-    ooo = Share.integerToBinary(d.offset(), 4, false);
-    System.arraycopy(ooo, 0, bin, 15, 4);
-    return bin;
-}
 //endregion
 
 
-//region Decoding
-@Contract(pure = true)
-public static int @NotNull [] decodeInts(byte[] bin, int start, int size) {
-    int[] ins = new int[size];
-    for (int i = 0, j = start; i < size; i += 1, j += 4) {
-        ins[i] = (int) Share.binaryToInteger(bin, j, j + 4, false);
-    }
-    return ins;
-}
-
-@Contract(pure = true)
-public static long @NotNull [] decodeLongs(byte[] bin, int start, int sz) {
-    long[] ls = new long[sz];
-    for (int i = 0, j = start; i < sz; i += 1, j += 8) {
-        ls[i] = Share.binaryToInteger(bin, j, j + 8, false);
-    }
-    return ls;
-}
-
-public static double @NotNull [] decodeDoubles(byte[] bin, int start, int sz) {
-    double[] ds = new double[sz];
-    for (int i = 0, j = start; i < sz; i += 1, j += 8) {
-        long bits = Share.binaryToInteger(bin, j, j + 8, false);
-        ds[i] = Double.longBitsToDouble(bits);
-    }
-    return ds;
-}
-
-@Contract("_, _ -> new")
-public static @NotNull Time decodeTime(byte[] bin, int start) {
-    long second = Share.binaryToInteger(bin, start, start + 8, false);
-    int nanosecond = (int) Share.binaryToInteger(bin, start + 8, start + 12, false);
-    return new Time(second, nanosecond);
-}
-
-@Contract("_, _ -> new")
-public static @NotNull Date decodeDate(byte[] bin, int start) {
-    int year = (int) Share.binaryToInteger(bin, start, start + 4, false);
-    int nanosecond = (int) Share.binaryToInteger(bin, start + 10, start + 14, false);
-    int offset = (int) Share.binaryToInteger(bin, start + 14, start + 18, false);
-    return new Date(year, bin[start + 4], bin[start + 5], bin[start + 7], bin[start + 8],
-                    bin[start + 9], nanosecond, offset);
-}
-
-@Contract(pure = true)
-public static long decodeSize(byte @NotNull [] bin, int start) {
-    long sz = 0;
-    int bound = start + 1 + (bin[start] & 0xFF);
-    for (int i = start + 1; i < bound; i += 1) {
-        sz = (sz << 4) + (bin[i] & 0xFF);
-    }
-    return sz;
-}
-
-public static final String UNMATCHED_LABEL = "unmatched binary label %s for decoding";
-
-private static class Decoding {
-
-    final byte[] bin;
-
-    int pos;
-
-    public Decoding(byte[] bin) {
-        this.bin = bin;
-        pos = 0;
-    }
-
-    Object process() {
-        Object datum;
-        int label = bin[pos];
-        pos += 1;
-        switch (label) {
-        case LABEL_BOOLEAN_FALSE -> datum = false;
-        case LABEL_BOOLEAN_TRUE -> datum = true;
-        case LABEL_INT -> {
-            datum = (int) Share.binaryToInteger(bin, pos, pos + 4, false);
-            pos = pos + 4;
-        }
-        case LABEL_LONG -> {
-            datum = Share.binaryToInteger(bin, pos, pos + 8, false);
-            pos = pos + 8;
-        }
-        case LABEL_DOUBLE -> {
-            long bits = Share.binaryToInteger(bin, pos, pos + 8, false);
-            datum = Double.longBitsToDouble(bits);
-            pos = pos + 8;
-        }
-        case LABEL_CHAR -> {
-            datum = (char) Share.binaryToInteger(bin, pos, pos + 3, false);
-            pos = pos + 3;
-        }
-        case LABEL_STRING -> {
-            int start = pos;
-            while (bin[pos] != 0) {
-                pos = pos + 1;
-            }
-            byte[] bs_str = Arrays.copyOfRange(bin, start, pos);
-            datum = new String(bs_str, StandardCharsets.UTF_8);
-            pos = pos + 1;
-        }
-        case LABEL_INTS -> {
-            int size = (int) decodeSize(bin, pos);
-            pos = pos + 1 + (bin[pos] & 0xFF);
-            datum = decodeInts(bin, pos, size);
-            pos = pos + 4 * size;
-        }
-        case LABEL_LONGS -> {
-            int size = (int) decodeSize(bin, pos);
-            pos = pos + 1 + (bin[pos] & 0xFF);
-            datum = decodeLongs(bin, pos, size);
-            pos = pos + 8 * size;
-        }
-        case LABEL_DOUBLES -> {
-            int size = (int) decodeSize(bin, pos);
-            pos = pos + 1 + (bin[pos] & 0xFF);
-            datum = decodeDoubles(bin, pos, size);
-            pos = pos + 8 * size;
-        }
-        case LABEL_SYMBOL -> {
-            int start = pos;
-            while (bin[pos] != 0) {
-                pos = pos + 1;
-            }
-            byte[] bs_str = Arrays.copyOfRange(bin, start, pos);
-            datum = symbol(new String(bs_str, StandardCharsets.UTF_8));
-            pos = pos + 1;
-        }
-        case LABEL_LOT_BEGIN -> {
-            if (bin[pos] == LABEL_LOT_END) {
-                datum = lot();
-                pos = pos + 1;
-            } else {
-                Object ooo = process();
-                datum = cons(ooo, (Lot) process());
-            }
-        }
-        case LABEL_LOT_CONS -> {
-            Object ooo = process();
-            datum = cons(ooo, (Lot) process());
-        }
-        case LABEL_LOT_END -> datum = lot();
-        case LABEL_FEW -> {
-            int size = (int) decodeSize(bin, pos);
-            pos = pos + 1 + (bin[pos] & 0xFF);
-            datum = makeFew(size, 0);
-            for (int i = 0; i < size; i = i + 1) {
-                Object ooo = process();
-                fewSet((Few) datum, i, ooo);
-            }
-        }
-        case LABEL_TIME -> {
-            datum = decodeTime(bin, pos);
-            pos = pos + 12;
-        }
-        case LABEL_DATE -> {
-            datum = decodeDate(bin, pos);
-            pos = pos + 18;
-        }
-        default -> throw new RuntimeException(String.format(UNMATCHED_LABEL, bin[pos]));
-        }
-        return datum;
-    }
+public static byte[] encode(Object datum) {
+    Encoding inst = new Encoding();
+    return inst.process(datum);
 }
 
 public static Object decode(byte[] bin) {
-    Decoding de = new Decoding(bin);
-    return de.process();
+    Decoding inst = new Decoding(bin);
+    return inst.process();
 }
-//endregion
 }

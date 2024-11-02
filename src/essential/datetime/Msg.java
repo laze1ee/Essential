@@ -1,9 +1,17 @@
+/*
+ * Copyright (c) 2022-2024. Laze Lee
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at
+ * https://mozilla.org/MPL/2.0/
+ */
+
 package essential.datetime;
 
 class Msg {
 
 // Time
 static final String OUT_RANGE_NANO = "nanosecond %s is out of range [%s %s]";
+static final String OUT_TIME = "the time %s converting to date is not in range [%d %d]";
 
 // Date
 static final String OUT_YEAR = "year %d is out of range [0 2000000000]";

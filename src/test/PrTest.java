@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2022-2024. Laze Lee
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at
+ * https://mozilla.org/MPL/2.0/
+ */
+
 package test;
 
 import essential.progresive.Few;
@@ -20,6 +27,11 @@ PrTest() {
     l2 = lotCopy(l1);
     setCdr(cddr(l2), l2);
     f1 = few(1, 2, 3);
+}
+
+@Test
+void length() {
+    assertEquals(3, l1.length());
 }
 
 @Test
@@ -69,7 +81,7 @@ void filterLot() {
 }
 
 @Test
-void mapLot() {
+void lotMap() {
     Lot m1 = Pr.lotMap((a) -> (int) a * (int) a, l1);
     Lot m2 = Pr.lot(1, 4, 9);
     assertEquals(m1, m2);
@@ -90,7 +102,7 @@ void fewToLot() {
 }
 
 @Test
-void mapFew() {
+void fewMap() {
     Few f2 = Pr.fewMap((a) -> (int) a * 10, f1);
     Few f3 = few(10, 20, 30);
     assertEquals(f2, f3);
@@ -107,7 +119,6 @@ void eq() {
     assertTrue(Pr.eq(5.5319, 5.5319));
     assertFalse(Pr.eq(1, 1.0));
     assertTrue(Pr.eq('\\', '\\'));
-    assertTrue(Pr.eq(Pr.symbol("abc"), Pr.symbol("abc")));
     assertTrue(Pr.eq(l2, l2));
     assertTrue(Pr.eq(f1, f1));
 }

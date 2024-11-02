@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2022-2024. Laze Lee
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at
+ * https://mozilla.org/MPL/2.0/
+ */
+
 package essential.progresive;
 
 class Msg {
@@ -7,11 +14,6 @@ static final String CIRCULAR_BREADTH = "%s is circular in breadth";
 static final String LOT_EMPTY = "lot () is empty";
 static final String INDEX_OUT = "index %s is out of range for %s";
 static final String LEN_NON_NATURAL = "length %s is not a natural number";
-
-// Symbol
-static final String INVALID_STRING = "string %s is invalid";
-static final String JACKPOT = "congratulation! you encounter the same checksum with fletcher-32 " +
-                              "but different strings %s and %s";
 
 // Comparison
 static final String UNDEFINED_ARR_COMPARE = "undefined array type %s and %s for comparing in size";

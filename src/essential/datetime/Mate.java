@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2022-2024. Laze Lee
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at
+ * https://mozilla.org/MPL/2.0/
+ */
+
 package essential.datetime;
 
 import org.jetbrains.annotations.Contract;
@@ -6,8 +13,8 @@ import org.jetbrains.annotations.NotNull;
 
 class Mate {
 
-static final int POS_NANO = 1_000_000_000;
-static final int NEG_NANO = -1_000_000_000;
+static final int POS_NANO_OF_SECOND = 1_000_000_000;
+static final int NEG_NANO_OF_SECOND = -1_000_000_000;
 
 static final int DAYS_400Y = 146097;
 static final int DAYS_100Y = 36524;

@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2022-2024. Laze Lee
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at
+ * https://mozilla.org/MPL/2.0/
+ */
+
 package essential.datetime;
 
 import essential.utilities.Binary;
@@ -14,36 +21,26 @@ import java.time.ZonedDateTime;
 public record Time(long second, int nanosecond) {
 
 public Time(long second, int nanosecond) {
-    if (nanosecond <= Mate.NEG_NANO ||
-        Mate.POS_NANO <= nanosecond) {
-        throw new RuntimeException(String.format(Msg.OUT_RANGE_NANO, nanosecond, Mate.NEG_NANO + 1,
-                                                 Mate.POS_NANO - 1));
+    if (nanosecond <= Mate.NEG_NANO_OF_SECOND ||
+        Mate.POS_NANO_OF_SECOND <= nanosecond) {
+        throw new RuntimeException(String.format(Msg.OUT_RANGE_NANO, nanosecond, Mate.NEG_NANO_OF_SECOND + 1,
+                                                 Mate.POS_NANO_OF_SECOND - 1));
     }
     if (second > 0 && nanosecond < 0) {
         this.second = second - 1;
-        this.nanosecond = Mate.POS_NANO + nanosecond;
+        this.nanosecond = Mate.POS_NANO_OF_SECOND + nanosecond;
     } else if (second < 0 && nanosecond > 0) {
         this.second = second + 1;
-        this.nanosecond = nanosecond - Mate.POS_NANO;
+        this.nanosecond = nanosecond - Mate.POS_NANO_OF_SECOND;
     } else {
         this.second = second;
         this.nanosecond = nanosecond;
     }
 }
 
-@Override
-public @NotNull String toString() {
-    return String.format("#<time %d.%09d>", second, Math.abs(nanosecond));
-}
-
-@Override
-public boolean equals(Object datum) {
-    if (datum instanceof Time t) {
-        return second == t.second &&
-               nanosecond == t.nanosecond;
-    } else {
-        return false;
-    }
+@Contract(" -> new")
+public @NotNull Time neg() {
+    return new Time(-second, -nanosecond);
 }
 
 public boolean less(@NotNull Time t) {
@@ -57,24 +54,31 @@ public boolean less(@NotNull Time t) {
 }
 
 @Override
+public @NotNull String toString() {
+    return String.format("#[time %d.%09d]", second, Math.abs(nanosecond));
+}
+
+@Override
+public boolean equals(Object datum) {
+    if (datum instanceof Time t) {
+        return second == t.second &&
+               nanosecond == t.nanosecond;
+    } else {
+        return false;
+    }
+}
+
+@Override
 public int hashCode() {
     byte[] bin = Binary.encode(this);
     return CheckSum.fletcher32(bin);
-}
-
-
-@Contract(" -> new")
-public @NotNull Time neg() {
-    return new Time(second * -1, nanosecond * -1);
 }
 
 public @NotNull Date toDate(int offset) {
     if (Mate.checkTime(this)) {
         return Mate.timeToDate(this, offset);
     } else {
-        throw new IllegalArgumentException(
-                String.format("the time %s converting to date is not in range [%d %d]",
-                              this, Mate.UTC_MIN, Mate.UTC_MAX));
+        throw new IllegalArgumentException(String.format(Msg.OUT_TIME, this, Mate.UTC_MIN, Mate.UTC_MAX));
     }
 }
 
@@ -90,15 +94,15 @@ public static @NotNull Time current(@NotNull TimeType type) {
     }
     case Monotonic -> {
         long stamp = System.nanoTime();
-        long second = stamp / Mate.POS_NANO;
-        int nanosecond = (int) (stamp % Mate.POS_NANO);
+        long second = stamp / Mate.POS_NANO_OF_SECOND;
+        int nanosecond = (int) (stamp % Mate.POS_NANO_OF_SECOND);
         return new Time(second, nanosecond);
     }
     default -> {
         ThreadMXBean bean = ManagementFactory.getThreadMXBean();
         long stamp = bean.getCurrentThreadCpuTime();
-        long second = stamp / Mate.POS_NANO;
-        int nanosecond = (int) (stamp % Mate.POS_NANO);
+        long second = stamp / Mate.POS_NANO_OF_SECOND;
+        int nanosecond = (int) (stamp % Mate.POS_NANO_OF_SECOND);
         return new Time(second, nanosecond);
     }
     }
@@ -113,10 +117,10 @@ public static @NotNull Time current() {
 public static @NotNull Time add(@NotNull Time t1, @NotNull Time t2) {
     long second = t1.second + t2.second;
     int nanosecond = t1.nanosecond + t2.nanosecond;
-    if (nanosecond >= Mate.POS_NANO) {
-        return new Time(second + 1, nanosecond - Mate.POS_NANO);
-    } else if (nanosecond <= Mate.NEG_NANO) {
-        return new Time(second - 1, nanosecond + Mate.POS_NANO);
+    if (nanosecond >= Mate.POS_NANO_OF_SECOND) {
+        return new Time(second + 1, nanosecond - Mate.POS_NANO_OF_SECOND);
+    } else if (nanosecond <= Mate.NEG_NANO_OF_SECOND) {
+        return new Time(second - 1, nanosecond + Mate.POS_NANO_OF_SECOND);
     } else {
         return new Time(second, nanosecond);
     }

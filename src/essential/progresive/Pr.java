@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2022-2024. Laze Lee
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at
+ * https://mozilla.org/MPL/2.0/
+ */
+
 package essential.progresive;
 
 import essential.datetime.Time;
@@ -6,10 +13,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import essential.functional.Do1;
 import essential.functional.Predicate1;
-import essential.utilities.CheckSum;
-import essential.utilities.AVLTree;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -355,11 +359,6 @@ public static void fillFew(@NotNull Few fw, @NotNull Object datum) {
     Arrays.fill(fw.data, datum);
 }
 
-public static void copyInto(@NotNull Few src, int src_pos, @NotNull Few dest, int dest_pos,
-                            int amount) {
-    System.arraycopy(src.data, src_pos, dest.data, dest_pos, amount);
-}
-
 @Contract("_ -> new")
 public static @NotNull Few fewCopy(@NotNull Few fw) {
     int bound = fw.data.length;
@@ -368,7 +367,7 @@ public static @NotNull Few fewCopy(@NotNull Few fw) {
     return new Few(arr);
 }
 
-public static @NotNull Lot fewToLot(@NotNull Few fw) {
+public static Lot fewToLot(@NotNull Few fw) {
     int bound = fw.data.length;
     Lot lt = lot();
     for (int i = bound - 1; 0 <= i; i -= 1) {
@@ -386,25 +385,16 @@ public static @NotNull Few fewMap(Do1 fn, @NotNull Few fw) {
     }
     return new Few(arr);
 }
-//endregion
 
-
-//region Symbol
-@Contract(value = "_ -> new", pure = true)
-public static @NotNull Symbol symbol(@NotNull String str) {
-    if (str.isEmpty() || str.isBlank()) {
-        throw new RuntimeException(String.format(Msg.INVALID_STRING, stringOf(str)));
-    } else {
-        int checksum = CheckSum.fletcher32(str.getBytes(StandardCharsets.UTF_8));
-        boolean success = AVLTree.insert(Symbol.tree, checksum, str);
-        if (!success) {
-            String present = (String) AVLTree.ref(Symbol.tree, checksum);
-            if (!str.equals(present)) {
-                throw new RuntimeException(String.format(Msg.JACKPOT, str, present));
-            }
+@Contract(pure = true)
+public static int fewFind(Predicate2 fn, Object datum, @NotNull Few fw) {
+    int bound = fw.data.length;
+    for (int i = 0; i < bound; i += 1) {
+        if (fn.apply(fw.data[i], datum)) {
+            return i;
         }
-        return new Symbol(checksum);
     }
+    return -1;
 }
 //endregion
 
@@ -422,9 +412,6 @@ public static boolean eq(Object datum1, Object datum2) {
     } else if (datum1 instanceof Character c1 &&
                datum2 instanceof Character c2) {
         return ((char) c1) == c2;
-    } else if (datum1 instanceof Symbol sym1 &&
-               datum2 instanceof Symbol sym2) {
-        return sym1.checksum == sym2.checksum;
     } else if (datum1 instanceof Few fw1 &&
                datum2 instanceof Few fw2) {
         return fw1.data == fw2.data;
@@ -446,6 +433,10 @@ public static boolean equal(Object datum1, Object datum2) {
                    datum2 instanceof byte[] bs2) {
             int r = Arrays.compare(bs1, bs2);
             return r == 0;
+        } else if (datum1 instanceof short[] ss1 &&
+                   datum2 instanceof short[] ss2) {
+            int r = Arrays.compare(ss1, ss2);
+            return r == 0;
         } else if (datum1 instanceof int[] ins1 &&
                    datum2 instanceof int[] ins2) {
             int r = Arrays.compare(ins1, ins2);
@@ -453,6 +444,10 @@ public static boolean equal(Object datum1, Object datum2) {
         } else if (datum1 instanceof long[] ls1 &&
                    datum2 instanceof long[] ls2) {
             int r = Arrays.compare(ls1, ls2);
+            return r == 0;
+        } else if (datum1 instanceof float[] fs1 &&
+                   datum2 instanceof float[] fs2) {
+            int r = Arrays.compare(fs1, fs2);
             return r == 0;
         } else if (datum1 instanceof double[] ds1 &&
                    datum2 instanceof double[] ds2) {
@@ -471,21 +466,17 @@ public static boolean equal(Object datum1, Object datum2) {
  * The types supported to compare size:
  * <ul><li>Number</li>
  * <li>String</li>
- * <li>Symbol</li>
  * <li>Time</li>
  * <li>boolean[], byte[], int[], long[], double[]</li></ul>
  */
 public static boolean less(Object datum1, Object datum2) {
-    if (datum1 instanceof Symbol sym1 &&
-        datum2 instanceof Symbol sym2) {
-        return sym1.checksum < sym2.checksum;
-    } else if (datum1 instanceof Number n1 &&
-               datum2 instanceof Number n2) {
+    if (datum1 instanceof Number n1 &&
+        datum2 instanceof Number n2) {
         return Mate.numberLess(n1, n2);
     } else if (datum1 instanceof String s1 &&
                datum2 instanceof String s2) {
-        int m = s1.compareTo(s2);
-        return m < 0;
+        int r = s1.compareTo(s2);
+        return r < 0;
     } else if (datum1 instanceof Time t1 &&
                datum2 instanceof Time t2) {
         return t1.less(t2);
@@ -499,6 +490,10 @@ public static boolean less(Object datum1, Object datum2) {
                    datum2 instanceof byte[] bs2) {
             int r = Arrays.compare(bs1, bs2);
             return r < 0;
+        } else if (datum1 instanceof short[] ss1 &&
+                   datum2 instanceof short[] ss2) {
+            int r = Arrays.compare(ss1, ss2);
+            return r < 0;
         } else if (datum1 instanceof int[] ins1 &&
                    datum2 instanceof int[] ins2) {
             int r = Arrays.compare(ins1, ins2);
@@ -506,6 +501,10 @@ public static boolean less(Object datum1, Object datum2) {
         } else if (datum1 instanceof long[] ls1 &&
                    datum2 instanceof long[] ls2) {
             int r = Arrays.compare(ls1, ls2);
+            return r < 0;
+        } else if (datum1 instanceof float[] fs1 &&
+                   datum2 instanceof float[] fs2) {
+            int r = Arrays.compare(fs1, fs2);
             return r < 0;
         } else if (datum1 instanceof double[] ds1 &&
                    datum2 instanceof double[] ds2) {
@@ -547,36 +546,19 @@ public static @NotNull String stringOf(Object datum) {
     }
 }
 
-public static @NotNull String hexOfBytes(byte @NotNull [] bs) {
-    int bound = bs.length;
-    if (bound == 0) {
-        return "#u8()";
-    } else {
-        StringBuilder str = new StringBuilder("#u8(");
-        bound = bound - 1;
-        for (int i = 0; i < bound; i = i + 1) {
-            str.append(Mate.stringOfHex(bs[i]));
-            str.append(" ");
-        }
-        str.append(Mate.stringOfHex(bs[bound]));
-        str.append(")");
-        return str.toString();
-    }
-}
-
-@SuppressWarnings("SpellCheckingInspection")
-private static final char[] CHARS_SET =
-"_-ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz".toCharArray();
-
 public static @NotNull String randomString(int length) {
     Random rd = new Random();
     StringBuilder builder = new StringBuilder();
     for (int i = 0; i < length; i = i + 1) {
-        int index = rd.nextInt(CHARS_SET.length);
-        char c = CHARS_SET[index];
+        int index = rd.nextInt(Mate.CHARS_SET.length);
+        char c = Mate.CHARS_SET[index];
         builder.append(c);
     }
     return builder.toString();
+}
+
+public static @NotNull String hexOfByte(byte b) {
+    return new String(new char[]{Mate.HEX_STR[(b >> 4) & 0xF], Mate.HEX_STR[b & 0xF]});
 }
 //endregion
 }

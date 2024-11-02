@@ -1,7 +1,12 @@
+/*
+ * Copyright (c) 2022-2024. Laze Lee
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at
+ * https://mozilla.org/MPL/2.0/
+ */
+
 package essential.datetime;
 
-import essential.utilities.Binary;
-import essential.utilities.CheckSum;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.OffsetTime;
@@ -60,35 +65,6 @@ public Date(int year, int month, int day_of_month, int hour, int minute, int sec
     this.offset = offset;
 }
 
-@Override
-public String toString() {
-    return String.format("#<date %s %d-%02d-%02d %s %02d:%02d:%02d>",
-                         Mate.stringOfOffset(offset), year, month, day_of_month,
-                         Mate.stringOfWeek(day_of_week), hour, minute, second);
-}
-
-@Override
-public boolean equals(Object datum) {
-    if (datum instanceof Date d) {
-        return d.year == year &&
-               month == d.month &&
-               day_of_month == d.day_of_month &&
-               hour == d.hour &&
-               minute == d.minute &&
-               second == d.second &&
-               nanosecond == d.nanosecond &&
-               offset == d.offset;
-    } else {
-        return false;
-    }
-}
-
-@Override
-public int hashCode() {
-    byte[] bin = Binary.encode(this);
-    return CheckSum.fletcher32(bin);
-}
-
 public int year() {
     return year;
 }
@@ -130,6 +106,29 @@ public Time toTime() {
     long secs_day = hour * 3600 + minute * 60 + second;
     long seconds = days * 24 * 3600 + secs_day - offset - Mate.COMPLEMENT;
     return new Time(seconds, nanosecond);
+}
+
+@Override
+public String toString() {
+    return String.format("#<date %s %d-%02d-%02d %s %02d:%02d:%02d>",
+                         Mate.stringOfOffset(offset), year, month, day_of_month,
+                         Mate.stringOfWeek(day_of_week), hour, minute, second);
+}
+
+@Override
+public boolean equals(Object datum) {
+    if (datum instanceof Date d) {
+        return d.year == year &&
+               month == d.month &&
+               day_of_month == d.day_of_month &&
+               hour == d.hour &&
+               minute == d.minute &&
+               second == d.second &&
+               nanosecond == d.nanosecond &&
+               offset == d.offset;
+    } else {
+        return false;
+    }
 }
 
 

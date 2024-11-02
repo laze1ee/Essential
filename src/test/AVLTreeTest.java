@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2022-2024. Laze Lee
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at
+ * https://mozilla.org/MPL/2.0/
+ */
+
 package test;
 
 import essential.datetime.Time;
@@ -18,7 +25,7 @@ void overall() {
     AVLTree tree = new AVLTree((o1, o2) -> (int) o1 < (int) o2,
                                (o1, o2) -> (int) o1 > (int) o2);
     Random rd = new Random(Time.current().nanosecond());
-    int times = 100000;
+    int times = 1000000;
 
     Lot keys = lot();
     for (int i = 0; i < times; i += 1) {
@@ -38,9 +45,11 @@ void overall() {
         AVLTree.set(tree, car(item), rd.nextInt(1000));
         item = cdr(item);
     }
+    System.out.println("set done");
 
-    Lot evens = AVLTree.filter(o -> ((int) o % 2) == 0, tree);
-    System.out.printf("tree even number length: %s\n", evens.length());
+    AVLTree evens = AVLTree.filter(o -> ((int) o % 2) == 0, tree);
+    System.out.println("filter done");
+    System.out.printf("tree even number length: %s\n", evens.size());
 
     while (!keys.isEmpty()) {
         int key = (int) car(keys);

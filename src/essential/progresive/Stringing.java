@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2022-2024. Laze Lee
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at
+ * https://mozilla.org/MPL/2.0/
+ */
+
 package essential.progresive;
 
 import essential.utilities.RBTree;
@@ -12,14 +19,13 @@ private final RBTree identical;
 private int count;
 
 private Stringing(RBTree identical) {
-    this.identical = identical;
-    RBTree.mapSet(Mate::attach, this.identical);
+    this.identical = RBTree.map(Mate::attach, identical);
     count = 0;
 }
 
 private String process(Object datum) {
     if (datum instanceof Few fw) {
-        return jobArray(fw.data);
+        return jobFew(fw);
     } else if (datum instanceof Lot lt) {
         if (lt.isEmpty()) {
             return "()";
@@ -31,8 +37,8 @@ private String process(Object datum) {
     }
 }
 
-private @NotNull String jobArray(Object[] arr) {
-    int key = System.identityHashCode(arr);
+private @NotNull String jobFew(Few fw) {
+    int key = System.identityHashCode(fw);
     if (RBTree.isPresent(identical, key)) {
         Few self = (Few) RBTree.ref(identical, key);
         if ((boolean) ref1(self)) {
@@ -41,10 +47,10 @@ private @NotNull String jobArray(Object[] arr) {
             set1(self, true);
             set2(self, count);
             count += 1;
-            return String.format("#%s=#(%s)", ref2(self), connectArray(arr));
+            return String.format("#%s=#(%s)", ref2(self), connectArray(fw.data));
         }
     } else {
-        return String.format("#(%s)", connectArray(arr));
+        return String.format("#(%s)", connectArray(fw.data));
     }
 }
 
@@ -57,7 +63,7 @@ private @NotNull String connectArray(Object @NotNull [] arr) {
         bound = bound - 1;
         for (int i = 0; i < bound; i = i + 1) {
             str.append(process(arr[i]));
-            str.append(" ");
+            str.append(' ');
         }
         str.append(process(arr[bound]));
         return str.toString();
@@ -150,7 +156,7 @@ static @NotNull String fewString(@NotNull Few fw) {
             builder.append(stringOf(fw.data[i]));
             builder.append(' ');
         }
-        builder.append(fw.data[len]);
+        builder.append(stringOf(fw.data[len]));
         builder.append(')');
         return builder.toString();
     }

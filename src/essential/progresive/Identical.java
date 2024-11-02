@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2022-2024. Laze Lee
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at
+ * https://mozilla.org/MPL/2.0/
+ */
+
 package essential.progresive;
 
 import essential.utilities.RBTree;
@@ -6,7 +13,7 @@ import static essential.progresive.Pr.car;
 import static essential.progresive.Pr.cdr;
 
 
-class Identical {
+public class Identical {
 
 private final RBTree collector;
 private final RBTree identical;
@@ -23,43 +30,43 @@ private RBTree process(Object datum) {
 
 private void collect(Object datum) {
     if (datum instanceof Few fw) {
-        collectArray(fw.data);
-    } else if (datum instanceof LotPair pair) {
-        collectPair(pair);
+        collectFew(fw);
+    } else if (datum instanceof Lot lt) {
+        collectLot(lt);
     }
 }
 
-private void collectArray(Object[] arr) {
-    int key = System.identityHashCode(arr);
+private void collectFew(Few fw) {
+    int key = System.identityHashCode(fw);
     boolean success = RBTree.insert(collector, key, false);
     if (success) {
-        for (Object datum : arr) {
-            collect(datum);
+        for (int i = 0; i < fw.data.length; i += 1) {
+            collect(fw.data[i]);
         }
     } else {
-        RBTree.insert(identical, key, arr);
+        RBTree.insert(identical, key, fw);
     }
 }
 
-private void collectPair(Lot pair) {
+private void collectLot(Lot lt) {
     while (true) {
-        if (pair instanceof LotEnd) {
+        if (lt instanceof LotEnd) {
             break;
         } else {
-            int key = System.identityHashCode(pair);
+            int key = System.identityHashCode(lt);
             boolean success = RBTree.insert(collector, key, false);
             if (success) {
-                collect(car(pair));
-                pair = cdr(pair);
+                collect(car(lt));
+                lt = cdr(lt);
             } else {
-                RBTree.insert(identical, key, pair);
+                RBTree.insert(identical, key, lt);
                 break;
             }
         }
     }
 }
 
-static RBTree detect(Object datum) {
+public static RBTree detect(Object datum) {
     Identical inst = new Identical();
     return inst.process(datum);
 }

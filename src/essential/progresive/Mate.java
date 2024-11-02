@@ -1,5 +1,13 @@
+/*
+ * Copyright (c) 2022-2024. Laze Lee
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at
+ * https://mozilla.org/MPL/2.0/
+ */
+
 package essential.progresive;
 
+import essential.functional.Do1;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,6 +18,14 @@ import static essential.progresive.Pr.*;
 
 class Mate {
 
+static final char[] HEX_STR = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                                         'A', 'B', 'C', 'D', 'E', 'F'};
+@SuppressWarnings("SpellCheckingInspection")
+static final char[] CHARS_SET =
+"_-ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz".toCharArray();
+
+
+//region Lot
 static int length(@NotNull Lot lt) {
     int n = 0;
     while (!lt.isEmpty()) {
@@ -28,7 +44,6 @@ static boolean isBelong(Object datum, @NotNull Lot lt) {
     }
     return false;
 }
-
 static int theHareAndTortoise(@NotNull Lot lt) {
     if (lt.isEmpty()) {
         return 0;
@@ -37,18 +52,18 @@ static int theHareAndTortoise(@NotNull Lot lt) {
     } else {
         Lot hare = cddr(lt);
         Lot tortoise = lt;
-        int index = 0;
+        int count = 1;
         while (true) {
             if (hare.isEmpty()) {
-                return (index + 1) * 2;
+                return count * 2;
             } else if (cdr(hare).isEmpty()) {
-                return (index + 1) * 2 + 1;
+                return count * 2 + 1;
             } else if (hare == tortoise) {
                 return -1;
             } else {
                 hare = cddr(hare);
                 tortoise = cdr(tortoise);
-                index += 1;
+                count += 1;
             }
         }
     }
@@ -64,27 +79,13 @@ static @NotNull Object attach(Object datum) {
 
 static @NotNull String stringOfChar(char c) {
     switch (c) {
-    case 0 -> {
-        return "#\\nul";
-    }
-    case 7 -> {
-        return "#\\alarm";
-    }
-    case 8 -> {
-        return "#\\backspace";
-    }
-    case 9 -> {
-        return "#\\tab";
-    }
-    case 0xA -> {
-        return "#\\newline";
-    }
-    case 0xD -> {
-        return "#\\return";
-    }
-    case 0x20 -> {
-        return "#\\space";
-    }
+    case 0 -> {return "#\\nul";}
+    case 7 -> {return "#\\alarm";}
+    case 8 -> {return "#\\backspace";}
+    case 9 -> {return "#\\tab";}
+    case 0xA -> {return "#\\newline";}
+    case 0xD -> {return "#\\return";}
+    case 0x20 -> {return "#\\space";}
     default -> {
         if (Character.isISOControl(c)) {
             return String.format("#\\u%X", (int) c);
@@ -114,42 +115,39 @@ static @NotNull String dataString(@NotNull String str) {
     return builder.toString();
 }
 
-static @NotNull String stringOfArray(@NotNull Object array) {
-    if (array instanceof boolean[] bs) {
-        return String.format("#1(%s)", connectArray(bs, bs.length));
-    } else if (array instanceof byte[] bs) {
-        return String.format("#i8(%s)", connectArray(bs, bs.length));
-    } else if (array instanceof int[] ins) {
-        return String.format("#i32(%s)", connectArray(ins, ins.length));
-    } else if (array instanceof long[] ls) {
-        return String.format("#i64(%s)", connectArray(ls, ls.length));
-    } else if (array instanceof double[] ds) {
-        return String.format("#r64(%s)", connectArray(ds, ds.length));
+static @NotNull String stringOfArray(@NotNull Object arr) {
+    if (arr instanceof boolean[] bs) {
+        return String.format("#1(%s)", serializeArray(Pr::stringOf, bs, bs.length));
+    } else if (arr instanceof byte[] bs) {
+        return String.format("#u8(%s)", serializeArray(o -> hexOfByte((byte) o), bs, bs.length));
+    } else if (arr instanceof short[] ss) {
+        return String.format("#i16(%s)", serializeArray(Object::toString, ss, ss.length));
+    } else if (arr instanceof int[] ins) {
+        return String.format("#i32(%s)", serializeArray(Object::toString, ins, ins.length));
+    } else if (arr instanceof long[] ls) {
+        return String.format("#i64(%s)", serializeArray(Object::toString, ls, ls.length));
+    } else if (arr instanceof float[] fs) {
+        return String.format("#f32(%s)", serializeArray(Object::toString, fs, fs.length));
+    } else if (arr instanceof double[] ds) {
+        return String.format("#f64(%s)", serializeArray(Object::toString, ds, ds.length));
     } else {
-        throw new RuntimeException(String.format("unsupported array type %s for printing", array));
+        throw new RuntimeException(String.format("unsupported array type %s for printing", arr));
     }
 }
 
-static @NotNull String connectArray(Object arr, int bound) {
+static @NotNull String serializeArray(Do1 fn, Object arr, int bound) {
     if (bound == 0) {
         return "";
     } else {
         StringBuilder builder = new StringBuilder();
         bound = bound - 1;
         for (int i = 0; i < bound; i = i + 1) {
-            builder.append(stringOf(Array.get(arr, i)));
+            builder.append(fn.apply(Array.get(arr, i)));
             builder.append(" ");
         }
-        builder.append(stringOf(Array.get(arr, bound)));
+        builder.append(fn.apply(Array.get(arr, bound)));
         return builder.toString();
     }
-}
-
-private static final char[] HEX_STR = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                                                 'A', 'B', 'C', 'D', 'E', 'F'};
-
-static @NotNull String stringOfHex(byte b) {
-    return new String(new char[]{HEX_STR[(b >> 4) & 0xF], HEX_STR[b & 0xF]});
 }
 //endregion
 

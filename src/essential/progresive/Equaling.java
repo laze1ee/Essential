@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2022-2024. Laze Lee
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at
+ * https://mozilla.org/MPL/2.0/
+ */
+
 package essential.progresive;
 
 import essential.utilities.RBTree;
@@ -13,17 +20,15 @@ private final RBTree identical2;
 private int count;
 
 private Equaling(RBTree identical1, RBTree identical2) {
-    this.identical1 = identical1;
-    RBTree.mapSet(Mate::attach, this.identical1);
-    this.identical2 = identical2;
-    RBTree.mapSet(Mate::attach, this.identical2);
+    this.identical1 = RBTree.map(Mate::attach, identical1);
+    this.identical2 = RBTree.map(Mate::attach, identical2);
     count = 0;
 }
 
 private boolean process(Object datum1, Object datum2) {
     if (datum1 instanceof Few fw1 &&
         datum2 instanceof Few fw2) {
-        return jobArray(fw1.data, fw2.data);
+        return jobFew(fw1, fw2);
     } else if (datum1 instanceof Lot lt1 &&
                datum2 instanceof Lot lt2) {
         if (lt1.isEmpty() && lt2.isEmpty()) {
@@ -36,12 +41,12 @@ private boolean process(Object datum1, Object datum2) {
     }
 }
 
-private boolean jobArray(Object @NotNull [] arr1, Object @NotNull [] arr2) {
-    if (arr1.length != arr2.length) {
+private boolean jobFew(@NotNull Few fw1, @NotNull Few fw2) {
+    if (fw1.data.length != fw2.data.length) {
         return false;
     } else {
-        int key1 = System.identityHashCode(arr1);
-        int key2 = System.identityHashCode(arr2);
+        int key1 = System.identityHashCode(fw1);
+        int key2 = System.identityHashCode(fw2);
         if (RBTree.isPresent(identical1, key1) &&
             RBTree.isPresent(identical2, key2)) {
             Few self1 = (Few) RBTree.ref(identical1, key1);
@@ -55,10 +60,10 @@ private boolean jobArray(Object @NotNull [] arr1, Object @NotNull [] arr2) {
                 set2(self1, count);
                 set2(self2, count);
                 count += 1;
-                return equalArray(arr1, arr2);
+                return equalArray(fw1.data, fw2.data);
             }
         } else {
-            return equalArray(arr1, arr2);
+            return equalArray(fw1.data, fw2.data);
         }
     }
 }
