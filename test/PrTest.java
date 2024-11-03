@@ -5,8 +5,6 @@
  * https://mozilla.org/MPL/2.0/
  */
 
-package test;
-
 import essential.progresive.Few;
 import essential.progresive.Lot;
 import essential.progresive.Pr;

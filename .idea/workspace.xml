@@ -4,54 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2214e1c4-78e6-4dd0-acac-b219f4292824" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/essential/utilities/Decoding.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/essential/utilities/Encoding.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Essential.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="2214e1c4-78e6-4dd0-acac-b219f4292824" name="Changes" comment="refactor Binary structure">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Essential.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Essential.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/Share.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/datetime/Date.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/datetime/Date.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/datetime/Mate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/datetime/Mate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/datetime/Msg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/datetime/Msg.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/datetime/Time.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/datetime/Time.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/datetime/TimeType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/datetime/TimeType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/functional/Do1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/functional/Do1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/functional/Predicate1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/functional/Predicate1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/functional/Predicate2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/functional/Predicate2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/progresive/Equaling.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/Equaling.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/progresive/Few.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/Few.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/progresive/Identical.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/Identical.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/progresive/Lot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/Lot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/progresive/LotEnd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/LotEnd.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/progresive/LotPair.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/LotPair.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/progresive/Mate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/Mate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/progresive/Msg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/Msg.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/progresive/Pr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/Pr.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/progresive/Stringing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/Stringing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/progresive/Symbol.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/utilities/AVLNode.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/utilities/AVLTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/AVLTree.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/utilities/AVLTreeMate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/AVLTreeMate.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/utilities/Binary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/Binary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/utilities/CheckSum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/CheckSum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/utilities/Msg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/Msg.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/utilities/Queue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/Queue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/utilities/RBNode.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/utilities/RBTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/RBTree.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/utilities/RBTreeMate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/RBTreeMate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/AVLTreeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/AVLTreeTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/BinaryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/BinaryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/CheckSumTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/CheckSumTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/DateTimeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/DateTimeTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/FewTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/FewTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/LotTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/LotTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/PrTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/PrTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/RBTreeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/RBTreeTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/Decoding.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/Decoding.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/Encoding.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/Encoding.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/AVLTreeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/AVLTreeTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/BinaryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/BinaryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/CheckSumTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/CheckSumTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/DateTimeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/DateTimeTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/FewTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/FewTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/LotTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/LotTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/PrTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/PrTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/RBTreeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/RBTreeTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,6 +64,7 @@
     "Downloaded.Files.Path.Enabled": "false",
     "JUnit.BinaryTest.testLotAndFew.executor": "Run",
     "JUnit.BinaryTest.testTimeAndDate.executor": "Run",
+    "JUnit.BinaryTest.testU32.executor": "Run",
     "Repository.Attach.Annotations": "false",
     "Repository.Attach.JavaDocs": "true",
     "Repository.Attach.Sources": "false",
@@ -105,30 +75,31 @@
     "create.test.in.the.same.root": "true",
     "git-widget-placeholder": "main",
     "java.suggest.annotation.dependency": "false",
+    "last_opened_file_path": "E:/Rock/TODO/IdeaProject/Plum",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.18252933",
     "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "editor.preferences.folding"
+    "settings.editor.selected.configurable": "preferences.keymap"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\Rock\TODO\IdeaProject\Essential" />
+    </key>
     <key name="CreateTestDialog.RecentsKey">
       <recent name="test" />
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="BinaryTest.testTimeAndDate" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="BinaryTest.testU32" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Essential" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="test.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="test" />
-      <option name="MAIN_CLASS_NAME" value="test.BinaryTest" />
-      <option name="METHOD_NAME" value="testTimeAndDate" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="BinaryTest" />
+      <option name="METHOD_NAME" value="testU32" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -136,7 +107,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.BinaryTest.testTimeAndDate" />
+        <item itemvalue="JUnit.BinaryTest.testU32" />
       </list>
     </recent_temporary>
   </component>
@@ -163,8 +134,21 @@
       <workItem from="1730455898718" duration="29000" />
       <workItem from="1730455941434" duration="665000" />
       <workItem from="1730472095843" duration="4106000" />
-      <workItem from="1730527930984" duration="442000" />
+      <workItem from="1730527930984" duration="778000" />
+      <workItem from="1730558949436" duration="46000" />
+      <workItem from="1730627703974" duration="657000" />
+      <workItem from="1730628387365" duration="2436000" />
+      <workItem from="1730637500755" duration="4170000" />
     </task>
+    <task id="LOCAL-00001" summary="refactor Binary structure">
+      <option name="closed" value="true" />
+      <created>1730528528353</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1730528528353</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -177,5 +161,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="refactor Binary structure" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor Binary structure" />
   </component>
 </project>

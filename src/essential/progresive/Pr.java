@@ -412,9 +412,6 @@ public static boolean eq(Object datum1, Object datum2) {
     } else if (datum1 instanceof Character c1 &&
                datum2 instanceof Character c2) {
         return ((char) c1) == c2;
-    } else if (datum1 instanceof Few fw1 &&
-               datum2 instanceof Few fw2) {
-        return fw1.data == fw2.data;
     } else {
         return false;
     }

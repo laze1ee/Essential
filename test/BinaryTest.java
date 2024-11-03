@@ -5,8 +5,6 @@
  * https://mozilla.org/MPL/2.0/
  */
 
-package test;
-
 import essential.datetime.Date;
 import essential.datetime.Time;
 import essential.progresive.Few;
@@ -22,17 +20,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class BinaryTest {
 
 @Test
-void testU32() {
-    Few ins = few(0x75, 0x1FF, 0x12345, 0x1234567, 0x12345678);
-    Few bins = makeFew(5, false);
-    for (int i = 0; i < 5; i += 1) {
-        fewSet(bins, i, Binary.encodeU32((int) fewRef(ins, i)));
+void testI32() {
+    Few ins = few(0x35, -0x0F, 0x1FF, -0x1FFF, 0xF2345, -0xABCDE,
+                  0x1234567, -0x7654321, 0x12345678, -0x12345678);
+    Few bins = makeFew(10, false);
+    for (int i = 0; i < 10; i += 1) {
+        fewSet(bins, i, Binary.encodeI32((int) fewRef(ins, i)));
     }
-    Few out_ins = makeFew(5, false);
-    for (int i = 0; i < 5; i += 1) {
+    Few out_ins = makeFew(10, false);
+    for (int i = 0; i < 10; i += 1) {
         byte[] bs = (byte[]) fewRef(bins, i);
-        int sz = Binary.sizeOfU32(bs, 0);
-        fewSet(out_ins, i, Binary.decodeU32(bs, 0, sz));
+        int sz = Binary.sizeOfI32(bs, 0);
+        fewSet(out_ins, i, Binary.decodeI32(bs, 0, sz));
     }
     assertTrue(equal(ins, out_ins));
 }

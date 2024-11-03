@@ -14,8 +14,7 @@ import essential.utilities.RBTree;
 
 public class Lot {
 
-Lot() {
-}
+Lot() {}
 
 @Override
 public String toString() {

@@ -71,7 +71,7 @@ static int theHareAndTortoise(@NotNull Lot lt) {
 //endregion
 
 
-//region To String
+//region Stringing
 @Contract("_ -> new")
 static @NotNull Object attach(Object datum) {
     return few(datum, false, -1);
@@ -127,9 +127,9 @@ static @NotNull String stringOfArray(@NotNull Object arr) {
     } else if (arr instanceof long[] ls) {
         return String.format("#i64(%s)", serializeArray(Object::toString, ls, ls.length));
     } else if (arr instanceof float[] fs) {
-        return String.format("#f32(%s)", serializeArray(Object::toString, fs, fs.length));
+        return String.format("#r32(%s)", serializeArray(Object::toString, fs, fs.length));
     } else if (arr instanceof double[] ds) {
-        return String.format("#f64(%s)", serializeArray(Object::toString, ds, ds.length));
+        return String.format("#r64(%s)", serializeArray(Object::toString, ds, ds.length));
     } else {
         throw new RuntimeException(String.format("unsupported array type %s for printing", arr));
     }

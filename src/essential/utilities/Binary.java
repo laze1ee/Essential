@@ -7,8 +7,11 @@
 
 package essential.utilities;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import essential.progresive.Lot;
+
+import java.util.Arrays;
 
 import static essential.progresive.Pr.*;
 
@@ -44,133 +47,7 @@ public static final byte BIN_LOT_END = (byte) 0xF3;
 public static final byte BIN_FEW = (byte) 0xF4;
 
 
-//region Encoding and Decoding for Variable Length U32 Integers
-public static byte @NotNull [] encodeU32(int length) {
-    if (length < 0) {
-        throw new IllegalArgumentException(String.format(Msg.NON_NATURAL, length));
-    } else if (length < 0x80) {        // 7 bits
-        return new byte[]{(byte) length};
-    } else if (length < 0x4000) {      // 14 bits
-        byte[] bin = new byte[2];
-        bin[1] = (byte) length;
-        length = length >> 8;
-        bin[0] = (byte) length;
-        bin[0] = (byte) (bin[0] | 0x80);
-        return bin;
-    } else if (length < 0x200000) {    // 21 bits
-        byte[] bin = new byte[3];
-        bin[2] = (byte) length;
-        length = length >> 8;
-        bin[1] = (byte) length;
-        length = length >> 8;
-        bin[0] = (byte) length;
-        bin[0] = (byte) (bin[0] | 0xC0);
-        return bin;
-    } else if (length < 0x10000000) {  // 28 bits
-        byte[] bin = new byte[4];
-        bin[3] = (byte) length;
-        length = length >> 8;
-        bin[2] = (byte) length;
-        length = length >> 8;
-        bin[1] = (byte) length;
-        length = length >> 8;
-        bin[0] = (byte) length;
-        bin[0] = (byte) (bin[0] | 0xE0);
-        return bin;
-    } else {        // 35 bits
-        byte[] bin = new byte[5];
-        bin[4] = (byte) length;
-        length = length >> 8;
-        bin[3] = (byte) length;
-        length = length >> 8;
-        bin[2] = (byte) length;
-        length = length >> 8;
-        bin[1] = (byte) length;
-        bin[0] = (byte) (bin[0] | 0xF0);
-        return bin;
-    }
-}
-
-public static int sizeOfU32(byte @NotNull [] bin, int start) {
-    int bytes = bin[start] & 0xF8;
-    if (bytes < 0x80) {
-        return 1;
-    } else if (bytes < 0xC0) {
-        return 2;
-    } else if (bytes < 0xE0) {
-        return 3;
-    } else if (bytes < 0xF0) {
-        return 4;
-    } else {
-        return 5;
-    }
-}
-
-public static int decodeU32(byte @NotNull [] bin, int start, int bound) {
-    int bytes = bound - start;
-    switch (bytes) {
-    case 1 -> {
-        return bin[start];
-    }
-    case 2 -> {
-        byte[] eef = new byte[8];
-        System.arraycopy(bin, start, eef, 6, 2);
-        eef[6] = (byte) (eef[6] & 0x3F);
-        return (int) binaryToI64(eef);
-    }
-    case 3 -> {
-        byte[] eef = new byte[8];
-        System.arraycopy(bin, start, eef, 5, 3);
-        eef[5] = (byte) (eef[5] & 0x1F);
-        return (int) binaryToI64(eef);
-    }
-    case 4 -> {
-        byte[] eef = new byte[8];
-        System.arraycopy(bin, start, eef, 4, 4);
-        eef[4] = (byte) (eef[4] & 0x0F);
-        return (int) binaryToI64(eef);
-    }
-    default -> {
-        byte[] eef = new byte[8];
-        System.arraycopy(bin, start, eef, 3, 5);
-        eef[3] = (byte) (eef[3] & 0x07);
-        return (int) binaryToI64(eef);
-    }
-    }
-}
-//endregion
-
-
-//region Common
-public static byte @NotNull [] trim(byte @NotNull [] big) {
-    int bound = big.length - 1;
-    if (big[0] == 0) {
-        int k = 0;
-        while (k < bound && big[k] == 0) {
-            k += 1;
-        }
-        if (big[k] < 0) {
-            k -= 1;
-        }
-        byte[] ooo = new byte[big.length - k];
-        System.arraycopy(big, k, ooo, 0, big.length - k);
-        return ooo;
-    } else if (big[0] == -1) {
-        int k = 0;
-        while (k < bound && big[k] == -1) {
-            k += 1;
-        }
-        if (big[k] >= 0) {
-            k -= 1;
-        }
-        byte[] ooo = new byte[big.length - k];
-        System.arraycopy(big, k, ooo, 0, big.length - k);
-        return ooo;
-    } else {
-        return big;
-    }
-}
-
+//region Common Functions
 /**
  * Convert a long to a byte array in big-endian order.
  *
@@ -276,39 +153,39 @@ public static int sizeOfBinChar(byte @NotNull [] bin, int start) {
     }
 }
 
-public static char binaryToChar(byte[] bin, int start, int bound) {
-    int bytes = bound - start;
-    switch (bytes) {
-        case 1 -> {
-            return (char) bin[start];
-        }
-        case 2 -> {
-            int c = (bin[start] & 0x1F) << 6;
-            c = c | (bin[start + 1] & 0x3F);
-            return (char) c;
-        }
-        case 3 -> {
-            int c = (bin[start] & 0x0F) << 12;
-            c = c | ((bin[start + 1] & 0x3F) << 6);
-            c = c | (bin[start + 2] & 0x3F);
-            return (char) c;
-        }
-        default -> {
-            int c = (bin[start] & 0x07) << 18;
-            c = c | ((bin[start + 1] & 0x3F) << 12);
-            c = c | ((bin[start + 2] & 0x3F) << 6);
-            c = c | (bin[start + 3] & 0x3F);
-            return (char) c;
-        }
-    }
-}
-
 public static byte @NotNull [] encodeChar(char c) {
     byte[] ooo = charToBinary(c);
     byte[] xxx = new byte[ooo.length + 1];
     xxx[0] = BIN_CHAR;
     System.arraycopy(ooo, 0, xxx, 1, ooo.length);
     return xxx;
+}
+
+public static char binaryToChar(byte[] bin, int start, int bound) {
+    int bytes = bound - start;
+    switch (bytes) {
+    case 1 -> {
+        return (char) bin[start];
+    }
+    case 2 -> {
+        int c = (bin[start] & 0x1F) << 6;
+        c = c | (bin[start + 1] & 0x3F);
+        return (char) c;
+    }
+    case 3 -> {
+        int c = (bin[start] & 0x0F) << 12;
+        c = c | ((bin[start + 1] & 0x3F) << 6);
+        c = c | (bin[start + 2] & 0x3F);
+        return (char) c;
+    }
+    default -> {
+        int c = (bin[start] & 0x07) << 18;
+        c = c | ((bin[start + 1] & 0x3F) << 12);
+        c = c | ((bin[start + 2] & 0x3F) << 6);
+        c = c | (bin[start + 3] & 0x3F);
+        return (char) c;
+    }
+    }
 }
 
 public static byte @NotNull [] encodeString(@NotNull String str) {
@@ -351,6 +228,117 @@ public static byte @NotNull [] serializeBinaries(@NotNull Lot lt) {
         lt = cdr(lt);
     }
     return bin;
+}
+//endregion
+
+
+//region Variable Length i32 Integer
+public static byte @NotNull [] encodeI32(int n) {
+    if (-0x40 <= n && n < 0x40) {                   // 7 bits
+        return new byte[]{(byte) (n & 0x7F)};
+    } else if (-0x2000 <= n && n < 0x2000) {        // 14 bits
+        byte[] bin = new byte[2];
+        bin[1] = (byte) n;
+        n = n >>> 8;
+        bin[0] = (byte) ((n & 0x3F) | 0x80);
+        return bin;
+    } else if (-0x100000 <= n && n < 0x100000) {    // 21 bits
+        byte[] bin = new byte[3];
+        bin[2] = (byte) n;
+        n = n >>> 8;
+        bin[1] = (byte) n;
+        n = n >>> 8;
+        bin[0] = (byte) ((n & 0x1F) | 0xC0);
+        return bin;
+    } else if (-0x8000000 <= n && n < 0x8000000) {   // 28 bits
+        byte[] bin = new byte[4];
+        bin[3] = (byte) n;
+        n = n >>> 8;
+        bin[2] = (byte) n;
+        n = n >>> 8;
+        bin[1] = (byte) n;
+        n = n >>> 8;
+        bin[0] = (byte) ((n & 0x0F) | 0xE0);
+        return bin;
+    } else {
+        byte[] bin = new byte[5];
+        bin[4] = (byte) n;
+        n = n >>> 8;
+        bin[3] = (byte) n;
+        n = n >>> 8;
+        bin[2] = (byte) n;
+        n = n >>> 8;
+        bin[1] = (byte) n;
+        bin[0] = (byte) 0xF0;
+        if (bin[1] < 0) {
+            bin[0] = (byte) (bin[0] | 0x07);
+        }
+        return bin;
+    }
+}
+
+public static int sizeOfI32(byte @NotNull [] bin, int start) {
+    int bytes = bin[start] & 0xF8;
+    if (bytes < 0x80) {
+        return 1;
+    } else if (bytes < 0xC0) {
+        return 2;
+    } else if (bytes < 0xE0) {
+        return 3;
+    } else if (bytes < 0xF0) {
+        return 4;
+    } else {
+        return 5;
+    }
+}
+
+public static int decodeI32(byte @NotNull [] bin, int start, int bound) {
+    int bytes = bound - start;
+    switch (bytes) {
+    case 1 -> {
+        if ((bin[start] & 0x40) == 0) {
+            return bin[start];
+        } else {
+            return bin[start] | -0x80;
+        }
+    }
+    case 2 -> {
+        byte[] ooo = Arrays.copyOfRange(bin, start, bound);
+        ooo[0] = (byte) (ooo[0] & 0x3F);
+        if ((ooo[0] & 0x20) != 0) {
+            ooo[0] = (byte) (ooo[0] | 0xC0);
+        }
+        byte[] xxx = extendTo64(ooo, 0, 2);
+        return (int) binaryToI64(xxx);
+    }
+    case 3 -> {
+        byte[] ooo = Arrays.copyOfRange(bin, start, bound);
+        ooo[0] = (byte) (ooo[0] & 0x1F);
+        if ((ooo[0] & 0x10) != 0) {
+            ooo[0] = (byte) (ooo[0] | 0xE0);
+        }
+        byte[] xxx = extendTo64(ooo, 0, 3);
+        return (int) binaryToI64(xxx);
+    }
+    case 4 -> {
+        byte[] ooo = Arrays.copyOfRange(bin, start, bound);
+        ooo[0] = (byte) (ooo[0] & 0x0F);
+        if ((ooo[0] & 0x08) != 0) {
+            ooo[0] = (byte) (ooo[0] | 0xF0);
+        }
+        byte[] xxx = extendTo64(ooo, 0, 4);
+        return (int) binaryToI64(xxx);
+    }
+    default -> {
+        byte[] ooo = Arrays.copyOfRange(bin, start, bound);
+        ooo[0] = (byte) (ooo[0] & 0x07);
+        if ((ooo[0] & 0x04) != 0) {
+            ooo[0] = (byte) (ooo[0] | 0xF8);
+        }
+        byte[] xxx = extendTo64(ooo, 0, 5);
+        return (int) binaryToI64(xxx);
+    }
+    }
 }
 //endregion
 

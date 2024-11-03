@@ -41,8 +41,8 @@ Object process() {
         throw new RuntimeException(String.format(Msg.UNMATCHED_BIN_LABEL, hexOfByte(bin[index]), index));
     }
     index += 1;
-    int sz = Binary.sizeOfU32(bin, index);
-    int len = Binary.decodeU32(bin, index, index + sz);
+    int sz = Binary.sizeOfI32(bin, index);
+    int len = Binary.decodeI32(bin, index, index + sz);
     share = makeFew(len, false);
     index += sz;
 
@@ -113,43 +113,43 @@ private Object decodeElem() {
         return Double.longBitsToDouble(bits);
     }
     case Binary.BIN_BOOLEANS -> {
-        int sz = Binary.sizeOfU32(bin, index);
-        int len = Binary.decodeU32(bin, index, index + sz);
+        int sz = Binary.sizeOfI32(bin, index);
+        int len = Binary.decodeI32(bin, index, index + sz);
         int start = index + sz;
         index = start + len;
         return decodeBooleans(bin, start, len);
     }
     case Binary.BIN_SHORTS -> {
-        int sz = Binary.sizeOfU32(bin, index);
-        int len = Binary.decodeU32(bin, index, index + sz);
+        int sz = Binary.sizeOfI32(bin, index);
+        int len = Binary.decodeI32(bin, index, index + sz);
         int start = index + sz;
         index = start + len * 2;
         return decodeShorts(bin, start, len);
     }
     case Binary.BIN_INTS -> {
-        int sz = Binary.sizeOfU32(bin, index);
-        int len = Binary.decodeU32(bin, index, index + sz);
+        int sz = Binary.sizeOfI32(bin, index);
+        int len = Binary.decodeI32(bin, index, index + sz);
         int start = index + sz;
         index = start + len * 4;
         return decodeInts(bin, start, len);
     }
     case Binary.BIN_LONGS -> {
-        int sz = Binary.sizeOfU32(bin, index);
-        int len = Binary.decodeU32(bin, index, index + sz);
+        int sz = Binary.sizeOfI32(bin, index);
+        int len = Binary.decodeI32(bin, index, index + sz);
         int start = index + sz;
         index = start + len * 8;
         return decodeLongs(bin, start, len);
     }
     case Binary.BIN_FLOATS -> {
-        int sz = Binary.sizeOfU32(bin, index);
-        int len = Binary.decodeU32(bin, index, index + sz);
+        int sz = Binary.sizeOfI32(bin, index);
+        int len = Binary.decodeI32(bin, index, index + sz);
         int start = index + sz;
         index = start + len * 4;
         return decodeFloats(bin, start, len);
     }
     case Binary.BIN_DOUBLES -> {
-        int sz = Binary.sizeOfU32(bin, index);
-        int len = Binary.decodeU32(bin, index, index + sz);
+        int sz = Binary.sizeOfI32(bin, index);
+        int len = Binary.decodeI32(bin, index, index + sz);
         int start = index + sz;
         index = start + len * 8;
         return decodeDoubles(bin, start, len);
@@ -192,8 +192,8 @@ private Object decodeElem() {
             }
         } else if (bin[index] == Binary.BIN_SHARE_INDEX) {
             index += 1;
-            int sz = Binary.sizeOfU32(bin, index);
-            int idx = Binary.decodeU32(bin, index, index + sz);
+            int sz = Binary.sizeOfI32(bin, index);
+            int idx = Binary.decodeI32(bin, index, index + sz);
             index += sz;
             Object elem_share = fewRef(share, idx);
             if (elem_share instanceof Boolean) {
@@ -209,8 +209,8 @@ private Object decodeElem() {
         while (bin[index] != Binary.BIN_LOT_END) {
             if (bin[index] == Binary.BIN_SHARE_INDEX) {
                 index += 1;
-                int sz = Binary.sizeOfU32(bin, index);
-                int idx = Binary.decodeU32(bin, index, index + sz);
+                int sz = Binary.sizeOfI32(bin, index);
+                int idx = Binary.decodeI32(bin, index, index + sz);
                 index += sz;
                 Object elem_share = fewRef(share, idx);
                 if (elem_share instanceof Boolean) {
@@ -227,15 +227,15 @@ private Object decodeElem() {
         return lt;
     }
     case Binary.BIN_FEW -> {
-        int sz = Binary.sizeOfU32(bin, index);
-        int len = Binary.decodeU32(bin, index, index + sz);
+        int sz = Binary.sizeOfI32(bin, index);
+        int len = Binary.decodeI32(bin, index, index + sz);
         index += sz;
         Few fw = makeFew(len, false);
         for (int i = 0; i < len; i += 1) {
             if (bin[index] == Binary.BIN_SHARE_INDEX) {
                 index += 1;
-                sz = Binary.sizeOfU32(bin, index);
-                int idx = Binary.decodeU32(bin, index, index + sz);
+                sz = Binary.sizeOfI32(bin, index);
+                int idx = Binary.decodeI32(bin, index, index + sz);
                 index += sz;
                 Object datum = fewRef(share, idx);
                 if (datum instanceof Boolean) {
@@ -250,8 +250,8 @@ private Object decodeElem() {
         return fw;
     }
     case Binary.BIN_SHARE_INDEX -> {
-        int sz = Binary.sizeOfU32(bin, index);
-        int idx = Binary.decodeU32(bin, index, index + sz);
+        int sz = Binary.sizeOfI32(bin, index);
+        int idx = Binary.decodeI32(bin, index, index + sz);
         index += sz;
         return fewRef(share, idx);
     }

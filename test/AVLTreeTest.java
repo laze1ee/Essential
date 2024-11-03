@@ -5,8 +5,6 @@
  * https://mozilla.org/MPL/2.0/
  */
 
-package test;
-
 import essential.datetime.Time;
 import essential.progresive.Lot;
 import essential.utilities.AVLTree;

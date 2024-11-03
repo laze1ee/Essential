@@ -5,8 +5,6 @@
  * https://mozilla.org/MPL/2.0/
  */
 
-package test;
-
 import essential.utilities.CheckSum;
 import org.junit.jupiter.api.Test;
 

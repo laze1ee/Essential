@@ -5,8 +5,6 @@
  * https://mozilla.org/MPL/2.0/
  */
 
-package test;
-
 import essential.datetime.Date;
 import essential.datetime.Time;
 import org.junit.jupiter.api.Test;

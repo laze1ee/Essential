@@ -40,7 +40,7 @@ byte[] process(Object datum) {
     }
     col = cons(encodeElem(datum), col);
     col = reverse(col);
-    col = cons(Binary.encodeU32(len), col);
+    col = cons(Binary.encodeI32(len), col);
     col = cons(new byte[]{Binary.BIN_FEW}, col);
     return Binary.serializeBinaries(col);
 }
@@ -69,7 +69,7 @@ private byte @NotNull [] encodeShareFew(@NotNull Few fw) {
         col = cons(encodeElem(fewRef(fw, i)), col);
     }
     col = reverse(col);
-    col = cons(Binary.encodeU32(len), col);
+    col = cons(Binary.encodeI32(len), col);
     col = cons(new byte[]{Binary.BIN_FEW}, col);
     return Binary.serializeBinaries(col);
 }
@@ -127,7 +127,7 @@ private byte[] encodeElem(Object elem) {
 }
 
 private static byte @NotNull [] shareIndex(int index) {
-    byte[] ooo = Binary.encodeU32(index);
+    byte[] ooo = Binary.encodeI32(index);
     byte[] xxx = new byte[1 + ooo.length];
     xxx[0] = Binary.BIN_SHARE_INDEX;
     System.arraycopy(ooo, 0, xxx, 1, ooo.length);
@@ -177,7 +177,7 @@ private static byte @NotNull [] encodeDouble(double n) {
 }
 
 private static byte @NotNull [] encodeBooleans(boolean @NotNull [] bs) {
-    byte[] len = Binary.encodeU32(bs.length);
+    byte[] len = Binary.encodeI32(bs.length);
     byte[] bin = new byte[1 + len.length + bs.length];
     bin[0] = Binary.BIN_BOOLEANS;
     System.arraycopy(len, 0, bin, 1, len.length);
@@ -192,7 +192,7 @@ private static byte @NotNull [] encodeBooleans(boolean @NotNull [] bs) {
 }
 
 private static byte @NotNull [] encodeShorts(short @NotNull [] ss) {
-    byte[] len = Binary.encodeU32(ss.length);
+    byte[] len = Binary.encodeI32(ss.length);
     byte[] bin = new byte[1 + len.length + 2 * ss.length];
     bin[0] = Binary.BIN_SHORTS;
     System.arraycopy(len, 0, bin, 1, len.length);
@@ -204,7 +204,7 @@ private static byte @NotNull [] encodeShorts(short @NotNull [] ss) {
 }
 
 private static byte @NotNull [] encodeInts(int @NotNull [] ins) {
-    byte[] len = Binary.encodeU32(ins.length);
+    byte[] len = Binary.encodeI32(ins.length);
     byte[] bin = new byte[1 + len.length + 4 * ins.length];
     bin[0] = Binary.BIN_INTS;
     System.arraycopy(len, 0, bin, 1, len.length);
@@ -216,7 +216,7 @@ private static byte @NotNull [] encodeInts(int @NotNull [] ins) {
 }
 
 private static byte @NotNull [] encodeLongs(long @NotNull [] ls) {
-    byte[] len = Binary.encodeU32(ls.length);
+    byte[] len = Binary.encodeI32(ls.length);
     byte[] bin = new byte[1 + len.length + 8 * ls.length];
     bin[0] = Binary.BIN_LONGS;
     System.arraycopy(len, 0, bin, 1, len.length);
@@ -228,7 +228,7 @@ private static byte @NotNull [] encodeLongs(long @NotNull [] ls) {
 }
 
 private static byte @NotNull [] encodeFloats(float @NotNull [] fs) {
-    byte[] len = Binary.encodeU32(fs.length);
+    byte[] len = Binary.encodeI32(fs.length);
     byte[] bin = new byte[1 + len.length + 4 * fs.length];
     bin[0] = Binary.BIN_FLOATS;
     System.arraycopy(len, 0, bin, 1, len.length);
@@ -241,7 +241,7 @@ private static byte @NotNull [] encodeFloats(float @NotNull [] fs) {
 }
 
 private static byte @NotNull [] encodeDoubles(double @NotNull [] ds) {
-    byte[] len = Binary.encodeU32(ds.length);
+    byte[] len = Binary.encodeI32(ds.length);
     byte[] bin = new byte[1 + len.length + 8 * ds.length];
     bin[0] = Binary.BIN_DOUBLES;
     System.arraycopy(len, 0, bin, 1, len.length);
