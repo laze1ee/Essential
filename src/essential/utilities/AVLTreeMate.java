@@ -25,29 +25,29 @@ static @NotNull Few makeNode() {
     return few(false, false, 0, 0, false, false);
 }
 
-static @NotNull Object key(Few node) {return ref0(node);}
+static @NotNull Object key(@NotNull Few node) {return node.ref(0);}
 
-static void setKey(Few node, Object key) {set0(node, key);}
+static void setKey(@NotNull Few node, Object key) {node.set(0, key);}
 
-static @NotNull Object value(Few node) {return ref1(node);}
+static @NotNull Object value(@NotNull Few node) {return node.ref(1);}
 
-static void setValue(Few node, Object value) {set1(node, value);}
+static void setValue(@NotNull Few node, Object value) {node.set(1, value);}
 
-static int height(Few node) {return (int) ref2(node);}
+static int height(@NotNull Few node) {return (int) node.ref(2);}
 
-static void setHeight(Few node, int height) {set2(node, height);}
+static void setHeight(@NotNull Few node, int height) {node.set(2, height);}
 
-static int balance(Few node) {return (int) ref3(node);}
+static int balance(@NotNull Few node) {return (int) node.ref(3);}
 
-static void setBalance(Few node, int balance) {set3(node, balance);}
+static void setBalance(@NotNull Few node, int balance) {node.set(3, balance);}
 
-static @NotNull Object left(Few node) {return ref4(node);}
+static @NotNull Object left(@NotNull Few node) {return node.ref(4);}
 
-static void setLeft(Few node, Object left) {set4(node, left);}
+static void setLeft(@NotNull Few node, Object left) {node.set(4, left);}
 
-static @NotNull Object right(Few node) {return ref5(node);}
+static @NotNull Object right(@NotNull Few node) {return node.ref(5);}
 
-static void setRight(Few node, Object right) {set5(node, right);}
+static void setRight(@NotNull Few node, Object right) {node.set(5, right);}
 
 static boolean isLeftOf(Few node, Few parent) {return eq(node, left(parent));}
 
@@ -82,8 +82,8 @@ static @NotNull Lot pathOf(@NotNull AVLTree tree, Object key) {
     return cons(node, path);
 }
 
-private static void leftRotate(AVLTree tree, Lot path) {
-    Few x = (Few) car(path);
+private static void leftRotate(AVLTree tree, @NotNull Lot path) {
+    Few x = (Few) path.car();
     Few up = (Few) right(x);
     if (balance(up) == -1) {
         rightRotate(tree, cons(up, path));
@@ -94,8 +94,8 @@ private static void leftRotate(AVLTree tree, Lot path) {
     }
 }
 
-private static void rightRotate(AVLTree tree, Lot path) {
-    Few x = (Few) car(path);
+private static void rightRotate(AVLTree tree, @NotNull Lot path) {
+    Few x = (Few) path.car();
     Few up = (Few) left(x);
     if (balance(up) == 1) {
         leftRotate(tree, cons(up, path));
@@ -106,25 +106,25 @@ private static void rightRotate(AVLTree tree, Lot path) {
     }
 }
 
-private static void reconnect(AVLTree tree, Lot path, Few x, Few up) {
-    if (cdr(path).isEmpty()) {
+private static void reconnect(AVLTree tree, @NotNull Lot path, Few x, Few up) {
+    if (path.cdr().isEmpty()) {
         tree.setRoot(up);
     } else {
-        Few parent = (Few) car1(path);
+        Few parent = (Few) path.ref(1);
         if (isLeftOf(x, parent)) {
             setLeft(parent, up);
         } else {
             setRight(parent, up);
         }
     }
-    path = cons(x, cons(up, cdr(path)));
+    path = cons(x, cons(up, path.cdr()));
     update(tree, path);
 }
 
 static void update(AVLTree tree, @NotNull Lot path) {
     while (!path.isEmpty()) {
-        Few node = (Few) car(path);
-        int b = balance((Few) right(node)) - balance((Few) left(node));
+        Few node = (Few) path.car();
+        int b = height((Few) right(node)) - height((Few) left(node));
         if (b == 2) {
             leftRotate(tree, path);
             return;
@@ -134,7 +134,7 @@ static void update(AVLTree tree, @NotNull Lot path) {
         } else {
             setHeight(node, 1 + Math.max(height((Few) left(node)), height((Few) right(node))));
             setBalance(node, b);
-            path = cdr(path);
+            path = path.cdr();
         }
     }
 }
@@ -157,11 +157,11 @@ static Lot maximum(@NotNull Few node, Lot path) {
 }
 
 private static void transplant(AVLTree tree, @NotNull Lot path, Few node) {
-    if (cdr(path).isEmpty()) {
+    if (path.cdr().isEmpty()) {
         tree.setRoot(node);
     } else {
-        Few parent = (Few) car1(path);
-        if (isLeftOf((Few) car(path), parent)) {
+        Few parent = (Few) path.ref(1);
+        if (isLeftOf((Few) path.car(), parent)) {
             setLeft(parent, node);
         } else {
             setRight(parent, node);
@@ -171,7 +171,7 @@ private static void transplant(AVLTree tree, @NotNull Lot path, Few node) {
 
 static boolean delete(@NotNull AVLTree tree, Object key) {
     Lot path = pathOf(tree, key);
-    Few deleted = (Few) car(path);
+    Few deleted = (Few) path.car();
     if (isNil(deleted)) {
         return false;
     } else {
@@ -179,14 +179,14 @@ static boolean delete(@NotNull AVLTree tree, Object key) {
         if (isNil((Few) left(deleted))) {
             x = (Few) right(deleted);
             transplant(tree, path, x);
-            path = cdr(path);
+            path = path.cdr();
         } else if (isNil((Few) right(deleted))) {
             x = (Few) left(deleted);
             transplant(tree, path, x);
-            path = cdr(path);
+            path = path.cdr();
         } else {
             Lot min_path = minimum((Few) right(deleted), lot());
-            Few replace = (Few) car(min_path);
+            Few replace = (Few) min_path.car();
             x = (Few) right(replace);
             if (!isRightOf(replace, deleted)) {
                 transplant(tree, min_path, x);
@@ -194,7 +194,7 @@ static boolean delete(@NotNull AVLTree tree, Object key) {
             }
             transplant(tree, path, replace);
             setLeft(replace, left(deleted));
-            path = append(cdr(min_path), cons(replace, cdr(path)));
+            path = append(min_path.cdr(), cons(replace, path.cdr()));
         }
         if (isNil(x)) {
             update(tree, path);
@@ -219,15 +219,15 @@ static class Counting {
         } else {
             Queue que = new Queue(node);
             while (!que.isEmpty()) {
-                node = (Few) Queue.deQ(que);
+                node = (Few) que.deQueue();
                 size += 1;
                 Few left = (Few) left(node);
                 if (!isNil(left)) {
-                    Queue.enQ(que, left);
+                    que.enQueue(left);
                 }
                 Few right = (Few) right(node);
                 if (!isNil(right)) {
-                    Queue.enQ(que, right);
+                    que.enQueue(right);
                 }
             }
             return size;
@@ -244,7 +244,9 @@ static class Traveling {
     }
 
     Lot process(Few node) {
-        if (isNil(node)) {return col;}
+        if (isNil(node)) {
+            return col;
+        }
         job(node);
         return col;
     }
@@ -257,9 +259,9 @@ static class Traveling {
                 stack = cons(node, stack);
                 node = (Few) right(node);
             }
-            node = (Few) car(stack);
+            node = (Few) stack.car();
             col = cons(lot(key(node), value(node)), col);
-            stack = cdr(stack);
+            stack = stack.cdr();
             node = (Few) left(node);
             while (!isNil(node)) {
                 stack = cons(node, stack);
@@ -279,22 +281,24 @@ static class Filtering {
 
     AVLTree process(@NotNull AVLTree tree) {
         AVLTree new_tree = new AVLTree(tree.less(), tree.greater());
-        if (tree.isEmpty()) {return new_tree;}
+        if (tree.isEmpty()) {
+            return new_tree;
+        }
 
         Queue que = new Queue(tree.root());
         Few node;
         while (!que.isEmpty()) {
-            node = (Few) Queue.deQ(que);
+            node = (Few) que.deQueue();
             if (fn.apply(value(node))) {
-                AVLTree.insert(new_tree, key(node), value(node));
+                new_tree.insert(key(node), value(node));
             }
             Few left = (Few) left(node);
             if (!isNil(left)) {
-                Queue.enQ(que, left);
+                que.enQueue(left);
             }
             Few right = (Few) right(node);
             if (!isNil(right)) {
-                Queue.enQ(que, right);
+                que.enQueue(right);
             }
         }
         return new_tree;
@@ -312,22 +316,53 @@ static class Mapping {
     }
 
     AVLTree process(Few node) {
-        if (isNil(node)) {return tree;}
+        if (isNil(node)) {
+            return tree;
+        }
 
         Queue que = new Queue(node);
         while (!que.isEmpty()) {
-            node = (Few) Queue.deQ(que);
-            AVLTree.insert(tree, key(node), fn.apply(value(node)));
+            node = (Few) que.deQueue();
+            tree.insert(key(node), fn.apply(value(node)));
             Few left = (Few) left(node);
             if (!isNil(left)) {
-                Queue.enQ(que, left);
+                que.enQueue(left);
             }
             Few right = (Few) right(node);
             if (!isNil(right)) {
-                Queue.enQ(que, right);
+                que.enQueue(right);
             }
         }
         return tree;
+    }
+}
+
+static Lot depthStatistic(Few root) {
+    if (isNil(root)) {
+        return lot();
+    } else {
+        Few node = root;
+        Lot col = lot();
+        Queue ooo = new Queue(node);
+        Queue xxx = new Queue(1);
+        while (!ooo.isEmpty()) {
+            node = (Few) ooo.deQueue();
+            int depth = (int) xxx.deQueue();
+            Few left = (Few) left(node);
+            Few right = (Few) right(node);
+            if (isNil(right) && isNil(left)) {
+                col = cons(depth, col);
+            }
+            if (!isNil(left)) {
+                ooo.enQueue(left);
+                xxx.enQueue(depth + 1);
+            }
+            if (!isNil(right)) {
+                ooo.enQueue(right);
+                xxx.enQueue(depth + 1);
+            }
+        }
+        return col;
     }
 }
 }

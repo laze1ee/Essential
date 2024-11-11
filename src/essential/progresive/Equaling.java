@@ -19,9 +19,9 @@ private final RBTree identical1;
 private final RBTree identical2;
 private int count;
 
-private Equaling(RBTree identical1, RBTree identical2) {
-    this.identical1 = RBTree.map(Mate::attach, identical1);
-    this.identical2 = RBTree.map(Mate::attach, identical2);
+private Equaling(@NotNull RBTree identical1, @NotNull RBTree identical2) {
+    this.identical1 = identical1.map(Mate::attach);
+    this.identical2 = identical2.map(Mate::attach);
     count = 0;
 }
 
@@ -47,18 +47,18 @@ private boolean jobFew(@NotNull Few fw1, @NotNull Few fw2) {
     } else {
         int key1 = System.identityHashCode(fw1);
         int key2 = System.identityHashCode(fw2);
-        if (RBTree.isPresent(identical1, key1) &&
-            RBTree.isPresent(identical2, key2)) {
-            Few self1 = (Few) RBTree.ref(identical1, key1);
-            Few self2 = (Few) RBTree.ref(identical2, key2);
-            if ((boolean) ref1(self1) &&
-                (boolean) ref1(self2)) {
-                return ref2(self1) == ref2(self2);
+        if (identical1.isPresent(key1) &&
+            identical2.isPresent(key2)) {
+            Few self1 = (Few) identical1.ref(key1);
+            Few self2 = (Few) identical2.ref(key2);
+            if ((boolean) self1.ref(1) &&
+                (boolean) self2.ref(1)) {
+                return self1.ref(2) == self2.ref(2);
             } else {
-                set1(self1, true);
-                set1(self2, true);
-                set2(self1, count);
-                set2(self2, count);
+                self1.set(1, true);
+                self2.set(1, true);
+                self1.set(2, count);
+                self2.set(2, count);
                 count += 1;
                 return equalArray(fw1.data, fw2.data);
             }
@@ -88,29 +88,29 @@ private boolean jobLot(@NotNull Lot lt1, Lot lt2) {
         } else {
             int key1 = System.identityHashCode(lt1);
             int key2 = System.identityHashCode(lt2);
-            if (RBTree.isPresent(identical1, key1) &&
-                RBTree.isPresent(identical2, key2)) {
-                Few self1 = (Few) RBTree.ref(identical1, key1);
-                Few self2 = (Few) RBTree.ref(identical2, key2);
-                if ((boolean) ref1(self1) &&
-                    (boolean) ref1(self2)) {
-                    return ref2(self1) == ref2(self2);
+            if (identical1.isPresent(key1) &&
+                identical2.isPresent(key2)) {
+                Few self1 = (Few) identical1.ref(key1);
+                Few self2 = (Few) identical2.ref(key2);
+                if ((boolean) self1.ref(1) &&
+                    (boolean) self2.ref(1)) {
+                    return self1.ref(2) == self2.ref(2);
                 } else {
-                    set1(self1, true);
-                    set1(self2, true);
-                    set2(self1, count);
-                    set2(self2, count);
+                    self1.set(1, true);
+                    self2.set(1, true);
+                    self1.set(2, count);
+                    self2.set(2, count);
                     count += 1;
-                    if (process(car(lt1), car(lt2))) {
-                        lt1 = cdr(lt1);
-                        lt2 = cdr(lt2);
+                    if (process(lt1.car(), lt2.car())) {
+                        lt1 = lt1.cdr();
+                        lt2 = lt2.cdr();
                     } else {
                         return false;
                     }
                 }
-            } else if (process(car(lt1), car(lt2))) {
-                lt1 = cdr(lt1);
-                lt2 = cdr(lt2);
+            } else if (process(lt1.car(), lt2.car())) {
+                lt1 = lt1.cdr();
+                lt2 = lt2.cdr();
             } else {
                 return false;
             }
@@ -127,9 +127,9 @@ static boolean lotEqual(@NotNull Lot lt1, Lot lt2) {
     while (true) {
         if (lt1.isEmpty() && lt2.isEmpty()) {
             return true;
-        } else if (equal(car(lt1), car(lt2))) {
-            lt1 = cdr(lt1);
-            lt2 = cdr(lt2);
+        } else if (equal(lt1.car(), lt2.car())) {
+            lt1 = lt1.cdr();
+            lt2 = lt2.cdr();
         } else {
             return false;
         }

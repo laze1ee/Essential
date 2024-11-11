@@ -65,41 +65,23 @@ public Date(int year, int month, int day_of_month, int hour, int minute, int sec
     this.offset = offset;
 }
 
-public int year() {
-    return year;
-}
+public int year() {return year;}
 
-public int month() {
-    return month;
-}
+public int month() {return month;}
 
-public int dayOfMonth() {
-    return day_of_month;
-}
+public int dayOfMonth() {return day_of_month;}
 
-public int dayOfWeek() {
-    return day_of_month;
-}
+public int dayOfWeek() {return day_of_month;}
 
-public int hour() {
-    return hour;
-}
+public int hour() {return hour;}
 
-public int minute() {
-    return minute;
-}
+public int minute() {return minute;}
 
-public int second() {
-    return second;
-}
+public int second() {return second;}
 
-public int nanosecond() {
-    return nanosecond;
-}
+public int nanosecond() {return nanosecond;}
 
-public int offset() {
-    return offset;
-}
+public int offset() {return offset;}
 
 public Time toTime() {
     long days = Mate.sumOfDays(year, month, day_of_month);
@@ -145,8 +127,6 @@ public static @NotNull Date current(int offset) {
                     offset);
 }
 
-public static @NotNull Date current() {
-    return current(OffsetTime.now().getOffset().getTotalSeconds());
-}
+public static @NotNull Date current() {return current(OffsetTime.now().getOffset().getTotalSeconds());}
 }
 

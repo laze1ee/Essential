@@ -4,23 +4,42 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2214e1c4-78e6-4dd0-acac-b219f4292824" name="Changes" comment="refactor Binary structure">
+    <list default="true" id="f3319480-06ba-405b-8a1e-0f7026449647" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/copyright/lazelee.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/essential/progresive/FewTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/essential/progresive/LotTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/essential/progresive/PrTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/essential/utilities/RBTreeTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Essential.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Essential.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/datetime/Date.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/datetime/Date.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/datetime/Time.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/datetime/Time.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/progresive/Equaling.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/Equaling.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/progresive/Few.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/Few.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/progresive/Identical.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/Identical.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/progresive/Lot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/Lot.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/progresive/Mate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/Mate.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/progresive/Pr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/Pr.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/progresive/Stringing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/Stringing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/AVLTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/AVLTree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/AVLTreeMate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/AVLTreeMate.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/utilities/Binary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/Binary.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/utilities/Decoding.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/Decoding.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/utilities/Encoding.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/Encoding.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/AVLTreeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/AVLTreeTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/BinaryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/BinaryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/CheckSumTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/CheckSumTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/DateTimeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/DateTimeTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/FewTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/FewTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/LotTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/LotTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/PrTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/PrTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/RBTreeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/RBTreeTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/Queue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/Queue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/RBTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/RBTree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/RBTreeMate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/RBTreeMate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/AVLTreeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/AVLTreeTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/BinaryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/BinaryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/CheckSumTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/CheckSumTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/DateTimeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/datetime/DateTimeTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/FewTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/LotTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/PrTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/RBTreeTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,7 +50,6 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JUnit5 Test Class" />
-        <option value="Class" />
       </list>
     </option>
   </component>
@@ -39,13 +57,13 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
   </component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 2
+  &quot;associatedIndex&quot;: 5
 }</component>
-  <component name="ProjectId" id="2oEpeUMcw9VhuSLFwv0faGL5q9i" />
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectId" id="2ohjdprcE9ClN1RCycPzoPSC2xd" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
@@ -60,11 +78,41 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.Binary.executor": "Run",
     "Downloaded.Files.Path.Enabled": "false",
+    "JUnit.All in Essential.executor": "Run",
+    "JUnit.BinaryTest.executor": "Run",
     "JUnit.BinaryTest.testLotAndFew.executor": "Run",
-    "JUnit.BinaryTest.testTimeAndDate.executor": "Run",
-    "JUnit.BinaryTest.testU32.executor": "Run",
+    "JUnit.FewTest.copy.executor": "Run",
+    "JUnit.FewTest.fill.executor": "Run",
+    "JUnit.FewTest.find.executor": "Run",
+    "JUnit.FewTest.length.executor": "Run",
+    "JUnit.FewTest.map.executor": "Run",
+    "JUnit.FewTest.ref.executor": "Run",
+    "JUnit.FewTest.set.executor": "Run",
+    "JUnit.FewTest.testEquals.executor": "Run",
+    "JUnit.FewTest.testToString.executor": "Run",
+    "JUnit.LotTest.caar.executor": "Run",
+    "JUnit.LotTest.car.executor": "Run",
+    "JUnit.LotTest.cdar.executor": "Run",
+    "JUnit.LotTest.cddr.executor": "Run",
+    "JUnit.LotTest.cdr.executor": "Run",
+    "JUnit.LotTest.copy.executor": "Run",
+    "JUnit.LotTest.executor": "Run",
+    "JUnit.LotTest.filter.executor": "Run",
+    "JUnit.LotTest.head.executor": "Run",
+    "JUnit.LotTest.isBreadthCircle.executor": "Run",
+    "JUnit.LotTest.isEmpty.executor": "Run",
+    "JUnit.LotTest.length.executor": "Run",
+    "JUnit.LotTest.map.executor": "Run",
+    "JUnit.LotTest.ref.executor": "Run",
+    "JUnit.LotTest.reverse.executor": "Run",
+    "JUnit.LotTest.tail.executor": "Run",
+    "JUnit.LotTest.testEquals.executor": "Run",
+    "JUnit.LotTest.testToString.executor": "Run",
+    "JUnit.LotTest.toFew.executor": "Run",
+    "JUnit.PrTest.testAppend.executor": "Run",
+    "JUnit.PrTest.testCons.executor": "Run",
+    "JUnit.PrTest.testIsBelong.executor": "Run",
     "Repository.Attach.Annotations": "false",
     "Repository.Attach.JavaDocs": "true",
     "Repository.Attach.Sources": "false",
@@ -72,34 +120,90 @@
     "com.codeium.enabled": "true",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "create.test.in.the.same.root": "true",
     "git-widget-placeholder": "main",
     "java.suggest.annotation.dependency": "false",
-    "last_opened_file_path": "E:/Rock/TODO/IdeaProject/Plum",
     "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.18252933",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
     "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.keymap"
+    "settings.editor.selected.configurable": "copyright"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="E:\Rock\TODO\IdeaProject\Essential" />
-    </key>
     <key name="CreateTestDialog.RecentsKey">
-      <recent name="test" />
+      <recent name="essential.progresive" />
     </key>
   </component>
-  <component name="RunManager">
-    <configuration name="BinaryTest.testU32" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.BinaryTest.testLotAndFew">
+    <configuration name="All in Essential" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Essential" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="BinaryTest" />
-      <option name="METHOD_NAME" value="testU32" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BinaryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Essential" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="essential.utilities.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="essential.utilities" />
+      <option name="MAIN_CLASS_NAME" value="essential.utilities.BinaryTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BinaryTest.testLotAndFew" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Essential" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="essential.utilities.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="essential.utilities" />
+      <option name="MAIN_CLASS_NAME" value="essential.utilities.BinaryTest" />
+      <option name="METHOD_NAME" value="testLotAndFew" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PrTest.testAppend" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Essential" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="essential.progresive.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="essential.progresive" />
+      <option name="MAIN_CLASS_NAME" value="essential.progresive.PrTest" />
+      <option name="METHOD_NAME" value="testAppend" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PrTest.testIsBelong" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Essential" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="essential.progresive.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="essential.progresive" />
+      <option name="MAIN_CLASS_NAME" value="essential.progresive.PrTest" />
+      <option name="METHOD_NAME" value="testIsBelong" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -107,7 +211,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.BinaryTest.testU32" />
+        <item itemvalue="JUnit.BinaryTest.testLotAndFew" />
+        <item itemvalue="JUnit.All in Essential" />
+        <item itemvalue="JUnit.BinaryTest" />
+        <item itemvalue="JUnit.PrTest.testIsBelong" />
+        <item itemvalue="JUnit.PrTest.testAppend" />
       </list>
     </recent_temporary>
   </component>
@@ -121,34 +229,15 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="2214e1c4-78e6-4dd0-acac-b219f4292824" name="Changes" comment="" />
-      <created>1730444687258</created>
+      <changelist id="f3319480-06ba-405b-8a1e-0f7026449647" name="Changes" comment="" />
+      <created>1731212362315</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1730444687258</updated>
-      <workItem from="1730444688171" duration="35000" />
-      <workItem from="1730444831482" duration="2769000" />
-      <workItem from="1730455331186" duration="23000" />
-      <workItem from="1730455500576" duration="271000" />
-      <workItem from="1730455792203" duration="25000" />
-      <workItem from="1730455898718" duration="29000" />
-      <workItem from="1730455941434" duration="665000" />
-      <workItem from="1730472095843" duration="4106000" />
-      <workItem from="1730527930984" duration="778000" />
-      <workItem from="1730558949436" duration="46000" />
-      <workItem from="1730627703974" duration="657000" />
-      <workItem from="1730628387365" duration="2436000" />
-      <workItem from="1730637500755" duration="4170000" />
+      <updated>1731212362315</updated>
+      <workItem from="1731212363455" duration="199000" />
+      <workItem from="1731328795061" duration="170000" />
+      <workItem from="1731329032420" duration="7634000" />
     </task>
-    <task id="LOCAL-00001" summary="refactor Binary structure">
-      <option name="closed" value="true" />
-      <created>1730528528353</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1730528528353</updated>
-    </task>
-    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -161,9 +250,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="refactor Binary structure" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor Binary structure" />
   </component>
 </project>

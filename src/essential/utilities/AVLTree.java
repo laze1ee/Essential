@@ -25,47 +25,19 @@ public AVLTree(Predicate2 less, Predicate2 greater) {
     avl_tree = few(less, greater, AVLTreeMate.makeNode());
 }
 
-Predicate2 less() {
-    return (Predicate2) ref0(avl_tree);
-}
+Predicate2 less() {return (Predicate2) avl_tree.ref(0);}
 
-Predicate2 greater() {
-    return (Predicate2) ref1(avl_tree);
-}
+Predicate2 greater() {return (Predicate2) avl_tree.ref(1);}
 
-Few root() {
-    return (Few) ref2(avl_tree);
-}
+Few root() {return (Few) avl_tree.ref(2);}
 
-void setRoot(Few node) {
-    set2(avl_tree, node);
-}
-
-/**
- * Is the tree empty?
- *
- * @return if the tree is empty, return true else false.
- */
-public boolean isEmpty() {
-    return AVLTreeMate.isNil(root());
-}
-
-/**
- * The number of items in the tree.
- *
- * @return number of items in the tree.
- */
-public int size() {
-    AVLTreeMate.Counting inst = new AVLTreeMate.Counting();
-    return inst.process(root());
-}
+void setRoot(Few node) {avl_tree.set(2, node);}
 
 @Override
-public String toString() {
-    return String.format("#[AVL-Tree %s]", AVLTreeMate.stringify(root()));
-}
+public String toString() {return String.format("#[AVL-Tree %s]", AVLTreeMate.stringify(root()));}
 
 @Override
+
 public boolean equals(Object datum) {
     if (datum instanceof AVLTree tree) {
         return root().equals(tree.root());
@@ -75,23 +47,42 @@ public boolean equals(Object datum) {
 }
 
 /**
- * Inserts a key-value pair into the AVL tree.
+ * Is the AVL tree empty?
  *
- * @param tree  the AVL tree to insert to.
+ * @return if the tree is empty, return true else false.
+ */
+public boolean isEmpty() {
+    return AVLTreeMate.isNil(root());
+}
+
+/**
+ * The number of items in the AVL tree.
+ *
+ * @return number of items in the tree.
+ */
+public int size() {
+    AVLTreeMate.Counting inst = new AVLTreeMate.Counting();
+    return inst.process(root());
+}
+
+/**
+ * Inserts a key-value pair into the AVL tree.
+ * If the key is already present in the tree, the insertion operation fails and returns false.
+ *
  * @param key   the key to insert.
  * @param value the value to insert.
  * @return true if inserting succeeded, false otherwise.
  */
-public static boolean insert(@NotNull AVLTree tree, @NotNull Object key, Object value) {
-    Lot path = AVLTreeMate.pathOf(tree, key);
-    Few node = (Few) car(path);
+public boolean insert(@NotNull Object key, Object value) {
+    Lot path = AVLTreeMate.pathOf(this, key);
+    Few node = (Few) path.car();
     if (AVLTreeMate.isNil(node)) {
         AVLTreeMate.setKey(node, key);
         AVLTreeMate.setValue(node, value);
         AVLTreeMate.setHeight(node, 1);
         AVLTreeMate.setLeft(node, AVLTreeMate.makeNode());
         AVLTreeMate.setRight(node, AVLTreeMate.makeNode());
-        AVLTreeMate.update(tree, path);
+        AVLTreeMate.update(this, path);
         return true;
     } else {
         return false;
@@ -101,69 +92,67 @@ public static boolean insert(@NotNull AVLTree tree, @NotNull Object key, Object 
 /**
  * Checks if the given key is present in the AVL tree.
  *
- * @param tree the AVL tree to check.
- * @param key  the key to check.
+ * @param key the key to check.
  * @return true if the key is present, false otherwise.
  */
-public static boolean isPresent(@NotNull AVLTree tree, @NotNull Object key) {
-    Lot path = AVLTreeMate.pathOf(tree, key);
-    Few node = (Few) car(path);
+public boolean isPresent(@NotNull Object key) {
+    Lot path = AVLTreeMate.pathOf(this, key);
+    Few node = (Few) path.car();
     return !AVLTreeMate.isNil(node);
 }
 
 /**
- * Returns the value associated with the given key.
+ * Retrieves the value associated with the specified key in the AVL tree.
  *
- * @param tree the AVL tree to access.
- * @param key  the key to refer.
- * @return the value associated with the given key.
+ * @param key the key whose associated value is to be returned.
+ * @return the value associated with the specified key.
+ * @throws RuntimeException if the key is not present in the tree.
  */
-public static @NotNull Object ref(@NotNull AVLTree tree, @NotNull Object key) {
-    Lot path = AVLTreeMate.pathOf(tree, key);
-    Few node = (Few) car(path);
+public @NotNull Object ref(@NotNull Object key) {
+    Lot path = AVLTreeMate.pathOf(this, key);
+    Few node = (Few) path.car();
     if (AVLTreeMate.isNil(node)) {
-        throw new RuntimeException(String.format(Msg.NOT_PRESENT, key, tree));
+        throw new RuntimeException(String.format(Msg.NOT_PRESENT, key, this));
     } else {
         return AVLTreeMate.value(node);
     }
 }
 
 /**
- * Sets the value associated with the given key.
+ * Sets the value associated with the given key in the AVL tree.
  *
- * @param tree      the AVL tree to be modified
- * @param key       key whose associated value is to be set
- * @param new_value the new value
+ * @param key       the key whose associated value is to be set.
+ * @param new_value the new value to be associated with the specified key.
+ * @throws RuntimeException if the key is not present in the tree.
  */
-public static void set(@NotNull AVLTree tree, @NotNull Object key, Object new_value) {
-    Lot path = AVLTreeMate.pathOf(tree, key);
-    Few node = (Few) car(path);
+public void set(@NotNull Object key, Object new_value) {
+    Lot path = AVLTreeMate.pathOf(this, key);
+    Few node = (Few) path.car();
     if (AVLTreeMate.isNil(node)) {
-        throw new RuntimeException(String.format(Msg.NOT_PRESENT, key, tree));
+        throw new RuntimeException(String.format(Msg.NOT_PRESENT, key, this));
     } else {
         AVLTreeMate.setValue(node, new_value);
     }
 }
 
 /**
- * Deletes the mapping of the specified key (if such mapping exists).
- * If this AVL tree maps the specified key to a value, returns {@code true},
- * else returns {@code false}.
+ * Removes the key-value pair of the specified key.
+ * If the key is present in the tree, the deletion operation succeeds and returns {@code true},
+ * otherwise returns {@code false}.
  *
- * @param tree the AVL tree to be modified.
- * @param key  the key and whose associated value is to be removed.
- * @return true if the value is deleted, false otherwise.
+ * @param key the key whose associated value is to be removed.
+ * @return {@code true} if the key was present and deleted, {@code false} otherwise.
  */
-public static boolean delete(@NotNull AVLTree tree, @NotNull Object key) {
-    if (tree.isEmpty()) {
+public boolean delete(@NotNull Object key) {
+    if (isEmpty()) {
         return false;
     } else {
-        return AVLTreeMate.delete(tree, key);
+        return AVLTreeMate.delete(this, key);
     }
 }
 
 /**
- * Finds the minimum key in the AVL tree.
+ * The minimum key in the tree.
  *
  * @return the minimum key in the tree.
  * @throws RuntimeException if the tree is empty.
@@ -173,13 +162,13 @@ public Object minimum() {
     if (path.isEmpty()) {
         throw new RuntimeException(Msg.EMPTY_TREE);
     } else {
-        Few node = (Few) car(path);
+        Few node = (Few) path.car();
         return AVLTreeMate.key(node);
     }
 }
 
 /**
- * Finds the maximum key in the AVL tree.
+ * The maximum key in the tree.
  *
  * @return the maximum key in the tree.
  * @throws RuntimeException if the tree is empty.
@@ -189,7 +178,7 @@ public Object maximum() {
     if (path.isEmpty()) {
         throw new RuntimeException(Msg.EMPTY_TREE);
     } else {
-        Few node = (Few) car(path);
+        Few node = (Few) path.car();
         return AVLTreeMate.key(node);
     }
 }
@@ -198,35 +187,41 @@ public Object maximum() {
  * Traverses the AVL tree and returns a list of key-value pairs.
  * The key-value pairs are ordered in ascending order of keys.
  *
- * @param tree the AVL tree to traverse.
  * @return a list of key-value pairs.
  */
-public static Lot travel(@NotNull AVLTree tree) {
+public Lot travel() {
     AVLTreeMate.Traveling inst = new AVLTreeMate.Traveling();
-    return inst.process(tree.root());
+    return inst.process(root());
 }
 
 /**
  * Filters the key-value pairs in the AVL tree with the given predicate.
  *
- * @param fn   the predicate to filter.
- * @param tree the AVL tree to filter.
+ * @param fn the predicate to filter.
  * @return a filtered AVL tree.
  */
-public static AVLTree filter(Predicate1 fn, @NotNull AVLTree tree) {
+public AVLTree filter(Predicate1 fn) {
     AVLTreeMate.Filtering inst = new AVLTreeMate.Filtering(fn);
-    return inst.process(tree);
+    return inst.process(this);
 }
 
 /**
  * Maps the key-value pairs in the AVL tree with the given procedure.
  *
- * @param fn   the procedure to modify value.
- * @param tree the AVL tree to map.
+ * @param fn the procedure to modify value.
  * @return a mapped AVL tree.
  */
-public static AVLTree map(Do1 fn, @NotNull AVLTree tree) {
-    AVLTreeMate.Mapping inst = new AVLTreeMate.Mapping(fn, tree);
-    return inst.process(tree.root());
+public AVLTree map(Do1 fn) {
+    AVLTreeMate.Mapping inst = new AVLTreeMate.Mapping(fn, this);
+    return inst.process(root());
+}
+
+
+/**
+ * Returns a list of depths for each leaf node in the AVL tree, in descending order.
+ * Note that this order is different from the order of the leaf nodes in the tree.
+ */
+public static Lot depth(@NotNull AVLTree tree) {
+    return AVLTreeMate.depthStatistic(tree.root());
 }
 }

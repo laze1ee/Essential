@@ -21,17 +21,29 @@ public class RBTree {
 
 private final Few rb_tree;
 
-public RBTree(Predicate2 less, Predicate2 greater) {
-    rb_tree = few(less, greater, RBTreeMate.makeNode());
+public RBTree(Predicate2 less, Predicate2 greater) {rb_tree = few(less, greater, RBTreeMate.makeNode());}
+
+Predicate2 less() {return (Predicate2) rb_tree.ref(0);}
+
+Predicate2 greater() {return (Predicate2) rb_tree.ref(1);}
+
+Few root() {return (Few) rb_tree.ref(2);}
+
+void setRoot(Few node) {rb_tree.set(2, node);}
+
+@Override
+public String toString() {
+    return String.format("#[Red-Black-Tree %s]", RBTreeMate.stringify(root()));
 }
 
-Predicate2 less() {return (Predicate2) ref0(rb_tree);}
-
-Predicate2 greater() {return (Predicate2) ref1(rb_tree);}
-
-Few root() {return (Few) ref2(rb_tree);}
-
-void setRoot(Few node) {set2(rb_tree, node);}
+@Override
+public boolean equals(Object datum) {
+    if (datum instanceof RBTree tree) {
+        return root().equals(tree.root());
+    } else {
+        return false;
+    }
+}
 
 /**
  * Checks if the tree is empty.
@@ -50,38 +62,24 @@ public int size() {
     return inst.process(root());
 }
 
-@Override
-public String toString() {
-    return String.format("#[Red-Black-Tree %s]", RBTreeMate.stringify(root()));
-}
-
-@Override
-public boolean equals(Object datum) {
-    if (datum instanceof RBTree tree) {
-        return root().equals(tree.root());
-    } else {
-        return false;
-    }
-}
-
 /**
  * Inserts a key-value pair into the Red-Black Tree.
+ * If the key is already present in the tree, the insertion operation fails and returns false.
  *
- * @param tree  the Red-Black Tree to insert into.
  * @param key   the key to insert.
  * @param value the value to insert.
- * @return true if inserting succeeded, false otherwise.
+ * @return {@code true} if inserting succeeded, {@code false} otherwise.
  */
-public static boolean insert(@NotNull RBTree tree, @NotNull Object key, Object value) {
-    Lot path = RBTreeMate.pathOf(tree, key);
-    Few node = (Few) car(path);
+public boolean insert(@NotNull Object key, Object value) {
+    Lot path = RBTreeMate.pathOf(this, key);
+    Few node = (Few) path.car();
     if (RBTreeMate.isNil(node)) {
         RBTreeMate.setKey(node, key);
         RBTreeMate.setValue(node, value);
         RBTreeMate.setColor(node, true);
         RBTreeMate.setLeft(node, RBTreeMate.makeNode());
         RBTreeMate.setRight(node, RBTreeMate.makeNode());
-        RBTreeMate.InsertFixing fixer = new RBTreeMate.InsertFixing(tree, path);
+        RBTreeMate.InsertFixing fixer = new RBTreeMate.InsertFixing(this, path);
         fixer.process();
         return true;
     } else {
@@ -92,65 +90,63 @@ public static boolean insert(@NotNull RBTree tree, @NotNull Object key, Object v
 /**
  * Checks if the given key is present in the Red-Black Tree.
  *
- * @param tree the Red-Black Tree to check.
- * @param key  the key to check.
+ * @param key the key to check.
  * @return true if the key is present, false otherwise.
  */
-public static boolean isPresent(@NotNull RBTree tree, @NotNull Object key) {
-    Lot path = RBTreeMate.pathOf(tree, key);
-    Few node = (Few) car(path);
+public boolean isPresent(@NotNull Object key) {
+    Lot path = RBTreeMate.pathOf(this, key);
+    Few node = (Few) path.car();
     return !RBTreeMate.isNil(node);
 }
 
+
 /**
- * Returns the value associated with the given key.
+ * Retrieves the value associated with the specified key in the Red-Black Tree.
  *
- * @param tree the Red-Black Tree to access.
- * @param key  the key to refer.
- * @return the value associated with the given key.
+ * @param key the key whose associated value is to be returned.
+ * @return the value associated with the specified key.
+ * @throws RuntimeException if the key is not present in the tree.
  */
-public static @NotNull Object ref(@NotNull RBTree tree, @NotNull Object key) {
-    Lot path = RBTreeMate.pathOf(tree, key);
-    Few node = (Few) car(path);
+public @NotNull Object ref(@NotNull Object key) {
+    Lot path = RBTreeMate.pathOf(this, key);
+    Few node = (Few) path.car();
     if (RBTreeMate.isNil(node)) {
-        throw new RuntimeException(String.format(Msg.NOT_PRESENT, key, tree));
+        throw new RuntimeException(String.format(Msg.NOT_PRESENT, key, this));
     } else {
         return RBTreeMate.value(node);
     }
 }
 
 /**
- * Sets the value associated with the given key in the Red-Black Tree.
+ * Sets the value associated with the given key.
  *
- * @param tree      the Red-Black Tree to be modified
- * @param key       the key whose associated value is to be set
- * @param new_value the new value to be associated with the specified key
+ * @param key       key whose associated value is to be set
+ * @param new_value the new value
  * @throws RuntimeException if the key is not present in the tree
  */
-public static void set(@NotNull RBTree tree, @NotNull Object key, Object new_value) {
-    Lot path = RBTreeMate.pathOf(tree, key);
-    Few node = (Few) car(path);
+public void set(@NotNull Object key, Object new_value) {
+    Lot path = RBTreeMate.pathOf(this, key);
+    Few node = (Few) path.car();
     if (RBTreeMate.isNil(node)) {
-        throw new RuntimeException(String.format(Msg.NOT_PRESENT, key, tree));
+        throw new RuntimeException(String.format(Msg.NOT_PRESENT, key, this));
     } else {
         RBTreeMate.setValue(node, new_value);
     }
 }
 
 /**
- * Deletes the mapping of the specified key (if such mapping exists).
- * If this Red-Black Tree maps the specified key to a value, returns {@code true},
- * else returns {@code false}.
+ * Removes the key-value pair of the specified key.
+ * If the key is present in the tree, the deletion operation succeeds and returns {@code true},
+ * otherwise returns {@code false}.
  *
- * @param tree the Red-Black Tree to be modified.
- * @param key  the key and whose associated value is to be deleted.
- * @return true if the value is deleted, false otherwise.
+ * @param key the key whose associated value is to be removed.
+ * @return {@code true} if the key was present and deleted, {@code false} otherwise.
  */
-public static boolean delete(@NotNull RBTree tree, @NotNull Object key) {
-    if (tree.isEmpty()) {
+public boolean delete(@NotNull Object key) {
+    if (isEmpty()) {
         return false;
     } else {
-        return RBTreeMate.delete(tree, key);
+        return RBTreeMate.delete(this, key);
     }
 }
 
@@ -165,7 +161,7 @@ public Object minimum() {
     if (path.isEmpty()) {
         throw new RuntimeException(Msg.EMPTY_TREE);
     } else {
-        Few node = (Few) car(path);
+        Few node = (Few) path.car();
         return RBTreeMate.key(node);
     }
 }
@@ -181,7 +177,7 @@ public Object maximum() {
     if (path.isEmpty()) {
         throw new RuntimeException(Msg.EMPTY_TREE);
     } else {
-        Few node = (Few) car(path);
+        Few node = (Few) path.car();
         return RBTreeMate.key(node);
     }
 }
@@ -190,36 +186,41 @@ public Object maximum() {
  * Traverses the Red-Black tree and returns a list of key-value pairs.
  * The key-value pairs are ordered in ascending order of keys.
  *
- * @param tree the AVL tree to traverse.
  * @return a list of key-value pairs.
  */
-public static Lot travel(@NotNull RBTree tree) {
+public Lot travel() {
     RBTreeMate.Traveling inst = new RBTreeMate.Traveling();
-    return inst.process(tree.root());
+    return inst.process(root());
 }
 
 /**
  * Filters the key-value pairs in the Red-Black tree with the given predicate.
  *
- * @param fn   the predicate to filter.
- * @param tree the Red-Black tree to filter.
+ * @param fn the predicate to filter.
  * @return a filtered Red-Black tree.
  */
-public static RBTree filter(Predicate1 fn, @NotNull RBTree tree) {
+public RBTree filter(Predicate1 fn) {
     RBTreeMate.Filtering inst = new RBTreeMate.Filtering(fn);
-    return inst.process(tree);
+    return inst.process(this);
 }
 
 /**
  * Maps the key-value pairs in the Red-Black tree with the given procedure.
  *
- * @param fn   the procedure to modify value.
- * @param tree the Red-Black tree to map.
+ * @param fn the procedure to modify value.
  * @return a mapped Red-Black tree.
  */
-public static RBTree map(Do1 fn, @NotNull RBTree tree) {
-    RBTreeMate.Mapping inst = new RBTreeMate.Mapping(fn, tree);
-    return inst.process(tree.root());
+public RBTree map(Do1 fn) {
+    RBTreeMate.Mapping inst = new RBTreeMate.Mapping(fn, this);
+    return inst.process(root());
+}
+
+/**
+ * Returns a list of depths for each leaf node in the Red-Black tree, in descending order.
+ * Note that this order is different from the order of the leaf nodes in the tree.
+ */
+public static Lot depth(@NotNull RBTree tree) {
+    return RBTreeMate.depthStatistic(tree.root());
 }
 }
 

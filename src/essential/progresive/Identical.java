@@ -9,9 +9,6 @@ package essential.progresive;
 
 import essential.utilities.RBTree;
 
-import static essential.progresive.Pr.car;
-import static essential.progresive.Pr.cdr;
-
 
 public class Identical {
 
@@ -38,13 +35,13 @@ private void collect(Object datum) {
 
 private void collectFew(Few fw) {
     int key = System.identityHashCode(fw);
-    boolean success = RBTree.insert(collector, key, false);
+    boolean success = collector.insert(key, false);
     if (success) {
         for (int i = 0; i < fw.data.length; i += 1) {
             collect(fw.data[i]);
         }
     } else {
-        RBTree.insert(identical, key, fw);
+        identical.insert(key, fw);
     }
 }
 
@@ -54,12 +51,12 @@ private void collectLot(Lot lt) {
             break;
         } else {
             int key = System.identityHashCode(lt);
-            boolean success = RBTree.insert(collector, key, false);
+            boolean success = collector.insert(key, false);
             if (success) {
-                collect(car(lt));
-                lt = cdr(lt);
+                collect(lt.car());
+                lt = lt.cdr();
             } else {
-                RBTree.insert(identical, key, lt);
+                identical.insert(key, lt);
                 break;
             }
         }

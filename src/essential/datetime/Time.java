@@ -39,9 +39,7 @@ public Time(long second, int nanosecond) {
 }
 
 @Contract(" -> new")
-public @NotNull Time neg() {
-    return new Time(-second, -nanosecond);
-}
+public @NotNull Time neg() {return new Time(-second, -nanosecond);}
 
 public boolean less(@NotNull Time t) {
     if (this.second() < t.second()) {
@@ -54,9 +52,7 @@ public boolean less(@NotNull Time t) {
 }
 
 @Override
-public @NotNull String toString() {
-    return String.format("#[time %d.%09d]", second, Math.abs(nanosecond));
-}
+public @NotNull String toString() {return String.format("#[time %d.%09d]", second, Math.abs(nanosecond));}
 
 @Override
 public boolean equals(Object datum) {
@@ -109,9 +105,7 @@ public static @NotNull Time current(@NotNull TimeType type) {
 }
 
 @Contract(" -> new")
-public static @NotNull Time current() {
-    return current(TimeType.UTC);
-}
+public static @NotNull Time current() {return current(TimeType.UTC);}
 
 @Contract("_, _ -> new")
 public static @NotNull Time add(@NotNull Time t1, @NotNull Time t2) {

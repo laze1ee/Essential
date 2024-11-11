@@ -5,7 +5,8 @@
  * https://mozilla.org/MPL/2.0/
  */
 
-import essential.utilities.CheckSum;
+package essential.utilities;
+
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;

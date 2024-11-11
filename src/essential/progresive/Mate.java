@@ -21,7 +21,7 @@ class Mate {
 static final char[] HEX_STR = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                                          'A', 'B', 'C', 'D', 'E', 'F'};
 @SuppressWarnings("SpellCheckingInspection")
-static final char[] CHARS_SET =
+static final char[] CHARS_SET = 
 "_-ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz".toCharArray();
 
 
@@ -30,39 +30,39 @@ static int length(@NotNull Lot lt) {
     int n = 0;
     while (!lt.isEmpty()) {
         n += 1;
-        lt = Pr.cdr(lt);
+        lt = lt.cdr();
     }
     return n;
 }
 
 static boolean isBelong(Object datum, @NotNull Lot lt) {
     while (!lt.isEmpty()) {
-        if (eq(datum, car(lt))) {
+        if (eq(datum, lt.car())) {
             return true;
         }
-        lt = cdr(lt);
+        lt = lt.cdr();
     }
     return false;
 }
 static int theHareAndTortoise(@NotNull Lot lt) {
     if (lt.isEmpty()) {
         return 0;
-    } else if (cdr(lt).isEmpty()) {
+    } else if (lt.cdr().isEmpty()) {
         return 1;
     } else {
-        Lot hare = cddr(lt);
+        Lot hare = lt.cddr();
         Lot tortoise = lt;
         int count = 1;
         while (true) {
             if (hare.isEmpty()) {
                 return count * 2;
-            } else if (cdr(hare).isEmpty()) {
+            } else if (hare.cdr().isEmpty()) {
                 return count * 2 + 1;
             } else if (hare == tortoise) {
                 return -1;
             } else {
-                hare = cddr(hare);
-                tortoise = cdr(tortoise);
+                hare = hare.cddr();
+                tortoise = tortoise.cdr();
                 count += 1;
             }
         }

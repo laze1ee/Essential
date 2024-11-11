@@ -5,8 +5,8 @@
  * https://mozilla.org/MPL/2.0/
  */
 
-import essential.datetime.Date;
-import essential.datetime.Time;
+package essential.datetime;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;

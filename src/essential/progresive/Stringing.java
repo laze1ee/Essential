@@ -18,8 +18,8 @@ class Stringing {
 private final RBTree identical;
 private int count;
 
-private Stringing(RBTree identical) {
-    this.identical = RBTree.map(Mate::attach, identical);
+private Stringing(@NotNull RBTree identical) {
+    this.identical = identical.map(Mate::attach);
     count = 0;
 }
 
@@ -39,15 +39,15 @@ private String process(Object datum) {
 
 private @NotNull String jobFew(Few fw) {
     int key = System.identityHashCode(fw);
-    if (RBTree.isPresent(identical, key)) {
-        Few self = (Few) RBTree.ref(identical, key);
-        if ((boolean) ref1(self)) {
-            return String.format("#%s#", ref2(self));
+    if (identical.isPresent(key)) {
+        Few self = (Few) identical.ref(key);
+        if ((boolean) self.ref(1)) {
+            return String.format("#%s#", self.ref(2));
         } else {
-            set1(self, true);
-            set2(self, count);
+            self.set(1, true);
+            self.set(2, count);
             count += 1;
-            return String.format("#%s=#(%s)", ref2(self), connectArray(fw.data));
+            return String.format("#%s=#(%s)", self.ref(2), connectArray(fw.data));
         }
     } else {
         return String.format("#(%s)", connectArray(fw.data));
@@ -72,54 +72,49 @@ private @NotNull String connectArray(Object @NotNull [] arr) {
 
 private @NotNull String jobLot(Lot lt) {
     int key = System.identityHashCode(lt);
-    if (RBTree.isPresent(identical, key)) {
-        Few self = (Few) RBTree.ref(identical, key);
-        if ((boolean) ref1(self)) {
-            return String.format("#%s#", ref2(self));
+    if (identical.isPresent(key)) {
+        Few self = (Few) identical.ref(key);
+        if ((boolean) self.ref(1)) {
+            return String.format("#%s#", self.ref(2));
         } else {
-            set1(self, true);
-            set2(self, count);
+            self.set(1, true);
+            self.set(2, count);
             count += 1;
-            String first = process(car(lt));
-            String other = connectLot(cdr(lt));
-            return String.format("#%s=(%s %s)", ref2(self), first, other);
+            return String.format("#%s=(%s)", self.ref(2), connectLot(lt));
         }
     } else {
-        String str = connectLot(lt);
-        return String.format("(%s)", str);
+        return String.format("(%s)", connectLot(lt));
     }
 }
 
-private @NotNull String connectLot(Lot lt) {
+private @NotNull String connectLot(@NotNull Lot lt) {
     StringBuilder builder = new StringBuilder();
-    boolean cycle = false;
-    while (true) {
+    builder.append(process(lt.car()));
+    lt = lt.cdr();
+    if (lt.isEmpty()) {
+        return builder.toString();
+    }
+
+    while (!lt.isEmpty()) {
         int key = System.identityHashCode(lt);
-        if (RBTree.isPresent(identical, key)) {
-            Few self = (Few) RBTree.ref(identical, key);
-            if ((boolean) ref1(self)) {
-                builder.append(String.format(". #%s#", ref2(self)));
-                if (cycle) {
-                    builder.append(')');
-                }
-                return builder.toString();
+        if (identical.isPresent(key)) {
+            Few self = (Few) identical.ref(key);
+            if ((boolean) self.ref(1)) {
+                builder.append(String.format(" . #%s#", self.ref(2)));
             } else {
-                set1(self, true);
-                set2(self, count);
+                self.set(1, true);
+                self.set(2, count);
                 count += 1;
-                builder.append(String.format(". #%s=(%s ", ref2(self), process(car(lt))));
-                cycle = true;
-                lt = cdr(lt);
+                builder.append(String.format(" . #%s=(%s)", self.ref(2), connectLot(lt)));
             }
-        } else if (cdr(lt).isEmpty()) {
-            builder.append(process(car(lt)));
             return builder.toString();
         } else {
-            builder.append(process(car(lt)));
             builder.append(' ');
-            lt = cdr(lt);
+            builder.append(process(lt.car()));
+            lt = lt.cdr();
         }
     }
+    return builder.toString();
 }
 
 static @NotNull String identicalString(Object datum, RBTree identical) {
@@ -133,12 +128,12 @@ static @NotNull String lotString(@NotNull Lot lt) {
     } else {
         StringBuilder builder = new StringBuilder();
         builder.append('(');
-        while (!cdr(lt).isEmpty()) {
-            builder.append(stringOf(car(lt)));
+        while (!lt.cdr().isEmpty()) {
+            builder.append(stringOf(lt.car()));
             builder.append(' ');
-            lt = cdr(lt);
+            lt = lt.cdr();
         }
-        builder.append(stringOf(car(lt)));
+        builder.append(stringOf(lt.car()));
         builder.append(')');
         return builder.toString();
     }

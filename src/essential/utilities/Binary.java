@@ -7,7 +7,6 @@
 
 package essential.utilities;
 
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import essential.progresive.Lot;
 
@@ -140,7 +139,7 @@ public static byte @NotNull [] charToBinary(int c) {
     }
 }
 
-public static int sizeOfBinChar(byte @NotNull [] bin, int start) {
+public static int sizeofChar(byte @NotNull [] bin, int start) {
     int bytes = bin[start] & 0xF8;
     if (bytes < 0x80) {
         return 1;
@@ -194,15 +193,15 @@ public static byte @NotNull [] encodeString(@NotNull String str) {
         byte[] bin = charToBinary(str.charAt(i));
         col = cons(bin, col);
     }
-    col = reverse(col);
+    col = col.reverse();
     byte[] bin = new byte[bytesOfBinaries(col) + 2];
     bin[0] = BIN_STRING;
     int i = 1;
     while (!col.isEmpty()) {
-        byte[] bs = (byte[]) car(col);
+        byte[] bs = (byte[]) col.car();
         System.arraycopy(bs, 0, bin, i, bs.length);
         i = i + bs.length;
-        col = cdr(col);
+        col = col.cdr();
     }
     return bin;
 }
@@ -210,9 +209,9 @@ public static byte @NotNull [] encodeString(@NotNull String str) {
 public static int bytesOfBinaries(@NotNull Lot bins) {
     int bytes = 0;
     while (!bins.isEmpty()) {
-        byte[] bs = (byte[]) car(bins);
+        byte[] bs = (byte[]) bins.car();
         bytes += bs.length;
-        bins = cdr(bins);
+        bins = bins.cdr();
     }
     return bytes;
 }
@@ -222,10 +221,10 @@ public static byte @NotNull [] serializeBinaries(@NotNull Lot lt) {
     byte[] bin = new byte[bytes];
     int i = 0;
     while (!lt.isEmpty()) {
-        byte[] elem = (byte[]) car(lt);
+        byte[] elem = (byte[]) lt.car();
         System.arraycopy(elem, 0, bin, i, elem.length);
         i += elem.length;
-        lt = cdr(lt);
+        lt = lt.cdr();
     }
     return bin;
 }
@@ -277,7 +276,7 @@ public static byte @NotNull [] encodeI32(int n) {
     }
 }
 
-public static int sizeOfI32(byte @NotNull [] bin, int start) {
+public static int sizeofI32(byte @NotNull [] bin, int start) {
     int bytes = bin[start] & 0xF8;
     if (bytes < 0x80) {
         return 1;

@@ -26,12 +26,12 @@ Encoding() {}
 
 byte[] process(Object datum) {
     RBTree identical = Identical.detect(datum);
-    share = lotToFew(lotMap(o -> car1((Lot) o), RBTree.travel(identical)));
+    share = identical.travel().map(o -> ((Lot) o).ref(1)).toFew();
 
     Lot col = lot();
     int len = share.length();
     for (int i = 0; i < len; i += 1) {
-        Object elem = fewRef(share, i);
+        Object elem = share.ref(i);
         if (elem instanceof Lot lt) {
             col = cons(encodeShareLot(lt), col);
         } else {
@@ -39,7 +39,7 @@ byte[] process(Object datum) {
         }
     }
     col = cons(encodeElem(datum), col);
-    col = reverse(col);
+    col = col.reverse();
     col = cons(Binary.encodeI32(len), col);
     col = cons(new byte[]{Binary.BIN_FEW}, col);
     return Binary.serializeBinaries(col);
@@ -49,9 +49,9 @@ private byte @NotNull [] encodeShareLot(@NotNull Lot lt) {
     Lot col = lot();
     col = cons(new byte[]{Binary.BIN_LOT_END}, col);
     while (!lt.isEmpty()) {
-        col = cons(encodeElem(car(lt)), col);
-        lt = cdr(lt);
-        int found = fewFind(Pr::eq, lt, share);
+        col = cons(encodeElem(lt.car()), col);
+        lt = lt.cdr();
+        int found = share.find(Pr::eq, lt);
         if (found >= 0) {
             col = cons(shareIndex(found), col);
             col = cons(new byte[]{Binary.BIN_LOT}, col);
@@ -66,9 +66,9 @@ private byte @NotNull [] encodeShareFew(@NotNull Few fw) {
     Lot col = lot();
     int len = fw.length();
     for (int i = 0; i < len; i += 1) {
-        col = cons(encodeElem(fewRef(fw, i)), col);
+        col = cons(encodeElem(fw.ref(i)), col);
     }
-    col = reverse(col);
+    col = col.reverse();
     col = cons(Binary.encodeI32(len), col);
     col = cons(new byte[]{Binary.BIN_FEW}, col);
     return Binary.serializeBinaries(col);
@@ -108,14 +108,14 @@ private byte[] encodeElem(Object elem) {
     } else if (elem instanceof Date d) {
         return encodeDate(d);
     } else if (elem instanceof Lot lt) {
-        int found = fewFind(Pr::eq, lt, share);
+        int found = share.find(Pr::eq, lt);
         if (found >= 0) {
             return shareIndex(found);
         } else {
             return encodeShareLot(lt);
         }
     } else if (elem instanceof Few fw) {
-        int found = fewFind(Pr::eq, fw, share);
+        int found = share.find(Pr::eq, fw);
         if (found >= 0) {
             return shareIndex(found);
         } else {

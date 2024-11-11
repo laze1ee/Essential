@@ -23,29 +23,29 @@ class RBTreeMate {
 @Contract(value = " -> new", pure = true)
 static @NotNull Few makeNode() {return few(false, false, false, false, false);}
 
-static @NotNull Object key(Few node) {return ref0(node);}
+static @NotNull Object key(@NotNull Few node) {return node.ref(0);}
 
-static void setKey(Few node, Object key) {set0(node, key);}
+static void setKey(@NotNull Few node, Object key) {node.set(0, key);}
 
-static @NotNull Object value(Few node) {return ref1(node);}
+static @NotNull Object value(@NotNull Few node) {return node.ref(1);}
 
-static void setValue(Few node, Object value) {set1(node, value);}
+static void setValue(@NotNull Few node, Object value) {node.set(1, value);}
 
-static boolean color(Few node) {return (boolean) ref2(node);}
+static boolean color(@NotNull Few node) {return (boolean) node.ref(2);}
 
 private static boolean isRed(Few node) {return color(node);}
 
 private static boolean isBlack(Few node) {return !color(node);}
 
-static void setColor(Few node, boolean color) {set2(node, color);}
+static void setColor(@NotNull Few node, boolean color) {node.set(2, color);}
 
-static @NotNull Object left(Few node) {return ref3(node);}
+static @NotNull Object left(@NotNull Few node) {return node.ref(3);}
 
-static void setLeft(Few node, Object left) {set3(node, left);}
+static void setLeft(@NotNull Few node, Object left) {node.set(3, left);}
 
-static @NotNull Object right(Few node) {return ref4(node);}
+static @NotNull Object right(@NotNull Few node) {return node.ref(4);}
 
-static void setRight(Few node, Object right) {set4(node, right);}
+static void setRight(@NotNull Few node, Object right) {node.set(4, right);}
 
 static boolean isLeftOf(Few node, Few parent) {return eq(node, left(parent));}
 
@@ -79,16 +79,16 @@ static @NotNull Lot pathOf(@NotNull RBTree tree, Object key) {
     return cons(node, path);
 }
 
-private static void leftRotate(RBTree tree, Lot path) {
-    Few x = (Few) car(path);
+private static void leftRotate(RBTree tree, @NotNull Lot path) {
+    Few x = (Few) path.car();
     Few up = (Few) right(x);
     setRight(x, left(up));
     setLeft(up, x);
 
-    if (cdr(path).isEmpty()) {
+    if (path.cdr().isEmpty()) {
         tree.setRoot(up);
     } else {
-        Few parent = (Few) car1(path);
+        Few parent = (Few) path.ref(1);
         if (isLeftOf(x, parent)) {
             setLeft(parent, up);
         } else {
@@ -97,16 +97,16 @@ private static void leftRotate(RBTree tree, Lot path) {
     }
 }
 
-private static void rightRotate(RBTree tree, Lot path) {
-    Few x = (Few) car(path);
+private static void rightRotate(RBTree tree, @NotNull Lot path) {
+    Few x = (Few) path.car();
     Few up = (Few) left(x);
     setLeft(x, right(up));
     setRight(up, x);
 
-    if (cdr(path).isEmpty()) {
+    if (path.cdr().isEmpty()) {
         tree.setRoot(up);
     } else {
-        Few parent = (Few) car1(path);
+        Few parent = (Few) path.ref(1);
         if (isLeftOf(x, parent)) {
             setLeft(parent, up);
         } else {
@@ -141,22 +141,22 @@ record InsertFixing(RBTree tree, Lot path) {
     }
 
     private void job(@NotNull Lot path) {
-        if (2 < path.length() && isRed((Few) car1(path))) {
-            Few p = (Few) car1(path);
-            Few pp = (Few) car2(path);
+        if (2 < path.length() && isRed((Few) path.ref(1))) {
+            Few p = (Few) path.ref(1);
+            Few pp = (Few) path.ref(2);
             if (isLeftOf(p, pp)) {
                 Few u = (Few) right(pp);
                 if (isRed(u)) {
                     setColor(p, false);
                     setColor(u, false);
                     setColor(pp, true);
-                    job(cddr(path));
+                    job(path.cddr());
                 } else {
-                    if (isRightOf((Few) car(path), p)) {
-                        leftRotate(tree, cdr(path));
-                        p = (Few) car(path);
+                    if (isRightOf((Few) path.car(), p)) {
+                        leftRotate(tree, path.cdr());
+                        p = (Few) path.car();
                     }
-                    rightRotate(tree, cddr(path));
+                    rightRotate(tree, path.cddr());
                     setColor(p, false);
                     setColor(pp, true);
                 }
@@ -166,13 +166,13 @@ record InsertFixing(RBTree tree, Lot path) {
                     setColor(p, false);
                     setColor(u, false);
                     setColor(pp, true);
-                    job(cddr(path));
+                    job(path.cddr());
                 } else {
-                    if (isLeftOf((Few) car(path), p)) {
-                        rightRotate(tree, cdr(path));
-                        p = (Few) car(path);
+                    if (isLeftOf((Few) path.car(), p)) {
+                        rightRotate(tree, path.cdr());
+                        p = (Few) path.car();
                     }
-                    leftRotate(tree, cddr(path));
+                    leftRotate(tree, path.cddr());
                     setColor(p, false);
                     setColor(pp, true);
                 }
@@ -186,8 +186,8 @@ private static void transplant(RBTree tree, @NotNull Lot path, Few node) {
     if (1 == path.length()) {
         tree.setRoot(node);
     } else {
-        Few p = (Few) car1(path);
-        if (isLeftOf((Few) car(path), p)) {
+        Few p = (Few) path.ref(1);
+        if (isLeftOf((Few) path.car(), p)) {
             setLeft(p, node);
         } else {
             setRight(p, node);
@@ -197,7 +197,7 @@ private static void transplant(RBTree tree, @NotNull Lot path, Few node) {
 
 static boolean delete(@NotNull RBTree tree, Object key) {
     Lot path = pathOf(tree, key);
-    Few deleted = (Few) car(path);
+    Few deleted = (Few) path.car();
     if (isNil(deleted)) {
         return false;
     } else {
@@ -206,14 +206,14 @@ static boolean delete(@NotNull RBTree tree, Object key) {
         if (isNil((Few) left(deleted))) {
             x = (Few) right(deleted);
             transplant(tree, path, x);
-            path = cons(x, cdr(path));
+            path = cons(x, path.cdr());
         } else if (isNil((Few) right(deleted))) {
             x = (Few) left(deleted);
             transplant(tree, path, x);
-            path = cons(x, cdr(path));
+            path = cons(x, path.cdr());
         } else {
             Lot min_path = minimum((Few) right(deleted), lot());
-            Few replace = (Few) car(min_path);
+            Few replace = (Few) min_path.car();
             color = color(replace);
             x = (Few) right(replace);
             if (!isRightOf(replace, deleted)) {
@@ -223,7 +223,7 @@ static boolean delete(@NotNull RBTree tree, Object key) {
             transplant(tree, path, replace);
             setLeft(replace, left(deleted));
             setColor(replace, color(deleted));
-            path = append(cons(x, cdr(min_path)), cons(replace, cdr(path)));
+            path = append(cons(x, min_path.cdr()), cons(replace, path.cdr()));
         }
         if (!color) {       // is the deleted color black?
             DeleteFixing fixer = new DeleteFixing(tree, path);
@@ -245,27 +245,27 @@ private static class DeleteFixing {
     }
 
     void process() {
-        x = (Few) car(path);
-        job(cdr(path));
+        x = (Few) path.car();
+        job(path.cdr());
         setColor(x, false);
     }
 
     void job(@NotNull Lot path) {
         if (!path.isEmpty() && isBlack(x)) {
-            Few p = (Few) car(path);
+            Few p = (Few) path.car();
             if (isLeftOf(x, p)) {
                 Few s = (Few) right(p);
                 if (isRed(s)) {
                     leftRotate(tree, path);
                     setColor(s, false);
                     setColor(p, true);
-                    path = cons(p, cons(s, cdr(path)));
+                    path = cons(p, cons(s, path.cdr()));
                     s = (Few) right(p);
                 }
                 if (isBlack((Few) left(s)) && isBlack((Few) right(s))) {
                     setColor(s, true);
                     x = p;
-                    job(cdr(path));
+                    job(path.cdr());
                 } else {
                     if (isBlack((Few) right(s))) {
                         rightRotate(tree, cons(s, path));
@@ -284,13 +284,13 @@ private static class DeleteFixing {
                     rightRotate(tree, path);
                     setColor(s, false);
                     setColor(p, true);
-                    path = cons(p, cons(s, cdr(path)));
+                    path = cons(p, cons(s, path.cdr()));
                     s = (Few) left(p);
                 }
                 if (isBlack((Few) left(s)) && isBlack((Few) right(s))) {
                     setColor(s, true);
                     x = p;
-                    job(cdr(path));
+                    job(path.cdr());
                 } else {
                     if (isBlack((Few) left(s))) {
                         leftRotate(tree, cons(s, path));
@@ -322,15 +322,15 @@ static class Counting {
         } else {
             Queue que = new Queue(node);
             while (!que.isEmpty()) {
-                node = (Few) Queue.deQ(que);
+                node = (Few) que.deQueue();
                 size += 1;
                 Few left = (Few) left(node);
                 if (!isNil(left)) {
-                    Queue.enQ(que, left);
+                    que.enQueue(left);
                 }
                 Few right = (Few) right(node);
                 if (!isNil(right)) {
-                    Queue.enQ(que, right);
+                    que.enQueue(right);
                 }
             }
             return size;
@@ -347,7 +347,9 @@ static class Traveling {
     }
 
     Lot process(Few node) {
-        if (isNil(node)) {return col;}
+        if (isNil(node)) {
+            return col;
+        }
         job(node);
         return col;
     }
@@ -360,9 +362,9 @@ static class Traveling {
                 stack = cons(node, stack);
                 node = (Few) right(node);
             }
-            node = (Few) car(stack);
+            node = (Few) stack.car();
             col = cons(lot(key(node), value(node)), col);
-            stack = cdr(stack);
+            stack = stack.cdr();
             node = (Few) left(node);
             while (!isNil(node)) {
                 stack = cons(node, stack);
@@ -382,22 +384,24 @@ static class Filtering {
 
     RBTree process(@NotNull RBTree tree) {
         RBTree new_tree = new RBTree(tree.less(), tree.greater());
-        if (tree.isEmpty()) {return new_tree;}
+        if (tree.isEmpty()) {
+            return new_tree;
+        }
 
         Queue que = new Queue(tree.root());
         Few node;
         while (!que.isEmpty()) {
-            node = (Few) Queue.deQ(que);
+            node = (Few) que.deQueue();
             if (fn.apply(value(node))) {
-                RBTree.insert(new_tree, key(node), value(node));
+                new_tree.insert(key(node), value(node));
             }
             Few left = (Few) left(node);
             if (!isNil(left)) {
-                Queue.enQ(que, left);
+                que.enQueue(left);
             }
             Few right = (Few) right(node);
             if (!isNil(right)) {
-                Queue.enQ(que, right);
+                que.enQueue(right);
             }
         }
         return new_tree;
@@ -415,22 +419,53 @@ static class Mapping {
     }
 
     RBTree process(Few node) {
-        if (isNil(node)) {return tree;}
+        if (isNil(node)) {
+            return tree;
+        }
 
         Queue que = new Queue(node);
         while (!que.isEmpty()) {
-            node = (Few) Queue.deQ(que);
-            RBTree.insert(tree, key(node), fn.apply(value(node)));
+            node = (Few) que.deQueue();
+            tree.insert(key(node), fn.apply(value(node)));
             Few left = (Few) left(node);
             if (!isNil(left)) {
-                Queue.enQ(que, left);
+                que.enQueue(left);
             }
             Few right = (Few) right(node);
             if (!isNil(right)) {
-                Queue.enQ(que, right);
+                que.enQueue(right);
             }
         }
         return tree;
+    }
+}
+
+static Lot depthStatistic(Few root) {
+    if (isNil(root)) {
+        return lot();
+    } else {
+        Few node = root;
+        Lot col = lot();
+        Queue ooo = new Queue(node);
+        Queue xxx = new Queue(1);
+        while (!ooo.isEmpty()) {
+            node = (Few) ooo.deQueue();
+            int depth = (int) xxx.deQueue();
+            Few left = (Few) left(node);
+            Few right = (Few) right(node);
+            if (isNil(right) && isNil(left)) {
+                col = cons(depth, col);
+            }
+            if (!isNil(left)) {
+                ooo.enQueue(left);
+                xxx.enQueue(depth + 1);
+            }
+            if (!isNil(right)) {
+                ooo.enQueue(right);
+                xxx.enQueue(depth + 1);
+            }
+        }
+        return col;
     }
 }
 }
