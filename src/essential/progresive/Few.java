@@ -60,7 +60,7 @@ public int hashCode() {
 
 public int length() {return data.length;}
 
-public Object[] toRaw() {return data;}
+public Object[] toArray() {return data;}
 
 public @NotNull Object ref(int index) {
     if (0 <= index && index < data.length) {

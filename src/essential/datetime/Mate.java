@@ -99,6 +99,7 @@ static @NotNull String stringOfWeek(int day) {
 
 
 //region Time to Date
+
 static final long UTC_MIN = -62167219200L;
 static final long UTC_MAX = 63113841832780800L;
 
@@ -222,6 +223,7 @@ private static int @NotNull [] trackTime(int seconds) {
 
 
 //region Date to Time
+
 static long sumOfDays(int year, int month, int day_of_month) {
     int[] degree = new int[4];
     int y = year;

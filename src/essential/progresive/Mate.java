@@ -26,6 +26,7 @@ static final char[] CHARS_SET =
 
 
 //region Lot
+
 static int length(@NotNull Lot lt) {
     int n = 0;
     while (!lt.isEmpty()) {
@@ -72,6 +73,7 @@ static int theHareAndTortoise(@NotNull Lot lt) {
 
 
 //region Stringing
+
 @Contract("_ -> new")
 static @NotNull Object attach(Object datum) {
     return few(datum, false, -1);
@@ -153,6 +155,7 @@ static @NotNull String serializeArray(Do1 fn, Object arr, int bound) {
 
 
 //region Comparison
+
 static boolean numberEq(Number n1, Number n2) {
     if (n1 instanceof Byte b1 &&
         n2 instanceof Byte b2) {

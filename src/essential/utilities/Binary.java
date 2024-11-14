@@ -47,6 +47,7 @@ public static final byte BIN_FEW = (byte) 0xF4;
 
 
 //region Common Functions
+
 /**
  * Convert a long to a byte array in big-endian order.
  *
@@ -232,6 +233,7 @@ public static byte @NotNull [] serializeBinaries(@NotNull Lot lt) {
 
 
 //region Variable Length i32 Integer
+
 public static byte @NotNull [] encodeI32(int n) {
     if (-0x40 <= n && n < 0x40) {                   // 7 bits
         return new byte[]{(byte) (n & 0x7F)};

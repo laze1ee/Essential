@@ -19,6 +19,7 @@ import java.util.Random;
 public class Pr {
 
 //region Lot
+
 /**
  * Constructs a Lot from the given arguments.
  *
@@ -117,6 +118,7 @@ public static boolean isBelong(Predicate2 fn, Object datum, @NotNull Lot lt) {
 
 
 //region Few
+
 /**
  * Constructs a Few from the given arguments.
  *
@@ -158,6 +160,7 @@ public static @NotNull Few makeFew(int length) {return makeFew(length, 0);}
 
 
 //region Comparison
+
 public static boolean eq(Object datum1, Object datum2) {
     if (datum1 == datum2) {
         return true;
@@ -270,7 +273,8 @@ public static boolean less(Object datum1, Object datum2) {
                                                      stringOf(datum1), stringOf(datum2)));
         }
     } else {
-        throw new RuntimeException(String.format(Msg.UNDEFINED_COMPARE, datum1, datum2));
+        throw new RuntimeException(String.format(Msg.UNDEFINED_COMPARE,
+                                                 datum1.getClass().getName(), datum2.getClass().getName()));
     }
 }
 
@@ -281,6 +285,7 @@ public static boolean greater(Object datum1, Object datum2) {
 
 
 //region To String
+
 public static @NotNull String stringOf(Object datum) {
     if (datum == null) {
         return "#<null>";
