@@ -27,7 +27,7 @@ Predicate2 less() {return (Predicate2) rb_tree.ref(0);}
 
 Predicate2 greater() {return (Predicate2) rb_tree.ref(1);}
 
-Few root() {return (Few) rb_tree.ref(2);}
+public Few root() {return (Few) rb_tree.ref(2);}
 
 void setRoot(Few node) {rb_tree.set(2, node);}
 
@@ -216,10 +216,13 @@ public RBTree map(Do1 fn) {
 }
 
 /**
- * Returns a list of depths for each leaf node in the Red-Black tree, in descending order.
- * Note that this order is different from the order of the leaf nodes in the tree.
+ * This method analyzes the structure of the Red-Black tree and provides statistics about the depths of its
+ * leaf nodes. The result is a lot of the lot form {@code (depth count)}
+ *
+ * @param tree The Red-Black tree to analyze
+ * @return A Lot containing depth statistics, where each element is a Lot of the form {@code (depth count)}
  */
-public static Lot depth(@NotNull RBTree tree) {
+public static Lot depthStatistic(@NotNull RBTree tree) {
     return RBTreeMate.depthStatistic(tree.root());
 }
 }

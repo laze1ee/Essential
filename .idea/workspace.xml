@@ -4,13 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f3319480-06ba-405b-8a1e-0f7026449647" name="Changes" comment="Follow object-oriented design principles,&#10;transformed the most of static methods to instance methods.">
+    <list default="true" id="f3319480-06ba-405b-8a1e-0f7026449647" name="Changes" comment="a few improvements">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/datetime/Mate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/datetime/Mate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/progresive/Few.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/Few.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/progresive/Equaling.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/Equaling.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/progresive/Identical.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/Identical.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/progresive/Mate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/Mate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/progresive/Pr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/Pr.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/utilities/Binary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/Binary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/progresive/Stringing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/Stringing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/AVLTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/AVLTree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/AVLTreeMate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/AVLTreeMate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/RBTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/RBTree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/RBTreeMate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/RBTreeMate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/utilities/AVLTreeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/AVLTreeTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/utilities/RBTreeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/RBTreeTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,10 +55,12 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Downloaded.Files.Path.Enabled": "false",
+    "JUnit.AVLTreeTest.overall.executor": "Run",
     "JUnit.All in Essential.executor": "Run",
     "JUnit.BinaryTest.executor": "Run",
     "JUnit.BinaryTest.testLotAndFew.executor": "Run",
     "JUnit.FewTest.copy.executor": "Run",
+    "JUnit.FewTest.executor": "Run",
     "JUnit.FewTest.fill.executor": "Run",
     "JUnit.FewTest.find.executor": "Run",
     "JUnit.FewTest.length.executor": "Run",
@@ -84,6 +91,7 @@
     "JUnit.PrTest.testAppend.executor": "Run",
     "JUnit.PrTest.testCons.executor": "Run",
     "JUnit.PrTest.testIsBelong.executor": "Run",
+    "JUnit.RBTreeTest.overall.executor": "Run",
     "Repository.Attach.Annotations": "false",
     "Repository.Attach.JavaDocs": "true",
     "Repository.Attach.Sources": "false",
@@ -98,7 +106,7 @@
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
     "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "copyright"
+    "settings.editor.selected.configurable": "preferences.keymap"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -108,6 +116,78 @@
     <key name="CreateTestDialog.RecentsKey">
       <recent name="essential.progresive" />
     </key>
+  </component>
+  <component name="RunManager" selected="JUnit.RBTreeTest.overall">
+    <configuration name="AVLTreeTest.overall" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Essential" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="essential.utilities.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="essential.utilities" />
+      <option name="MAIN_CLASS_NAME" value="essential.utilities.AVLTreeTest" />
+      <option name="METHOD_NAME" value="overall" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FewTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Essential" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="essential.progresive.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="essential.progresive" />
+      <option name="MAIN_CLASS_NAME" value="essential.progresive.FewTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LotTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Essential" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="essential.progresive.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="essential.progresive" />
+      <option name="MAIN_CLASS_NAME" value="essential.progresive.LotTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RBTreeTest.overall" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Essential" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="essential.utilities.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="essential.utilities" />
+      <option name="MAIN_CLASS_NAME" value="essential.utilities.RBTreeTest" />
+      <option name="METHOD_NAME" value="overall" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.RBTreeTest.overall" />
+        <item itemvalue="JUnit.AVLTreeTest.overall" />
+        <item itemvalue="JUnit.LotTest" />
+        <item itemvalue="JUnit.FewTest" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -129,7 +209,16 @@
       <workItem from="1731329032420" duration="8005000" />
       <workItem from="1731343171714" duration="15000" />
       <workItem from="1731394300252" duration="78000" />
-      <workItem from="1731565184831" duration="22000" />
+      <workItem from="1731565184831" duration="885000" />
+      <workItem from="1731643015397" duration="1192000" />
+      <workItem from="1731729868357" duration="356000" />
+      <workItem from="1731730240378" duration="239000" />
+      <workItem from="1731730496159" duration="362000" />
+      <workItem from="1731730921741" duration="154000" />
+      <workItem from="1731731232492" duration="297000" />
+      <workItem from="1731858380143" duration="116000" />
+      <workItem from="1731912915703" duration="665000" />
+      <workItem from="1731913619897" duration="1065000" />
     </task>
     <task id="LOCAL-00001" summary="Follow object-oriented design principles,&#10;transformed the most of static methods to instance methods.">
       <option name="closed" value="true" />
@@ -139,7 +228,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731337577466</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="a few improvements">
+      <option name="closed" value="true" />
+      <created>1731565431722</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1731565431722</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -147,7 +244,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -155,6 +264,11 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Follow object-oriented design principles,&#10;transformed the most of static methods to instance methods." />
-    <option name="LAST_COMMIT_MESSAGE" value="Follow object-oriented design principles,&#10;transformed the most of static methods to instance methods." />
+    <MESSAGE value="a few improvements" />
+    <option name="LAST_COMMIT_MESSAGE" value="a few improvements" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

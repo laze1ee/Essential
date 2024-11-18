@@ -16,8 +16,10 @@ private final RBTree collector;
 private final RBTree identical;
 
 private Identical() {
-    collector = new RBTree(Pr::less, Pr::greater);
-    identical = new RBTree(Pr::less, Pr::greater);
+    collector = new RBTree((o1, o2) -> (int) o1 < (int) o2,
+                           (o1, o2) -> (int) o1 > (int) o2);
+    identical = new RBTree((o1, o2) -> (int) o1 < (int) o2,
+                           (o1, o2) -> (int) o1 > (int) o2);
 }
 
 private RBTree process(Object datum) {
@@ -41,7 +43,7 @@ private void collectFew(Few fw) {
             collect(fw.data[i]);
         }
     } else {
-        identical.insert(key, fw);
+        identical.insert(key, false);
     }
 }
 
@@ -56,7 +58,7 @@ private void collectLot(Lot lt) {
                 collect(lt.car());
                 lt = lt.cdr();
             } else {
-                identical.insert(key, lt);
+                identical.insert(key, false);
                 break;
             }
         }

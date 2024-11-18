@@ -19,7 +19,7 @@ private final RBTree identical;
 private int count;
 
 private Stringing(@NotNull RBTree identical) {
-    this.identical = identical.map(Mate::attach);
+    this.identical = identical.map(o -> few(o, -1));
     count = 0;
 }
 
@@ -41,13 +41,13 @@ private @NotNull String jobFew(Few fw) {
     int key = System.identityHashCode(fw);
     if (identical.isPresent(key)) {
         Few self = (Few) identical.ref(key);
-        if ((boolean) self.ref(1)) {
-            return String.format("#%s#", self.ref(2));
+        if ((boolean) self.ref(0)) {
+            return String.format("#%s#", self.ref(1));
         } else {
-            self.set(1, true);
-            self.set(2, count);
+            self.set(0, true);
+            self.set(1, count);
             count += 1;
-            return String.format("#%s=#(%s)", self.ref(2), connectArray(fw.data));
+            return String.format("#%s=#(%s)", self.ref(1), connectArray(fw.data));
         }
     } else {
         return String.format("#(%s)", connectArray(fw.data));
@@ -74,13 +74,13 @@ private @NotNull String jobLot(Lot lt) {
     int key = System.identityHashCode(lt);
     if (identical.isPresent(key)) {
         Few self = (Few) identical.ref(key);
-        if ((boolean) self.ref(1)) {
-            return String.format("#%s#", self.ref(2));
+        if ((boolean) self.ref(0)) {
+            return String.format("#%s#", self.ref(1));
         } else {
-            self.set(1, true);
-            self.set(2, count);
+            self.set(0, true);
+            self.set(1, count);
             count += 1;
-            return String.format("#%s=(%s)", self.ref(2), connectLot(lt));
+            return String.format("#%s=(%s)", self.ref(1), connectLot(lt));
         }
     } else {
         return String.format("(%s)", connectLot(lt));
@@ -99,13 +99,13 @@ private @NotNull String connectLot(@NotNull Lot lt) {
         int key = System.identityHashCode(lt);
         if (identical.isPresent(key)) {
             Few self = (Few) identical.ref(key);
-            if ((boolean) self.ref(1)) {
-                builder.append(String.format(" . #%s#", self.ref(2)));
+            if ((boolean) self.ref(0)) {
+                builder.append(String.format(" . #%s#", self.ref(1)));
             } else {
-                self.set(1, true);
-                self.set(2, count);
+                self.set(0, true);
+                self.set(1, count);
                 count += 1;
-                builder.append(String.format(" . #%s=(%s)", self.ref(2), connectLot(lt)));
+                builder.append(String.format(" . #%s=(%s)", self.ref(1), connectLot(lt)));
             }
             return builder.toString();
         } else {

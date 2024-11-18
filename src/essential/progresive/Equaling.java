@@ -20,8 +20,8 @@ private final RBTree identical2;
 private int count;
 
 private Equaling(@NotNull RBTree identical1, @NotNull RBTree identical2) {
-    this.identical1 = identical1.map(Mate::attach);
-    this.identical2 = identical2.map(Mate::attach);
+    this.identical1 = identical1.map(o -> few(o, -1));
+    this.identical2 = identical2.map(o -> few(o, -1));
     count = 0;
 }
 
@@ -51,14 +51,14 @@ private boolean jobFew(@NotNull Few fw1, @NotNull Few fw2) {
             identical2.isPresent(key2)) {
             Few self1 = (Few) identical1.ref(key1);
             Few self2 = (Few) identical2.ref(key2);
-            if ((boolean) self1.ref(1) &&
-                (boolean) self2.ref(1)) {
-                return self1.ref(2) == self2.ref(2);
+            if ((boolean) self1.ref(0) &&
+                (boolean) self2.ref(0)) {
+                return self1.ref(1) == self2.ref(1);
             } else {
-                self1.set(1, true);
-                self2.set(1, true);
-                self1.set(2, count);
-                self2.set(2, count);
+                self1.set(0, true);
+                self2.set(0, true);
+                self1.set(1, count);
+                self2.set(1, count);
                 count += 1;
                 return equalArray(fw1.data, fw2.data);
             }
@@ -92,14 +92,14 @@ private boolean jobLot(@NotNull Lot lt1, Lot lt2) {
                 identical2.isPresent(key2)) {
                 Few self1 = (Few) identical1.ref(key1);
                 Few self2 = (Few) identical2.ref(key2);
-                if ((boolean) self1.ref(1) &&
-                    (boolean) self2.ref(1)) {
-                    return self1.ref(2) == self2.ref(2);
+                if ((boolean) self1.ref(0) &&
+                    (boolean) self2.ref(0)) {
+                    return self1.ref(1) == self2.ref(1);
                 } else {
-                    self1.set(1, true);
-                    self2.set(1, true);
-                    self1.set(2, count);
-                    self2.set(2, count);
+                    self1.set(0, true);
+                    self2.set(0, true);
+                    self1.set(1, count);
+                    self2.set(1, count);
                     count += 1;
                     if (process(lt1.car(), lt2.car())) {
                         lt1 = lt1.cdr();

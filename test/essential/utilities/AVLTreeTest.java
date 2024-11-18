@@ -49,7 +49,7 @@ void overall() {
     System.out.println("filter done");
     System.out.printf("tree even number length: %s\n", evens.size());
 
-    Lot depth = AVLTree.depth(tree);
+    Lot depth = AVLTree.depthStatistic(tree);
     System.out.printf("tree depth: %s\n", depth);
 
     while (!keys.isEmpty()) {

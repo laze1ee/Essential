@@ -343,23 +343,34 @@ static Lot depthStatistic(Few root) {
     } else {
         Few node = root;
         Lot col = lot();
+        int count = 0;
+        int depth = 0;
         Queue ooo = new Queue(node);
         Queue xxx = new Queue(1);
         while (!ooo.isEmpty()) {
             node = (Few) ooo.deQueue();
-            int depth = (int) xxx.deQueue();
+            int n = (int) xxx.deQueue();
             Few left = (Few) left(node);
             Few right = (Few) right(node);
             if (isNil(right) && isNil(left)) {
-                col = cons(depth, col);
+                if (depth == 0) {
+                    depth = n;
+                    count = 1;
+                } else if (depth == n) {
+                    count += 1;
+                } else {
+                    col = cons(lot(depth, count), col);
+                    depth = n;
+                    count = 1;
+                }
             }
             if (!isNil(left)) {
                 ooo.enQueue(left);
-                xxx.enQueue(depth + 1);
+                xxx.enQueue(n + 1);
             }
             if (!isNil(right)) {
                 ooo.enQueue(right);
-                xxx.enQueue(depth + 1);
+                xxx.enQueue(n + 1);
             }
         }
         return col;

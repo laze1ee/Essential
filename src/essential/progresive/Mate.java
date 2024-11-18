@@ -8,7 +8,6 @@
 package essential.progresive;
 
 import essential.functional.Do1;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Array;
@@ -73,11 +72,6 @@ static int theHareAndTortoise(@NotNull Lot lt) {
 
 
 //region Stringing
-
-@Contract("_ -> new")
-static @NotNull Object attach(Object datum) {
-    return few(datum, false, -1);
-}
 
 static @NotNull String stringOfChar(char c) {
     switch (c) {
