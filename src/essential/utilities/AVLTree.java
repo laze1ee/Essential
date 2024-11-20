@@ -29,7 +29,7 @@ Predicate2 less() {return (Predicate2) avl_tree.ref(0);}
 
 Predicate2 greater() {return (Predicate2) avl_tree.ref(1);}
 
-public Few root() {return (Few) avl_tree.ref(2);}
+Few root() {return (Few) avl_tree.ref(2);}
 
 void setRoot(Few node) {avl_tree.set(2, node);}
 

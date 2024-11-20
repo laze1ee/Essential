@@ -13,25 +13,72 @@ import essential.progresive.Lot;
 import java.util.Arrays;
 
 import static essential.progresive.Pr.*;
-import static essential.progresive.Pr.hexOfByte;
 
 
-class Decoding {
+class DecodingWithSharing {
+
+private static final String SET_CDR = "set-cdr";
+private static final String SET_CAR = "set-car";
+private static final String SET_FEW = "set-few";
 
 private final byte[] bin;
 private int index;
+private Few share;
+private Lot stack;
 
-Decoding(byte[] bin) {
+DecodingWithSharing(byte[] bin) {
     this.bin = bin;
     index = 0;
+    stack = lot();
 }
 
-Decoding(byte[] bin, int index) {
+DecodingWithSharing(byte[] bin, int index) {
     this.bin = bin;
     this.index = index;
+    stack = lot();
 }
 
 Object process() {
+    if (bin[index] != Binary.BIN_FEW) {
+        throw new RuntimeException(String.format(Msg.UNMATCHED_BIN_LABEL, hexOfByte(bin[index]), index));
+    }
+    index += 1;
+    int sz = Binary.sizeofVarI32(bin, index);
+    int len = Binary.decodeVarI32(bin, index, index + sz);
+    share = makeFew(len, false);
+    index += sz;
+
+    for (int i = 0; i < len; i += 1) {
+        share.set(i, decodeElem());
+    }
+    while (!stack.isEmpty()) {
+        Few pack = (Few) stack.car();
+        String operator = (String) pack.ref(0);
+        switch (operator) {
+        case SET_CDR -> {
+            Lot lt1 = (Lot) pack.ref(1);
+            Lot lt2 = (Lot) share.ref((int) pack.ref(2));
+            //lt2.toString();   // force refresh lt2 for passing junit 5 test
+            setCdr(lt1, lt2);
+        }
+        case SET_CAR -> {
+            Lot lt = (Lot) pack.ref(1);
+            int idx = (int) pack.ref(2);
+            setCar(lt, share.ref(idx));
+        }
+        case SET_FEW -> {
+            Few fw = (Few) pack.ref(1);
+            int i = (int) pack.ref(2);
+            int j = (int) pack.ref(3);
+            fw.set(i, share.ref(j));
+        }
+        }
+        stack = stack.cdr();
+    }
+    return decodeElem();
+}
+
+private Object decodeElem() {
     byte label = bin[index];
     index += 1;
     switch (label) {
@@ -141,22 +188,74 @@ Object process() {
         index += sz;
         Few fw = makeFew(length, false);
         for (int i = 0; i < length; i += 1) {
-            fw.set(i, process());
+            if (bin[index] == Binary.BIN_SHARE_INDEX) {
+                index += 1;
+                sz = Binary.sizeofVarI32(bin, index);
+                int idx = Binary.decodeVarI32(bin, index, index + sz);
+                index += sz;
+                Object datum = share.ref(idx);
+                if (datum instanceof Boolean) {
+                    stack = cons(few(SET_FEW, fw, i, idx), stack);
+                } else {
+                    fw.set(i, datum);
+                }
+            } else {
+                fw.set(i, decodeElem());
+            }
         }
         return fw;
     }
     case Binary.BIN_LOT -> {
-        Lot lt = lot();
-        if (bin[index] != Binary.BIN_LOT_BEGIN) {
+        Lot lt;
+        if (bin[index] == Binary.BIN_LOT_BEGIN) {
+            index += 1;
+            if (bin[index] == Binary.BIN_LOT_END) {
+                index += 1;
+                return lot();
+            } else {
+                lt = lot();
+            }
+        } else if (bin[index] == Binary.BIN_SHARE_INDEX) {
+            index += 1;
+            int sz = Binary.sizeofVarI32(bin, index);
+            int idx = Binary.decodeVarI32(bin, index, index + sz);
+            index += sz;
+            Object elem_share = share.ref(idx);
+            if (elem_share instanceof Boolean) {
+                lt = lot(decodeElem());
+                stack = cons(few(SET_CDR, lt, idx), stack);
+            } else {
+                lt = lot(elem_share);
+            }
+        } else {
             throw new RuntimeException(String.format(Msg.UNMATCHED_BIN_LABEL, hexOfByte(bin[index]), index));
         }
-        index += 1;
 
         while (bin[index] != Binary.BIN_LOT_END) {
-            lt = cons(process(), lt);
+            if (bin[index] == Binary.BIN_SHARE_INDEX) {
+                index += 1;
+                int sz = Binary.sizeofVarI32(bin, index);
+                int idx = Binary.decodeVarI32(bin, index, index + sz);
+                index += sz;
+                Object elem_share = share.ref(idx);
+                if (elem_share instanceof Boolean) {
+                    lt = cons(false, lt);
+                    stack = cons(few(SET_CAR, lt, idx), stack);
+                } else {
+                    lt = cons(elem_share, lt);
+                }
+            } else {
+                lt = cons(decodeElem(), lt);
+            }
         }
         index += 1;
         return lt;
+    }
+    case Binary.BIN_SHARE_INDEX -> {
+        int sz = Binary.sizeofVarI32(bin, index);
+        int idx = Binary.decodeVarI32(bin, index, index + sz);
+        index += sz;
+        return share.ref(idx);
     }
     default -> throw new RuntimeException(String.format(Msg.UNMATCHED_BIN_LABEL,
                                                         hexOfByte(label), index - 1));

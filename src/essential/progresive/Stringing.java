@@ -19,12 +19,27 @@ private final RBTree identical;
 private int count;
 
 private Stringing(@NotNull RBTree identical) {
-    this.identical = identical.map(o -> few(o, -1));
+    this.identical = identical.map(o -> few(false, -1));
     count = 0;
 }
 
 private String process(Object datum) {
-    if (datum instanceof Few fw) {
+    if (datum instanceof String) {
+        int key = System.identityHashCode(datum);
+        if (identical.isPresent(key)) {
+            Object self = identical.ref(key);
+            if ((boolean) ((Few) self).ref(0)) {
+                return String.format("#%s#", ((Few) self).ref(1));
+            } else {
+                ((Few) self).set(0, true);
+                ((Few) self).set(1, count);
+                count += 1;
+                return String.format("#%s=%s", ((Few) self).ref(1), stringOf(datum));
+            }
+        } else {
+            return stringOf(datum);
+        }
+    } else if (datum instanceof Few fw) {
         return jobFew(fw);
     } else if (datum instanceof Lot lt) {
         if (lt.isEmpty()) {

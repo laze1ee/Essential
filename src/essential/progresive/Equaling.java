@@ -20,8 +20,8 @@ private final RBTree identical2;
 private int count;
 
 private Equaling(@NotNull RBTree identical1, @NotNull RBTree identical2) {
-    this.identical1 = identical1.map(o -> few(o, -1));
-    this.identical2 = identical2.map(o -> few(o, -1));
+    this.identical1 = identical1.map(o -> few(false, -1));
+    this.identical2 = identical2.map(o -> few(false, -1));
     count = 0;
 }
 

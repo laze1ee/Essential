@@ -28,7 +28,13 @@ private RBTree process(Object datum) {
 }
 
 private void collect(Object datum) {
-    if (datum instanceof Few fw) {
+    if (datum instanceof String) {
+        int key = System.identityHashCode(datum);
+        boolean success = collector.insert(key, false);
+        if (!success) {
+            identical.insert(key, datum);
+        }
+    } else if (datum instanceof Few fw) {
         collectFew(fw);
     } else if (datum instanceof Lot lt) {
         collectLot(lt);
@@ -43,7 +49,7 @@ private void collectFew(Few fw) {
             collect(fw.data[i]);
         }
     } else {
-        identical.insert(key, false);
+        identical.insert(key, fw);
     }
 }
 
@@ -58,7 +64,7 @@ private void collectLot(Lot lt) {
                 collect(lt.car());
                 lt = lt.cdr();
             } else {
-                identical.insert(key, false);
+                identical.insert(key, lt);
                 break;
             }
         }

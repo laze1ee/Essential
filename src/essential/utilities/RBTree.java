@@ -27,7 +27,7 @@ Predicate2 less() {return (Predicate2) rb_tree.ref(0);}
 
 Predicate2 greater() {return (Predicate2) rb_tree.ref(1);}
 
-public Few root() {return (Few) rb_tree.ref(2);}
+Few root() {return (Few) rb_tree.ref(2);}
 
 void setRoot(Few node) {rb_tree.set(2, node);}
 
@@ -222,8 +222,5 @@ public RBTree map(Do1 fn) {
  * @param tree The Red-Black tree to analyze
  * @return A Lot containing depth statistics, where each element is a Lot of the form {@code (depth count)}
  */
-public static Lot depthStatistic(@NotNull RBTree tree) {
-    return RBTreeMate.depthStatistic(tree.root());
+public static Lot depthStatistic(@NotNull RBTree tree) {return RBTreeMate.depthStatistic(tree.root());}
 }
-}
-

@@ -54,7 +54,7 @@ public boolean equals(Object datum) {
 
 @Override
 public int hashCode() {
-    byte[] bin = Binary.encode(this);
+    byte[] bin = Binary.encodeWithSharing(this);
     return CheckSum.fletcher32(bin);
 }
 
