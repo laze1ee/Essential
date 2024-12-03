@@ -28,16 +28,16 @@ private RBTree process(Object datum) {
 }
 
 private void collect(Object datum) {
-    if (datum instanceof String) {
+    if (datum instanceof Few fw) {
+        collectFew(fw);
+    } else if (datum instanceof Lot lt) {
+        collectLot(lt);
+    } else {
         int key = System.identityHashCode(datum);
         boolean success = collector.insert(key, false);
         if (!success) {
             identical.insert(key, datum);
         }
-    } else if (datum instanceof Few fw) {
-        collectFew(fw);
-    } else if (datum instanceof Lot lt) {
-        collectLot(lt);
     }
 }
 

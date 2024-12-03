@@ -33,7 +33,7 @@ void setRoot(Few node) {rb_tree.set(2, node);}
 
 @Override
 public String toString() {
-    return String.format("#[Red-Black-Tree %s]", RBTreeMate.stringify(root()));
+    return String.format("«Red-Black-Tree %s»", RBTreeMate.stringify(root()));
 }
 
 @Override

@@ -7,8 +7,6 @@
 
 package essential.datetime;
 
-import essential.utilities.Binary;
-import essential.utilities.CheckSum;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -62,12 +60,6 @@ public boolean equals(Object datum) {
     } else {
         return false;
     }
-}
-
-@Override
-public int hashCode() {
-    byte[] bin = Binary.encodeWithSharing(this);
-    return CheckSum.fletcher32(bin);
 }
 
 public @NotNull Date toDate(int offset) {

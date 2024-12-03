@@ -9,8 +9,7 @@ package essential.progresive;
 
 import org.junit.jupiter.api.Test;
 
-import static essential.progresive.Pr.equal;
-import static essential.progresive.Pr.few;
+import static essential.progresive.Pr.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class FewTest {

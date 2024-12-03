@@ -34,7 +34,7 @@ public boolean isEmpty() {
 
 @Override
 public String toString() {
-    return String.format("#[Queue %s %s]", pipe.ref(0), pipe.ref(1));
+    return String.format("«Queue %s %s»", pipe.ref(0), pipe.ref(1));
 }
 
 @Override

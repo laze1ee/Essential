@@ -34,7 +34,7 @@ Few root() {return (Few) avl_tree.ref(2);}
 void setRoot(Few node) {avl_tree.set(2, node);}
 
 @Override
-public String toString() {return String.format("#[AVL-Tree %s]", AVLTreeMate.stringify(root()));}
+public String toString() {return String.format("«AVL-Tree %s»", AVLTreeMate.stringify(root()));}
 
 @Override
 

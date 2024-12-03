@@ -11,7 +11,7 @@ class Msg {
 
 // Lot and Few
 static final String CIRCULAR_BREADTH = "%s is circular in breadth";
-static final String LOT_EMPTY = "lot () is empty";
+static final String LOT_EMPTY = "Lot () is empty";
 static final String INDEX_OUT = "index %s is out of range for %s";
 static final String LEN_NON_NATURAL = "length %s is not a natural number";
 

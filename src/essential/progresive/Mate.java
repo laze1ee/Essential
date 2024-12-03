@@ -75,8 +75,6 @@ static int theHareAndTortoise(@NotNull Lot lt) {
 
 static @NotNull String stringOfChar(char c) {
     switch (c) {
-    case 0 -> {return "#\\nul";}
-    case 7 -> {return "#\\alarm";}
     case 8 -> {return "#\\backspace";}
     case 9 -> {return "#\\tab";}
     case 0xA -> {return "#\\newline";}

@@ -7,8 +7,6 @@
 
 package essential.utilities;
 
-import essential.datetime.Date;
-import essential.datetime.Time;
 import essential.progresive.Few;
 import org.jetbrains.annotations.NotNull;
 import essential.progresive.Lot;
@@ -66,28 +64,28 @@ public static byte @NotNull [] encodeI64(long n) {
     return bin;
 }
 
-public static byte @NotNull [] to64Bits(byte[] bin, int start, int bound) {
+public static byte @NotNull [] extendTo64Bits(byte[] bin, int start, int bound) {
     int len = bound - start;
     if (len <= 0 || len > 8) {
         throw new RuntimeException(String.format(Msg.INVALID_RANGE, start, bound));
     } else {
-        byte[] eef = new byte[8];
+        byte[] uuf = new byte[8];
         for (int i = bound - 1, j = 7; i >= start; i -= 1, j -= 1) {
-            eef[j] = bin[i];
+            uuf[j] = bin[i];
         }
         if (bin[start] < 0 && len < 8) {
             for (int i = 0; i < 8 - len; i += 1) {
-                eef[i] = -1;
+                uuf[i] = -1;
             }
         }
-        return eef;
+        return uuf;
     }
 }
 
 /**
  * Convert a big-endian byte array to a long.
  *
- * @param bin the 8-byte array
+ * @param bin the 8-bytes array
  * @return the long
  */
 public static long decodeI64(byte[] bin) {
@@ -99,7 +97,7 @@ public static long decodeI64(byte[] bin) {
     return n;
 }
 
-public static byte @NotNull [] encodeLabelBoolean(boolean b) {
+public static byte @NotNull [] encodeBoolean(boolean b) {
     if (b) {
         return new byte[]{BIN_BOOLEAN_TRUE};
     } else {
@@ -107,105 +105,38 @@ public static byte @NotNull [] encodeLabelBoolean(boolean b) {
     }
 }
 
-/**
- * Returns the UTF-8 encoding of the given char in binary form.
- *
- * @param c the char to encode
- * @return the UTF-8 encoding of the given char in binary form
- */
-public static byte @NotNull [] encodeChar(int c) {
-    if (c < 0x80) {
-        return new byte[]{(byte) c};
-    } else if (c < 0x800) {
-        byte[] bin = new byte[2];
-        bin[1] = (byte) (0x80 | c & 0x3F);
-        c = c >> 6;
-        bin[0] = (byte) (0xC0 | c & 0x1F);
-        return bin;
-    } else if (c < 0x10000) {
-        byte[] bin = new byte[3];
-        bin[2] = (byte) (0x80 | c & 0x3F);
-        c = c >> 6;
-        bin[1] = (byte) (0x80 | c & 0x3F);
-        c = c >> 6;
-        bin[0] = (byte) (0xE0 | c & 0x0F);
-        return bin;
-    } else {
-        byte[] bin = new byte[4];
-        bin[3] = (byte) (0x80 | c & 0x3F);
-        c = c >> 6;
-        bin[2] = (byte) (0x80 | c & 0x3F);
-        c = c >> 6;
-        bin[1] = (byte) (0x80 | c & 0x3F);
-        c = c >> 6;
-        bin[0] = (byte) (0xF0 | c & 0x07);
-        return bin;
-    }
-}
-
-public static int sizeofChar(byte @NotNull [] bin, int start) {
-    int bytes = bin[start] & 0xF8;
-    if (bytes < 0x80) {
-        return 1;
-    } else if (bytes < 0xE0) {
-        return 2;
-    } else if (bytes < 0xF0) {
-        return 3;
-    } else {
-        return 4;
-    }
-}
-
-public static byte @NotNull [] encodeLabelChar(char c) {
-    byte[] ooo = encodeChar(c);
+public static byte @NotNull [] encodeChar(char c) {
+    byte[] ooo = BinaryMate.encodePureChar(c);
     byte[] xxx = new byte[ooo.length + 1];
     xxx[0] = BIN_CHAR;
     System.arraycopy(ooo, 0, xxx, 1, ooo.length);
     return xxx;
 }
 
-public static char decodeChar(byte[] bin, int start, int bound) {
-    int bytes = bound - start;
-    switch (bytes) {
-    case 1 -> {
-        return (char) bin[start];
-    }
-    case 2 -> {
-        int c = (bin[start] & 0x1F) << 6;
-        c = c | (bin[start + 1] & 0x3F);
-        return (char) c;
-    }
-    case 3 -> {
-        int c = (bin[start] & 0x0F) << 12;
-        c = c | ((bin[start + 1] & 0x3F) << 6);
-        c = c | (bin[start + 2] & 0x3F);
-        return (char) c;
-    }
-    default -> {
-        int c = (bin[start] & 0x07) << 18;
-        c = c | ((bin[start + 1] & 0x3F) << 12);
-        c = c | ((bin[start + 2] & 0x3F) << 6);
-        c = c | (bin[start + 3] & 0x3F);
-        return (char) c;
-    }
-    }
+public static @NotNull Few decodeChar(byte @NotNull [] bin, int start) {
+    int sz = BinaryMate.sizeofChar(bin, start);
+    char c = BinaryMate.decodePureChar(bin, start, start + sz);
+    return few(start + sz, c);
 }
 
 public static byte @NotNull [] encodeString(@NotNull String str) {
-    Lot col = lot();
-    for (int i = str.length() - 1; i != -1; i -= 1) {
-        byte[] bin = encodeChar(str.charAt(i));
-        col = cons(bin, col);
-    }
-    return connectBytes(col);
-}
-
-public static byte @NotNull [] encodeLabelString(@NotNull String str) {
-    byte[] ooo = encodeString(str);
+    byte[] ooo = BinaryMate.encodePureString(str);
     byte[] xxx = new byte[ooo.length + 2];
     xxx[0] = BIN_STRING;
     System.arraycopy(ooo, 0, xxx, 1, ooo.length);
     return xxx;
+}
+
+public static @NotNull Few decodeString(byte @NotNull [] bin, int start) {
+    StringBuilder builder = new StringBuilder();
+    int i = start;
+    while (bin[i] != 0) {
+        int sz = BinaryMate.sizeofChar(bin, i);
+        char c = BinaryMate.decodePureChar(bin, i, i + sz);
+        builder.append(c);
+        i += sz;
+    }
+    return few(i + 1, builder.toString());
 }
 
 public static int sizeofBytes(@NotNull Lot bins) {
@@ -310,7 +241,7 @@ public static int decodeVarI32(byte @NotNull [] bin, int start, int bound) {
         if ((ooo[0] & 0x20) != 0) {
             ooo[0] = (byte) (ooo[0] | 0xC0);
         }
-        byte[] xxx = to64Bits(ooo, 0, 2);
+        byte[] xxx = extendTo64Bits(ooo, 0, 2);
         return (int) decodeI64(xxx);
     }
     case 3 -> {
@@ -319,7 +250,7 @@ public static int decodeVarI32(byte @NotNull [] bin, int start, int bound) {
         if ((ooo[0] & 0x10) != 0) {
             ooo[0] = (byte) (ooo[0] | 0xE0);
         }
-        byte[] xxx = to64Bits(ooo, 0, 3);
+        byte[] xxx = extendTo64Bits(ooo, 0, 3);
         return (int) decodeI64(xxx);
     }
     case 4 -> {
@@ -328,7 +259,7 @@ public static int decodeVarI32(byte @NotNull [] bin, int start, int bound) {
         if ((ooo[0] & 0x08) != 0) {
             ooo[0] = (byte) (ooo[0] | 0xF0);
         }
-        byte[] xxx = to64Bits(ooo, 0, 4);
+        byte[] xxx = extendTo64Bits(ooo, 0, 4);
         return (int) decodeI64(xxx);
     }
     default -> {
@@ -337,7 +268,7 @@ public static int decodeVarI32(byte @NotNull [] bin, int start, int bound) {
         if ((ooo[0] & 0x04) != 0) {
             ooo[0] = (byte) (ooo[0] | 0xF8);
         }
-        byte[] xxx = to64Bits(ooo, 0, 5);
+        byte[] xxx = extendTo64Bits(ooo, 0, 5);
         return (int) decodeI64(xxx);
     }
     }
@@ -346,49 +277,7 @@ public static int decodeVarI32(byte @NotNull [] bin, int start, int bound) {
 
 
 public static byte[] encode(Object datum) {
-    if (datum instanceof Boolean b) {
-        return Binary.encodeLabelBoolean(b);
-    } else if (datum instanceof Short s) {
-        return BinaryMate.encodeLabelShort(s);
-    } else if (datum instanceof Integer in) {
-        return BinaryMate.encodeLabelInt(in);
-    } else if (datum instanceof Long l) {
-        return BinaryMate.encodeLabelLong(l);
-    } else if (datum instanceof Float f) {
-        return BinaryMate.encodeLabelFloat(f);
-    } else if (datum instanceof Double d) {
-        return BinaryMate.encodeLabelDouble(d);
-    } else if (datum instanceof boolean[] bs) {
-        return BinaryMate.encodeLabelBooleans(bs);
-    } else if (datum instanceof short[] ss) {
-        return BinaryMate.encodeLabelShorts(ss);
-    } else if (datum instanceof int[] ins) {
-        return BinaryMate.encodeLabelInts(ins);
-    } else if (datum instanceof long[] ls) {
-        return BinaryMate.encodeLabelLongs(ls);
-    } else if (datum instanceof float[] fs) {
-        return BinaryMate.encodeLabelFloats(fs);
-    } else if (datum instanceof double[] ds) {
-        return BinaryMate.encodeLabelDoubles(ds);
-    } else if (datum instanceof Character c) {
-        return Binary.encodeLabelChar(c);
-    } else if (datum instanceof String str) {
-        return Binary.encodeLabelString(str);
-    } else if (datum instanceof Time t) {
-        return BinaryMate.encodeLabelTime(t);
-    } else if (datum instanceof Date d) {
-        return BinaryMate.encodeLabelDate(d);
-    } else if (datum instanceof Few fw) {
-        return BinaryMate.encodeLabelFew(fw);
-    } else if (datum instanceof Lot lt) {
-        return BinaryMate.encodeLabelLot(lt);
-    } else {
-        throw new RuntimeException(String.format(Msg.UNSUPPORTED, datum));
-    }
-}
-
-public static byte[] encodeWithSharing(Object datum) {
-    EncodingWithSharing inst = new EncodingWithSharing();
+    Encoding inst = new Encoding();
     return inst.process(datum);
 }
 
@@ -402,13 +291,8 @@ public static Object decode(byte[] bin, int start) {
     return inst.process();
 }
 
-public static Object decodeWithSharing(byte[] bin) {
-    DecodingWithSharing inst = new DecodingWithSharing(bin);
-    return inst.process();
-}
-
-public static Object decodeWithSharing(byte[] bin, int start) {
-    DecodingWithSharing inst = new DecodingWithSharing(bin, start);
-    return inst.process();
+public static int hashcode(Object datum) {
+    byte[] bin = encode(datum);
+    return CheckSum.fletcher32(bin);
 }
 }

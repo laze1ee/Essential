@@ -53,11 +53,11 @@ void testBoolean() {
 
     Few share_bins = makeFew(3, 0);
     for (int i = 0; i < 3; i += 1) {
-        share_bins.set(i, Binary.encodeWithSharing(bs.ref(i)));
+        share_bins.set(i, Binary.encode(bs.ref(i)));
     }
     Few share_bs = makeFew(3, 0);
     for (int i = 0; i < 3; i += 1) {
-        share_bs.set(i, Binary.decodeWithSharing((byte[]) share_bins.ref(i)));
+        share_bs.set(i, Binary.decode((byte[]) share_bins.ref(i)));
     }
     assertEquals(bs, share_bs);
 }
@@ -78,11 +78,11 @@ void testShort() {
 
     Few share_bins = makeFew(2, false);
     for (int i = 0; i < 2; i += 1) {
-        share_bins.set(i, Binary.encodeWithSharing(ss.ref(i)));
+        share_bins.set(i, Binary.encode(ss.ref(i)));
     }
     Few share_ss = makeFew(2, false);
     for (int i = 0; i < 2; i += 1) {
-        share_ss.set(i, Binary.decodeWithSharing((byte[]) share_bins.ref(i)));
+        share_ss.set(i, Binary.decode((byte[]) share_bins.ref(i)));
     }
     assertEquals(ss, share_ss);
 }
@@ -103,11 +103,11 @@ void testInt() {
 
     Few share_bins = makeFew(3, false);
     for (int i = 0; i < 3; i += 1) {
-        share_bins.set(i, Binary.encodeWithSharing(ins.ref(i)));
+        share_bins.set(i, Binary.encode(ins.ref(i)));
     }
     Few share_ins = makeFew(3, false);
     for (int i = 0; i < 3; i += 1) {
-        share_ins.set(i, Binary.decodeWithSharing((byte[]) share_bins.ref(i)));
+        share_ins.set(i, Binary.decode((byte[]) share_bins.ref(i)));
     }
     assertEquals(ins, share_ins);
 }
@@ -128,11 +128,11 @@ void testLong() {
 
     Few share_bins = makeFew(4, false);
     for (int i = 0; i < 4; i += 1) {
-        share_bins.set(i, Binary.encodeWithSharing(ins.ref(i)));
+        share_bins.set(i, Binary.encode(ins.ref(i)));
     }
     Few share_ins = makeFew(4, false);
     for (int i = 0; i < 4; i += 1) {
-        share_ins.set(i, Binary.decodeWithSharing((byte[]) share_bins.ref(i)));
+        share_ins.set(i, Binary.decode((byte[]) share_bins.ref(i)));
     }
     assertEquals(ins, share_ins);
 }
@@ -153,11 +153,11 @@ void testFloat() {
 
     Few share_bins = makeFew(2, false);
     for (int i = 0; i < 2; i += 1) {
-        share_bins.set(i, Binary.encodeWithSharing(ins.ref(i)));
+        share_bins.set(i, Binary.encode(ins.ref(i)));
     }
     Few share_ins = makeFew(2, false);
     for (int i = 0; i < 2; i += 1) {
-        share_ins.set(i, Binary.decodeWithSharing((byte[]) share_bins.ref(i)));
+        share_ins.set(i, Binary.decode((byte[]) share_bins.ref(i)));
     }
     assertEquals(ins, share_ins);
 }
@@ -178,11 +178,11 @@ void testDouble() {
 
     Few share_bins = makeFew(3, false);
     for (int i = 0; i < 3; i += 1) {
-        share_bins.set(i, Binary.encodeWithSharing(ins.ref(i)));
+        share_bins.set(i, Binary.encode(ins.ref(i)));
     }
     Few share_ins = makeFew(3, false);
     for (int i = 0; i < 3; i += 1) {
-        share_ins.set(i, Binary.decodeWithSharing((byte[]) share_bins.ref(i)));
+        share_ins.set(i, Binary.decode((byte[]) share_bins.ref(i)));
     }
     assertEquals(ins, share_ins);
 }
@@ -205,11 +205,11 @@ void testCharAndString() {
 
     Few share_bins = makeFew(4, false);
     for (int i = 0; i < 4; i += 1) {
-        share_bins.set(i, Binary.encodeWithSharing(cs.ref(i)));
+        share_bins.set(i, Binary.encode(cs.ref(i)));
     }
     Few share_cs = makeFew(4, false);
     for (int i = 0; i < 4; i += 1) {
-        share_cs.set(i, Binary.decodeWithSharing((byte[]) share_bins.ref(i)));
+        share_cs.set(i, Binary.decode((byte[]) share_bins.ref(i)));
     }
     assertEquals(cs, share_cs);
 }
@@ -231,20 +231,21 @@ void testTimeAndDate() {
 
     Few share_bins = makeFew(2, false);
     for (int i = 0; i < 2; i += 1) {
-        share_bins.set(i, Binary.encodeWithSharing(misc.ref(i)));
+        share_bins.set(i, Binary.encode(misc.ref(i)));
     }
     Few share_misc = makeFew(2, false);
     for (int i = 0; i < 2; i += 1) {
-        share_misc.set(i, Binary.decodeWithSharing((byte[]) share_bins.ref(i)));
+        share_misc.set(i, Binary.decode((byte[]) share_bins.ref(i)));
     }
     assertEquals(misc, share_misc);
 }
 
 @Test
 void testFewAndLot() {
-    Lot lt = lot(1, 2, 3, few(), few(lot()));
+    Lot lt = lot(1, 2, 3);
     Few fw = few(0, lt, -2, -3, -4);
 
+    // Non-Identical Test
     byte[] bin_lt = Binary.encode(lt);
     Lot out_lt = (Lot) Binary.decode(bin_lt);
     assertEquals(lt, out_lt);
@@ -252,37 +253,22 @@ void testFewAndLot() {
     byte[] bin_fw = Binary.encode(fw);
     Few out_fw = (Few) Binary.decode(bin_fw);
     assertEquals(fw, out_fw);
-}
-
-@Test
-void testFewAndLotWithSharing() {
-    Lot lt = lot(1, 2, 3);
-    Few fw = few(0, lt, -2, -3, -4);
-
-    // Non-Identical Test
-    byte[] bin_lt = Binary.encodeWithSharing(lt);
-    Lot out_lt = (Lot) Binary.decodeWithSharing(bin_lt);
-    assertEquals(lt, out_lt);
-
-    byte[] bin_fw = Binary.encodeWithSharing(fw);
-    Few out_fw = (Few) Binary.decodeWithSharing(bin_fw);
-    assertEquals(fw, out_fw);
 
     // Identical Test
     setCdr(lt.cddr(), lt);
-    bin_lt = Binary.encodeWithSharing(lt);
-    out_lt = (Lot) Binary.decodeWithSharing(bin_lt);
+    bin_lt = Binary.encode(lt);
+    out_lt = (Lot) Binary.decode(bin_lt);
     assertEquals(lt, out_lt);
 
     Lot ls = cons('a', cons(false, cons("abc", lt)));
     setCar(ls.cdr(), ls);
-    byte[] bin_ls = Binary.encodeWithSharing(ls);
-    Lot out_ls = (Lot) Binary.decodeWithSharing(bin_ls);
+    byte[] bin_ls = Binary.encode(ls);
+    Lot out_ls = (Lot) Binary.decode(bin_ls);
     assertEquals(ls, out_ls);
 
     fw.set(3, fw);
-    bin_fw = Binary.encodeWithSharing(fw);
-    out_fw = (Few) Binary.decodeWithSharing(bin_fw);
+    bin_fw = Binary.encode(fw);
+    out_fw = (Few) Binary.decode(bin_fw);
     assertEquals(fw, out_fw);
 }
 }

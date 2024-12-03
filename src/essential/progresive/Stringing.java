@@ -24,7 +24,15 @@ private Stringing(@NotNull RBTree identical) {
 }
 
 private String process(Object datum) {
-    if (datum instanceof String) {
+    if (datum instanceof Few fw) {
+        return jobFew(fw);
+    } else if (datum instanceof Lot lt) {
+        if (lt.isEmpty()) {
+            return "()";
+        } else {
+            return jobLot(lt);
+        }
+    } else {
         int key = System.identityHashCode(datum);
         if (identical.isPresent(key)) {
             Object self = identical.ref(key);
@@ -39,16 +47,6 @@ private String process(Object datum) {
         } else {
             return stringOf(datum);
         }
-    } else if (datum instanceof Few fw) {
-        return jobFew(fw);
-    } else if (datum instanceof Lot lt) {
-        if (lt.isEmpty()) {
-            return "()";
-        } else {
-            return jobLot(lt);
-        }
-    } else {
-        return stringOf(datum);
     }
 }
 

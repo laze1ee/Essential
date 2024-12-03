@@ -9,8 +9,6 @@ package essential.progresive;
 
 import essential.functional.Do1;
 import essential.functional.Predicate1;
-import essential.utilities.Binary;
-import essential.utilities.CheckSum;
 import essential.utilities.RBTree;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,12 +40,6 @@ public boolean equals(Object datum) {
     } else {
         return false;
     }
-}
-
-@Override
-public int hashCode() {
-    byte[] bin = Binary.encodeWithSharing(this);
-    return CheckSum.fletcher32(bin);
 }
 
 public boolean isEmpty() {return this instanceof LotEnd;}
@@ -93,14 +85,15 @@ public @NotNull Lot cdar() {return ((Lot) this.car()).cdr();}
 
 public @NotNull Object ref(int index) {
     Lot lt = this;
-    while (index >= 0) {
+    int i = index;
+    while (i >= 0) {
         if (lt.isEmpty()) {
             throw new RuntimeException(String.format(Msg.INDEX_OUT, index, this));
         }
-        if (index == 0) {
+        if (i == 0) {
             return lt.car();
         }
-        index -= 1;
+        i -= 1;
         lt = lt.cdr();
     }
     throw new RuntimeException(String.format(Msg.INDEX_OUT, index, this));
@@ -126,15 +119,15 @@ public @NotNull Lot head(int index) {
     if (index == 0) {
         return new LotEnd();
     } else if (this.isBreadthCircle() || (0 <= index && index <= Mate.length(this))) {
-        index -= 1;
+        int i = index - 1;
         Lot head = new LotPair(this.car(), new LotEnd());
         Lot ooo = head;
         Lot xxx = this.cdr();
-        while (index > 0) {
+        while (i > 0) {
             ((LotPair) ooo).next = new LotPair(xxx.car(), new LotEnd());
             ooo = ooo.cdr();
             xxx = xxx.cdr();
-            index -= 1;
+            i -= 1;
         }
         return head;
     } else {
@@ -145,9 +138,10 @@ public @NotNull Lot head(int index) {
 public @NotNull Lot tail(int index) {
     if (this.isBreadthCircle() || (0 <= index && index <= Mate.length(this))) {
         Lot lt = this;
-        while (index > 0) {
+        int i = index;
+        while (i > 0) {
             lt = lt.cdr();
-            index -= 1;
+            i -= 1;
         }
         return lt;
     } else {

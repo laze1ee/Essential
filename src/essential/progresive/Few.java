@@ -9,8 +9,6 @@ package essential.progresive;
 
 import essential.functional.Do1;
 import essential.functional.Predicate2;
-import essential.utilities.Binary;
-import essential.utilities.CheckSum;
 import essential.utilities.RBTree;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -50,12 +48,6 @@ public boolean equals(Object datum) {
     } else {
         return false;
     }
-}
-
-@Override
-public int hashCode() {
-    byte[] bin = Binary.encodeWithSharing(this);
-    return CheckSum.fletcher32(bin);
 }
 
 public int length() {return data.length;}

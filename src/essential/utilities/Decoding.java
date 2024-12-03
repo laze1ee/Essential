@@ -13,57 +13,106 @@ import essential.progresive.Lot;
 import java.util.Arrays;
 
 import static essential.progresive.Pr.*;
-import static essential.progresive.Pr.hexOfByte;
 
 
 class Decoding {
 
+private static class Nothing {}
+
+private static final String SET_CDR = "set-cdr";
+private static final String SET_CAR = "set-car";
+private static final String SET_FEW = "set-few";
+
 private final byte[] bin;
 private int index;
+private Few share;
+private Lot stack;
 
 Decoding(byte[] bin) {
     this.bin = bin;
     index = 0;
+    stack = lot();
 }
 
 Decoding(byte[] bin, int index) {
     this.bin = bin;
     this.index = index;
+    stack = lot();
 }
 
 Object process() {
+    if (bin[index] != Binary.BIN_FEW) {
+        throw new RuntimeException(String.format(Msg.UNMATCHED_BIN_LABEL, hexOfByte(bin[index]), index));
+    }
+    index += 1;
+    int sz = Binary.sizeofVarI32(bin, index);
+    int len = Binary.decodeVarI32(bin, index, index + sz);
+    share = makeFew(len, new Nothing());
+    index += sz;
+
+    for (int i = 0; i < len; i += 1) {
+        share.set(i, decodeElem());
+    }
+    while (!stack.isEmpty()) {
+        Few pack = (Few) stack.car();
+        String operator = (String) pack.ref(0);
+        switch (operator) {
+        case SET_CDR -> {
+            Lot lt1 = (Lot) pack.ref(1);
+            Lot lt2 = (Lot) share.ref((int) pack.ref(2));
+            //lt2.toString();   // force refresh lt2 for passing junit 5 test
+            setCdr(lt1, lt2);
+        }
+        case SET_CAR -> {
+            Lot lt = (Lot) pack.ref(1);
+            int idx = (int) pack.ref(2);
+            setCar(lt, share.ref(idx));
+        }
+        case SET_FEW -> {
+            Few fw = (Few) pack.ref(1);
+            int i = (int) pack.ref(2);
+            int j = (int) pack.ref(3);
+            fw.set(i, share.ref(j));
+        }
+        }
+        stack = stack.cdr();
+    }
+    return decodeElem();
+}
+
+private Object decodeElem() {
     byte label = bin[index];
     index += 1;
     switch (label) {
     case Binary.BIN_BOOLEAN_FALSE -> {return false;}
     case Binary.BIN_BOOLEAN_TRUE -> {return true;}
     case Binary.BIN_SHORT -> {
-        byte[] eef = Binary.to64Bits(bin, index, index + 2);
+        byte[] uuf = Binary.extendTo64Bits(bin, index, index + 2);
         index += 2;
-        return (short) Binary.decodeI64(eef);
+        return (short) Binary.decodeI64(uuf);
     }
     case Binary.BIN_INT -> {
-        byte[] eef = Binary.to64Bits(bin, index, index + 4);
+        byte[] uuf = Binary.extendTo64Bits(bin, index, index + 4);
         index += 4;
-        return (int) Binary.decodeI64(eef);
+        return (int) Binary.decodeI64(uuf);
     }
     case Binary.BIN_LONG -> {
-        byte[] eef = Binary.to64Bits(bin, index, index + 8);
+        byte[] uuf = Binary.extendTo64Bits(bin, index, index + 8);
         index += 8;
-        return Binary.decodeI64(eef);
+        return Binary.decodeI64(uuf);
     }
     case Binary.BIN_FLOAT -> {
-        byte[] eef = Arrays.copyOfRange(bin, index, index + 4);
+        byte[] uuf = Arrays.copyOfRange(bin, index, index + 4);
         int bits = 0;
         for (int i = 0; i < 4; i += 1) {
-            bits = (bits << 8) | (eef[i] & 0xFF);
+            bits = (bits << 8) | (uuf[i] & 0xFF);
         }
         index += 4;
         return Float.intBitsToFloat(bits);
     }
     case Binary.BIN_DOUBLE -> {
-        byte[] eef = Arrays.copyOfRange(bin, index, index + 8);
-        long bits = Binary.decodeI64(eef);
+        byte[] uuf = Arrays.copyOfRange(bin, index, index + 8);
+        long bits = Binary.decodeI64(uuf);
         index += 8;
         return Double.longBitsToDouble(bits);
     }
@@ -110,20 +159,14 @@ Object process() {
         return BinaryMate.decodeDoubles(bin, start, len);
     }
     case Binary.BIN_CHAR -> {
-        int sz = Binary.sizeofChar(bin, index);
-        int start = index;
-        index += sz;
-        return Binary.decodeChar(bin, start, index);
+        Few pack = Binary.decodeChar(bin, index);
+        index = (int) pack.ref(0);
+        return pack.ref(1);
     }
     case Binary.BIN_STRING -> {
-        StringBuilder builder = new StringBuilder();
-        while (bin[index] != 0) {
-            int sz = Binary.sizeofChar(bin, index);
-            builder.append(Binary.decodeChar(bin, index, index + sz));
-            index += sz;
-        }
-        index += 1;
-        return builder.toString();
+        Few pack = Binary.decodeString(bin, index);
+        index = (int) pack.ref(0);
+        return pack.ref(1);
     }
     case Binary.BIN_TIME -> {
         Object time = BinaryMate.decodeTime(bin, index);
@@ -139,24 +182,76 @@ Object process() {
         int sz = Binary.sizeofVarI32(bin, index);
         int length = Binary.decodeVarI32(bin, index, index + sz);
         index += sz;
-        Few fw = makeFew(length, false);
+        Few fw = makeFew(length, new Nothing());
         for (int i = 0; i < length; i += 1) {
-            fw.set(i, process());
+            if (bin[index] == Binary.BIN_SHARE_INDEX) {
+                index += 1;
+                sz = Binary.sizeofVarI32(bin, index);
+                int idx = Binary.decodeVarI32(bin, index, index + sz);
+                index += sz;
+                Object datum = share.ref(idx);
+                if (datum instanceof Nothing) {
+                    stack = cons(few(SET_FEW, fw, i, idx), stack);
+                } else {
+                    fw.set(i, datum);
+                }
+            } else {
+                fw.set(i, decodeElem());
+            }
         }
         return fw;
     }
     case Binary.BIN_LOT -> {
-        Lot lt = lot();
-        if (bin[index] != Binary.BIN_LOT_BEGIN) {
+        Lot lt;
+        if (bin[index] == Binary.BIN_LOT_BEGIN) {
+            index += 1;
+            if (bin[index] == Binary.BIN_LOT_END) {
+                index += 1;
+                return lot();
+            } else {
+                lt = lot();
+            }
+        } else if (bin[index] == Binary.BIN_SHARE_INDEX) {
+            index += 1;
+            int sz = Binary.sizeofVarI32(bin, index);
+            int idx = Binary.decodeVarI32(bin, index, index + sz);
+            index += sz;
+            Object elem_share = share.ref(idx);
+            if (elem_share instanceof Nothing) {
+                lt = lot(decodeElem());
+                stack = cons(few(SET_CDR, lt, idx), stack);
+            } else {
+                lt = lot(elem_share);
+            }
+        } else {
             throw new RuntimeException(String.format(Msg.UNMATCHED_BIN_LABEL, hexOfByte(bin[index]), index));
         }
-        index += 1;
 
         while (bin[index] != Binary.BIN_LOT_END) {
-            lt = cons(process(), lt);
+            if (bin[index] == Binary.BIN_SHARE_INDEX) {
+                index += 1;
+                int sz = Binary.sizeofVarI32(bin, index);
+                int idx = Binary.decodeVarI32(bin, index, index + sz);
+                index += sz;
+                Object elem_share = share.ref(idx);
+                if (elem_share instanceof Nothing) {
+                    lt = cons(new Nothing(), lt);
+                    stack = cons(few(SET_CAR, lt, idx), stack);
+                } else {
+                    lt = cons(elem_share, lt);
+                }
+            } else {
+                lt = cons(decodeElem(), lt);
+            }
         }
         index += 1;
         return lt;
+    }
+    case Binary.BIN_SHARE_INDEX -> {
+        int sz = Binary.sizeofVarI32(bin, index);
+        int idx = Binary.decodeVarI32(bin, index, index + sz);
+        index += sz;
+        return share.ref(idx);
     }
     default -> throw new RuntimeException(String.format(Msg.UNMATCHED_BIN_LABEL,
                                                         hexOfByte(label), index - 1));

@@ -288,7 +288,7 @@ public static boolean greater(Object datum1, Object datum2) {
 
 public static @NotNull String stringOf(Object datum) {
     if (datum == null) {
-        return "#<null>";
+        return "«null»";
     } else if (datum instanceof Boolean b) {
         if (b) {
             return "#t";
