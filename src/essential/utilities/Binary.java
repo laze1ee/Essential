@@ -67,7 +67,8 @@ public static byte @NotNull [] encodeI64(long n) {
 public static byte @NotNull [] extendTo64Bits(byte[] bin, int start, int bound) {
     int len = bound - start;
     if (len <= 0 || len > 8) {
-        throw new RuntimeException(String.format(Msg.INVALID_RANGE, start, bound));
+        String msg = String.format(Msg.INVALID_RANGE, start, bound);
+        throw new RuntimeException(msg);
     } else {
         byte[] uuf = new byte[8];
         for (int i = bound - 1, j = 7; i >= start; i -= 1, j -= 1) {

@@ -135,23 +135,6 @@ static @NotNull String identicalString(Object datum, RBTree identical) {
     return inst.process(datum);
 }
 
-static @NotNull String lotString(@NotNull Lot lt) {
-    if (lt.isEmpty()) {
-        return "()";
-    } else {
-        StringBuilder builder = new StringBuilder();
-        builder.append('(');
-        while (!lt.cdr().isEmpty()) {
-            builder.append(stringOf(lt.car()));
-            builder.append(' ');
-            lt = lt.cdr();
-        }
-        builder.append(stringOf(lt.car()));
-        builder.append(')');
-        return builder.toString();
-    }
-}
-
 static @NotNull String fewString(@NotNull Few fw) {
     int len = fw.data.length;
     if (len == 0) {
@@ -165,6 +148,23 @@ static @NotNull String fewString(@NotNull Few fw) {
             builder.append(' ');
         }
         builder.append(stringOf(fw.data[len]));
+        builder.append(')');
+        return builder.toString();
+    }
+}
+
+static @NotNull String lotString(@NotNull Lot lt) {
+    if (lt.isEmpty()) {
+        return "()";
+    } else {
+        StringBuilder builder = new StringBuilder();
+        builder.append('(');
+        while (!lt.cdr().isEmpty()) {
+            builder.append(stringOf(lt.car()));
+            builder.append(' ');
+            lt = lt.cdr();
+        }
+        builder.append(stringOf(lt.car()));
         builder.append(')');
         return builder.toString();
     }

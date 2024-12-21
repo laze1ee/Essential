@@ -14,30 +14,33 @@ import essential.progresive.Few;
 import essential.progresive.Lot;
 import org.jetbrains.annotations.NotNull;
 
-import static essential.progresive.Pr.*;
+import static essential.progresive.Pr.lot;
 
 
 public class AVLTree {
 
-private final Few avl_tree;
+private final Predicate2 less;
+private final Predicate2 greater;
+private Few root;
 
 public AVLTree(Predicate2 less, Predicate2 greater) {
-    avl_tree = few(less, greater, AVLTreeMate.makeNode());
+    this.less = less;
+    this.greater = greater;
+    this.root = AVLTreeMate.makeNode();
 }
 
-Predicate2 less() {return (Predicate2) avl_tree.ref(0);}
+Predicate2 less() {return less;}
 
-Predicate2 greater() {return (Predicate2) avl_tree.ref(1);}
+Predicate2 greater() {return greater;}
 
-Few root() {return (Few) avl_tree.ref(2);}
+Few root() {return root;}
 
-void setRoot(Few node) {avl_tree.set(2, node);}
+void setRoot(Few node) {this.root = node;}
 
 @Override
 public String toString() {return String.format("«AVL-Tree %s»", AVLTreeMate.stringify(root()));}
 
 @Override
-
 public boolean equals(Object datum) {
     if (datum instanceof AVLTree tree) {
         return root().equals(tree.root());
@@ -112,7 +115,8 @@ public @NotNull Object ref(@NotNull Object key) {
     Lot path = AVLTreeMate.pathOf(this, key);
     Few node = (Few) path.car();
     if (AVLTreeMate.isNil(node)) {
-        throw new RuntimeException(String.format(Msg.NOT_PRESENT, key, this));
+        String msg = String.format(Msg.NOT_PRESENT, key, this);
+        throw new RuntimeException(msg);
     } else {
         return AVLTreeMate.value(node);
     }
@@ -129,7 +133,8 @@ public void set(@NotNull Object key, Object new_value) {
     Lot path = AVLTreeMate.pathOf(this, key);
     Few node = (Few) path.car();
     if (AVLTreeMate.isNil(node)) {
-        throw new RuntimeException(String.format(Msg.NOT_PRESENT, key, this));
+        String msg = String.format(Msg.NOT_PRESENT, key, this);
+        throw new RuntimeException(msg);
     } else {
         AVLTreeMate.setValue(node, new_value);
     }
@@ -216,7 +221,6 @@ public AVLTree map(Do1 fn) {
     return inst.process(root());
 }
 
-
 /**
  * This method analyzes the structure of the AVL tree and provides statistics about the depths of its
  * leaf nodes. The result is a lot of the lot form {@code (depth count)}
@@ -226,5 +230,11 @@ public AVLTree map(Do1 fn) {
  */
 public static Lot depthStatistic(@NotNull AVLTree tree) {
     return AVLTreeMate.depthStatistic(tree.root());
+}
+
+public static @NotNull AVLTree make(Predicate2 less, Predicate2 greater, Few root) {
+    AVLTree tree = new AVLTree(less, greater);
+    tree.root = root;
+    return tree;
 }
 }

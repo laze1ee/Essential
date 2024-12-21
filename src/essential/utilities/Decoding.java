@@ -42,7 +42,8 @@ Decoding(byte[] bin, int index) {
 
 Object process() {
     if (bin[index] != Binary.BIN_FEW) {
-        throw new RuntimeException(String.format(Msg.UNMATCHED_BIN_LABEL, hexOfByte(bin[index]), index));
+        String msg = String.format(Msg.UNMATCHED_BIN_LABEL, hexOfByte(bin[index]), index);
+        throw new RuntimeException(msg);
     }
     index += 1;
     int sz = Binary.sizeofVarI32(bin, index);
@@ -224,7 +225,8 @@ private Object decodeElem() {
                 lt = lot(elem_share);
             }
         } else {
-            throw new RuntimeException(String.format(Msg.UNMATCHED_BIN_LABEL, hexOfByte(bin[index]), index));
+            String msg = String.format(Msg.UNMATCHED_BIN_LABEL, hexOfByte(bin[index]), index);
+            throw new RuntimeException(msg);
         }
 
         while (bin[index] != Binary.BIN_LOT_END) {
@@ -253,8 +255,10 @@ private Object decodeElem() {
         index += sz;
         return share.ref(idx);
     }
-    default -> throw new RuntimeException(String.format(Msg.UNMATCHED_BIN_LABEL,
-                                                        hexOfByte(label), index - 1));
+    default -> {
+        String msg = String.format(Msg.UNMATCHED_BIN_LABEL, hexOfByte(label), index - 1);
+        throw new RuntimeException(msg);
+    }
     }
 }
 }

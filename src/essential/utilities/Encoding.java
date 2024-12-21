@@ -133,7 +133,8 @@ private static byte[] encodeNonContainer(Object datum) {
     } else if (datum instanceof Date d) {
         return BinaryMate.encodeDate(d);
     } else {
-        throw new RuntimeException(String.format(Msg.UNSUPPORTED, datum));
+        String msg = String.format(Msg.UNSUPPORTED, datum);
+        throw new RuntimeException(msg);
     }
 }
 }

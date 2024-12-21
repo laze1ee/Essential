@@ -15,7 +15,18 @@ import org.jetbrains.annotations.NotNull;
 
 public class Lot {
 
-Lot() {}
+Object data;
+Lot next;
+
+Lot() {
+    data = new LotEnd();
+    next = null;
+}
+
+Lot(Object data, Lot next) {
+    this.data = data;
+    this.next = next;
+}
 
 @Override
 public String toString() {
@@ -42,12 +53,16 @@ public boolean equals(Object datum) {
     }
 }
 
-public boolean isEmpty() {return this instanceof LotEnd;}
+public boolean isEmpty() {
+    return data instanceof LotEnd &&
+           next == null;
+}
 
 public int length() {
     int n = Mate.theHareAndTortoise(this);
     if (n == -1) {
-        throw new RuntimeException(String.format(Msg.CIRCULAR_BREADTH, this));
+        String msg = String.format(Msg.CIRCULAR_BREADTH, this);
+        throw new RuntimeException(msg);
     } else {
         return n;
     }
@@ -59,36 +74,50 @@ public boolean isBreadthCircle() {
 }
 
 public @NotNull Object car() {
-    if (this instanceof LotEnd) {
+    if (this.isEmpty()) {
         throw new RuntimeException(Msg.LOT_EMPTY);
     } else {
-        return ((LotPair) this).data;
+        return this.data;
     }
 }
 
 public @NotNull Lot cdr() {
-    if (this instanceof LotEnd) {
+    if (this.isEmpty()) {
         throw new RuntimeException(Msg.LOT_EMPTY);
     } else {
-        return ((LotPair) this).next;
+        return this.next;
     }
 }
 
-public @NotNull Object caar() {return ((Lot) this.car()).car();}
+public @NotNull Object caar() {
+    return ((Lot) this.car()).car();
+}
 
-public @NotNull Lot cddr() {return this.cdr().cdr();}
+public @NotNull Lot cddr() {
+    return this.cdr().cdr();
+}
+
+/**
+ * @return the car of the cdr of this lot.
+ */
+public Object cadr() {
+    return this.cdr().car();
+}
 
 /**
  * @return the cdr of the car of this lot.
  */
-public @NotNull Lot cdar() {return ((Lot) this.car()).cdr();}
+public @NotNull Lot cdar() {
+    return ((Lot) this.car()).cdr();
+}
 
 public @NotNull Object ref(int index) {
     Lot lt = this;
     int i = index;
     while (i >= 0) {
         if (lt.isEmpty()) {
-            throw new RuntimeException(String.format(Msg.INDEX_OUT, index, this));
+            String msg = String.format(Msg.INDEX_OUT, index, this);
+            throw new RuntimeException(msg);
         }
         if (i == 0) {
             return lt.car();
@@ -96,19 +125,21 @@ public @NotNull Object ref(int index) {
         i -= 1;
         lt = lt.cdr();
     }
-    throw new RuntimeException(String.format(Msg.INDEX_OUT, index, this));
+    String msg = String.format(Msg.INDEX_OUT, index, this);
+    throw new RuntimeException(msg);
 }
 
 public @NotNull Lot reverse() {
     if (this.isEmpty()) {
         return this;
     } else if (this.isBreadthCircle()) {
-        throw new RuntimeException(String.format(Msg.CIRCULAR_BREADTH, this));
+        String msg = String.format(Msg.CIRCULAR_BREADTH, this);
+        throw new RuntimeException(msg);
     } else {
-        Lot head = new LotPair(this.car(), new LotEnd());
+        Lot head = new Lot(this.car(), new Lot());
         Lot next = this.cdr();
         while (!next.isEmpty()) {
-            head = new LotPair(next.car(), head);
+            head = new Lot(next.car(), head);
             next = next.cdr();
         }
         return head;
@@ -117,21 +148,22 @@ public @NotNull Lot reverse() {
 
 public @NotNull Lot head(int index) {
     if (index == 0) {
-        return new LotEnd();
+        return new Lot();
     } else if (this.isBreadthCircle() || (0 <= index && index <= Mate.length(this))) {
         int i = index - 1;
-        Lot head = new LotPair(this.car(), new LotEnd());
+        Lot head = new Lot(this.car(), new Lot());
         Lot ooo = head;
         Lot xxx = this.cdr();
         while (i > 0) {
-            ((LotPair) ooo).next = new LotPair(xxx.car(), new LotEnd());
+            ooo.next = new Lot(xxx.car(), new Lot());
             ooo = ooo.cdr();
             xxx = xxx.cdr();
             i -= 1;
         }
         return head;
     } else {
-        throw new RuntimeException(String.format(Msg.INDEX_OUT, index, this));
+        String msg = String.format(Msg.INDEX_OUT, index, this);
+        throw new RuntimeException(msg);
     }
 }
 
@@ -145,7 +177,8 @@ public @NotNull Lot tail(int index) {
         }
         return lt;
     } else {
-        throw new RuntimeException(String.format(Msg.INDEX_OUT, index, this));
+        String msg = String.format(Msg.INDEX_OUT, index, this);
+        throw new RuntimeException(msg);
     }
 }
 
@@ -153,9 +186,10 @@ public @NotNull Lot copy() {
     if (this.isEmpty()) {
         return Pr.lot();
     } else if (this.isBreadthCircle()) {
-        throw new RuntimeException(String.format(Msg.CIRCULAR_BREADTH, this));
+        String msg = String.format(Msg.CIRCULAR_BREADTH, this);
+        throw new RuntimeException(msg);
     } else {
-        Lot head = new LotPair(this.car(), new LotEnd());
+        Lot head = new Lot(this.car(), new Lot());
         Lot ooo = head;
         Lot xxx = this.cdr();
         while (!xxx.isEmpty()) {
@@ -169,7 +203,8 @@ public @NotNull Lot copy() {
 
 public @NotNull Few toFew() {
     if (this.isBreadthCircle()) {
-        throw new RuntimeException(String.format(Msg.CIRCULAR_BREADTH, this));
+        String msg = String.format(Msg.CIRCULAR_BREADTH, this);
+        throw new RuntimeException(msg);
     }
     int length = Mate.length(this);
     Few fw = Pr.makeFew(length, 0);
@@ -186,14 +221,15 @@ public @NotNull Lot filter(Predicate1 fn) {
         return this;
     }
     if (this.isBreadthCircle()) {
-        throw new RuntimeException(String.format(Msg.CIRCULAR_BREADTH, this));
+        String msg = String.format(Msg.CIRCULAR_BREADTH, this);
+        throw new RuntimeException(msg);
     }
-    Lot head = new LotPair(false, new LotEnd());
+    Lot head = new Lot(false, new Lot());
     Lot ooo = head;
     Lot xxx = this;
     while (!xxx.isEmpty()) {
         if (fn.apply(xxx.car())) {
-            ((LotPair) ooo).next = new LotPair(xxx.car(), new LotEnd());
+            ooo.next = new Lot(xxx.car(), new Lot());
             ooo = ooo.cdr();
         }
         xxx = xxx.cdr();
@@ -206,13 +242,14 @@ public @NotNull Lot map(Do1 fn) {
         return this;
     }
     if (this.isBreadthCircle()) {
-        throw new RuntimeException(String.format(Msg.CIRCULAR_BREADTH, this));
+        String msg = String.format(Msg.CIRCULAR_BREADTH, this);
+        throw new RuntimeException(msg);
     }
-    Lot head = new LotPair(fn.apply(this.car()), new LotEnd());
+    Lot head = new Lot(fn.apply(this.car()), new Lot());
     Lot ooo = head;
     Lot xxx = this.cdr();
     while (!xxx.isEmpty()) {
-        ((LotPair) ooo).next = new LotPair(fn.apply(xxx.car()), new LotEnd());
+        ooo.next = new Lot(fn.apply(xxx.car()), new Lot());
         ooo = ooo.cdr();
         xxx = xxx.cdr();
     }

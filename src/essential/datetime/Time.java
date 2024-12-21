@@ -21,8 +21,9 @@ public record Time(long second, int nanosecond) {
 public Time(long second, int nanosecond) {
     if (nanosecond <= Mate.NEG_NANO_OF_SECOND ||
         Mate.POS_NANO_OF_SECOND <= nanosecond) {
-        throw new RuntimeException(String.format(Msg.OUT_RANGE_NANO, nanosecond, Mate.NEG_NANO_OF_SECOND + 1,
-                                                 Mate.POS_NANO_OF_SECOND - 1));
+        String msg = String.format(Msg.OUT_RANGE_NANO, nanosecond, Mate.NEG_NANO_OF_SECOND + 1,
+                                   Mate.POS_NANO_OF_SECOND - 1);
+        throw new RuntimeException(msg);
     }
     if (second > 0 && nanosecond < 0) {
         this.second = second - 1;
@@ -66,7 +67,8 @@ public @NotNull Date toDate(int offset) {
     if (Mate.checkTime(this)) {
         return Mate.timeToDate(this, offset);
     } else {
-        throw new IllegalArgumentException(String.format(Msg.OUT_TIME, this, Mate.UTC_MIN, Mate.UTC_MAX));
+        String msg = String.format(Msg.OUT_TIME, this, Mate.UTC_MIN, Mate.UTC_MAX);
+        throw new RuntimeException(msg);
     }
 }
 

@@ -58,7 +58,8 @@ public @NotNull Object ref(int index) {
     if (0 <= index && index < data.length) {
         return data[index];
     } else {
-        throw new RuntimeException(String.format(Msg.INDEX_OUT, index, this));
+        String msg = String.format(Msg.INDEX_OUT, index, this);
+        throw new RuntimeException(msg);
     }
 }
 
@@ -66,7 +67,8 @@ public void set(int index, Object datum) {
     if (0 <= index && index < this.data.length) {
         this.data[index] = datum;
     } else {
-        throw new RuntimeException(String.format(Msg.INDEX_OUT, index, this));
+        String msg = String.format(Msg.INDEX_OUT, index, this);
+        throw new RuntimeException(msg);
     }
 }
 
@@ -82,9 +84,9 @@ public @NotNull Few copy() {
 
 public Lot toLot() {
     int length = this.data.length;
-    Lot lt = new LotEnd();
+    Lot lt = new Lot();
     for (int i = length - 1; 0 <= i; i -= 1) {
-        lt = new LotPair(this.data[i], lt);
+        lt = new Lot(this.data[i], lt);
     }
     return lt;
 }

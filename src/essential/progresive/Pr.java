@@ -30,11 +30,11 @@ public class Pr {
 public static @NotNull Lot lot(@NotNull Object @NotNull ... args) {
     int length = args.length;
     if (length == 0) {
-        return new LotEnd();
+        return new Lot();
     } else {
-        Lot lt = new LotEnd();
+        Lot lt = new Lot();
         for (int i = length - 1; 0 <= i; i -= 1) {
-            lt = new LotPair(args[i], lt);
+            lt = new Lot(args[i], lt);
         }
         return lt;
     }
@@ -48,13 +48,15 @@ public static @NotNull Lot lot(@NotNull Object @NotNull ... args) {
  * @return a new Lot with the datum as the first element followed by the elements of the original Lot.
  */
 @Contract("_, _ -> new")
-public static @NotNull Lot cons(@NotNull Object datum, @NotNull Lot lt) {return new LotPair(datum, lt);}
+public static @NotNull Lot cons(@NotNull Object datum, @NotNull Lot lt) {
+    return new Lot(datum, lt);
+}
 
 public static void setCar(@NotNull Lot lt, @NotNull Object datum) {
     if (lt.isEmpty()) {
         throw new RuntimeException(Msg.LOT_EMPTY);
     } else {
-        ((LotPair) lt).data = datum;
+        lt.data = datum;
     }
 }
 
@@ -62,7 +64,7 @@ public static void setCdr(@NotNull Lot lt1, @NotNull Lot lt2) {
     if (lt1.isEmpty()) {
         throw new RuntimeException(Msg.LOT_EMPTY);
     } else {
-        ((LotPair) lt1).next = lt2;
+        lt1.next = lt2;
     }
 }
 
@@ -78,24 +80,26 @@ public static @NotNull Lot append(@NotNull Lot lt1, @NotNull Lot lt2) {
     if (lt1.isEmpty()) {
         return lt2;
     } else if (lt1.isBreadthCircle()) {
-        throw new RuntimeException(String.format(Msg.CIRCULAR_BREADTH, lt1));
+        String msg = String.format(Msg.CIRCULAR_BREADTH, lt1);
+        throw new RuntimeException(msg);
     } else {
-        Lot head = new LotPair(lt1.car(), new LotEnd());
+        Lot head = new Lot(lt1.car(), new Lot());
         Lot ooo = head;
         Lot xxx = lt1.cdr();
         while (!xxx.isEmpty()) {
-            ((LotPair) ooo).next = new LotPair(xxx.car(), new LotEnd());
+            ooo.next = new Lot(xxx.car(), new Lot());
             ooo = ooo.cdr();
             xxx = xxx.cdr();
         }
-        ((LotPair) ooo).next = lt2;
+        ooo.next = lt2;
         return head;
     }
 }
 
 public static boolean isBelong(Object datum, @NotNull Lot lt) {
     if (lt.isBreadthCircle()) {
-        throw new RuntimeException(String.format(Msg.CIRCULAR_BREADTH, lt));
+        String msg = String.format(Msg.CIRCULAR_BREADTH, lt);
+        throw new RuntimeException(msg);
     } else {
         return Mate.isBelong(datum, lt);
     }
@@ -103,7 +107,8 @@ public static boolean isBelong(Object datum, @NotNull Lot lt) {
 
 public static boolean isBelong(Predicate2 fn, Object datum, @NotNull Lot lt) {
     if (lt.isBreadthCircle()) {
-        throw new RuntimeException(String.format(Msg.CIRCULAR_BREADTH, lt));
+        String msg = String.format(Msg.CIRCULAR_BREADTH, lt);
+        throw new RuntimeException(msg);
     } else {
         while (!lt.isEmpty()) {
             if (fn.apply(datum, lt.car())) {
@@ -143,7 +148,8 @@ public static @NotNull Few makeFew(int length, @NotNull Object datum) {
         Arrays.fill(arr, datum);
         return new Few(arr);
     } else {
-        throw new RuntimeException(String.format(Msg.LEN_NON_NATURAL, length));
+        String msg = String.format(Msg.LEN_NON_NATURAL, length);
+        throw new RuntimeException(msg);
     }
 }
 
@@ -269,12 +275,13 @@ public static boolean less(Object datum1, Object datum2) {
             int r = Arrays.compare(ds1, ds2);
             return r < 0;
         } else {
-            throw new RuntimeException(String.format(Msg.UNDEFINED_ARR_COMPARE,
-                                                     stringOf(datum1), stringOf(datum2)));
+            String msg = String.format(Msg.UNDEFINED_ARR_COMPARE, stringOf(datum1), stringOf(datum2));
+            throw new RuntimeException(msg);
         }
     } else {
-        throw new RuntimeException(String.format(Msg.UNDEFINED_COMPARE,
-                                                 datum1.getClass().getName(), datum2.getClass().getName()));
+        String msg = String.format(Msg.UNDEFINED_COMPARE,
+                                   datum1.getClass().getName(), datum2.getClass().getName());
+        throw new RuntimeException(msg);
     }
 }
 

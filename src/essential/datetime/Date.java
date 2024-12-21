@@ -30,28 +30,36 @@ private final int offset;
 public Date(int year, int month, int day_of_month, int hour, int minute, int second,
             int nanosecond, int offset) {
     if (year < 0 || 2000000000 < year) {
-        throw new RuntimeException(String.format(Msg.OUT_YEAR, year));
+        String msg = String.format(Msg.OUT_YEAR, year);
+        throw new RuntimeException(msg);
     }
     if (month < 1 || 12 < month) {
-        throw new RuntimeException(String.format(Msg.OUT_MONTH, month));
+        String msg = String.format(Msg.OUT_MONTH, month);
+        throw new RuntimeException(msg);
     }
     if (!Mate.checkDayOfMonth(year, month, day_of_month)) {
-        throw new RuntimeException(String.format(Msg.OUT_DAY, year, month, day_of_month));
+        String msg = String.format(Msg.OUT_DAY, year, month, day_of_month);
+        throw new RuntimeException(msg);
     }
     if (hour < 0 || 23 < hour) {
-        throw new RuntimeException(String.format(Msg.OUT_HOUR, hour));
+        String msg = String.format(Msg.OUT_HOUR, hour);
+        throw new RuntimeException(msg);
     }
     if (minute < 0 || 59 < minute) {
-        throw new RuntimeException(String.format(Msg.OUT_MINUTE, minute));
+        String msg = String.format(Msg.OUT_MINUTE, minute);
+        throw new RuntimeException(msg);
     }
     if (second < 0 || 59 < second) {
-        throw new RuntimeException(String.format(Msg.OUT_SEC, second));
+        String msg = String.format(Msg.OUT_SEC, second);
+        throw new RuntimeException(msg);
     }
     if (nanosecond < 0 || 999999999 < nanosecond) {
-        throw new RuntimeException(String.format(Msg.OUT_NANO, nanosecond));
+        String msg = String.format(Msg.OUT_NANO, nanosecond);
+        throw new RuntimeException(msg);
     }
     if (offset < -64800 || 64800 < offset) {
-        throw new RuntimeException(String.format(Msg.OUT_OFFSET, offset));
+        String msg = String.format(Msg.OUT_OFFSET, offset);
+        throw new RuntimeException(msg);
     }
 
     this.year = year;

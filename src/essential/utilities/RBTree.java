@@ -8,28 +8,34 @@
 package essential.utilities;
 
 import essential.functional.Do1;
-import essential.progresive.Few;
-import org.jetbrains.annotations.NotNull;
 import essential.functional.Predicate1;
 import essential.functional.Predicate2;
+import essential.progresive.Few;
 import essential.progresive.Lot;
+import org.jetbrains.annotations.NotNull;
 
-import static essential.progresive.Pr.*;
+import static essential.progresive.Pr.lot;
 
 
 public class RBTree {
 
-private final Few rb_tree;
+private final Predicate2 less;
+private final Predicate2 greater;
+private Few root;
 
-public RBTree(Predicate2 less, Predicate2 greater) {rb_tree = few(less, greater, RBTreeMate.makeNode());}
+public RBTree(Predicate2 less, Predicate2 greater) {
+    this.less = less;
+    this.greater = greater;
+    root = RBTreeMate.makeNode();
+}
 
-Predicate2 less() {return (Predicate2) rb_tree.ref(0);}
+Predicate2 less() {return less;}
 
-Predicate2 greater() {return (Predicate2) rb_tree.ref(1);}
+Predicate2 greater() {return greater;}
 
-Few root() {return (Few) rb_tree.ref(2);}
+Few root() {return root;}
 
-void setRoot(Few node) {rb_tree.set(2, node);}
+void setRoot(Few node) {this.root = node;}
 
 @Override
 public String toString() {
@@ -111,7 +117,8 @@ public @NotNull Object ref(@NotNull Object key) {
     Lot path = RBTreeMate.pathOf(this, key);
     Few node = (Few) path.car();
     if (RBTreeMate.isNil(node)) {
-        throw new RuntimeException(String.format(Msg.NOT_PRESENT, key, this));
+        String msg = String.format(Msg.NOT_PRESENT, key, this);
+        throw new RuntimeException(msg);
     } else {
         return RBTreeMate.value(node);
     }
@@ -128,7 +135,8 @@ public void set(@NotNull Object key, Object new_value) {
     Lot path = RBTreeMate.pathOf(this, key);
     Few node = (Few) path.car();
     if (RBTreeMate.isNil(node)) {
-        throw new RuntimeException(String.format(Msg.NOT_PRESENT, key, this));
+        String msg = String.format(Msg.NOT_PRESENT, key, this);
+        throw new RuntimeException(msg);
     } else {
         RBTreeMate.setValue(node, new_value);
     }
@@ -222,5 +230,13 @@ public RBTree map(Do1 fn) {
  * @param tree The Red-Black tree to analyze
  * @return A Lot containing depth statistics, where each element is a Lot of the form {@code (depth count)}
  */
-public static Lot depthStatistic(@NotNull RBTree tree) {return RBTreeMate.depthStatistic(tree.root());}
+public static Lot depthStatistic(@NotNull RBTree tree) {
+    return RBTreeMate.depthStatistic(tree.root());
+}
+
+public static @NotNull RBTree make(Predicate2 less, Predicate2 greater, Few root) {
+    RBTree tree = new RBTree(less, greater);
+    tree.root = root;
+    return tree;
+}
 }

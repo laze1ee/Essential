@@ -8,6 +8,7 @@
 package essential.progresive;
 
 import essential.utilities.RBTree;
+import org.jetbrains.annotations.NotNull;
 
 
 public class Identical {
@@ -53,9 +54,9 @@ private void collectFew(Few fw) {
     }
 }
 
-private void collectLot(Lot lt) {
+private void collectLot(@NotNull Lot lt) {
     while (true) {
-        if (lt instanceof LotEnd) {
+        if (lt.isEmpty()) {
             break;
         } else {
             int key = System.identityHashCode(lt);

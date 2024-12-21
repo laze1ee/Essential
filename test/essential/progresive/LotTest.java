@@ -31,7 +31,7 @@ LotTest() {
 void testToString() {
     assertTrue(equal("(1 2 3)", l1.toString()));
     assertTrue(equal("#0=(1 2 3 . #0#)", l2.toString()));
-    assertTrue(equal("#0=(1 #1=(1 2 3 . #1#) 3 . #0#)", l3.toString()));
+    assertTrue(equal("#0=(#1=1 #2=(#1# 2 #3=3 . #2#) #3# . #0#)", l3.toString()));
 }
 
 @Test
@@ -50,7 +50,7 @@ void testEquals() {
 @Test
 void isEmpty() {
     assertFalse(l1.isEmpty());
-    assertTrue(new LotEnd().isEmpty());
+    assertTrue(new Lot().isEmpty());
 }
 
 @Test
