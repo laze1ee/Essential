@@ -53,12 +53,12 @@ static boolean isRightOf(Few node, Few parent) {return eq(node, right(parent));}
 
 static boolean isNil(Few node) {return key(node) instanceof Boolean;}
 
-static @NotNull String stringify(Few node) {
+static @NotNull String _stringOf(Few node) {
     if (isNil(node)) {
         return "nil";
     } else {
         return String.format("(%s %s %s %s)", stringOf(key(node)), stringOf(value(node)),
-                             stringify((Few) left(node)), stringify((Few) right(node)));
+                             _stringOf((Few) left(node)), _stringOf((Few) right(node)));
     }
 }
 
@@ -136,12 +136,12 @@ static Lot maximum(@NotNull Few node, Lot path) {
 record InsertFixing(RBTree tree, Lot path) {
 
     void process() {
-        job(path);
+        process(path);
         setColor(tree.root(), false);
     }
 
-    private void job(@NotNull Lot path) {
-        if (2 < path.length() && isRed((Few) path.ref(1))) {
+    private void process(@NotNull Lot path) {
+        while (2 < path.length() && isRed((Few) path.ref(1))) {
             Few p = (Few) path.ref(1);
             Few pp = (Few) path.ref(2);
             if (isLeftOf(p, pp)) {
@@ -150,7 +150,7 @@ record InsertFixing(RBTree tree, Lot path) {
                     setColor(p, false);
                     setColor(u, false);
                     setColor(pp, true);
-                    job(path.cddr());
+                    path = path.cddr();
                 } else {
                     if (isRightOf((Few) path.car(), p)) {
                         leftRotate(tree, path.cdr());
@@ -159,6 +159,7 @@ record InsertFixing(RBTree tree, Lot path) {
                     rightRotate(tree, path.cddr());
                     setColor(p, false);
                     setColor(pp, true);
+                    return;
                 }
             } else {
                 Few u = (Few) left(pp);
@@ -166,7 +167,7 @@ record InsertFixing(RBTree tree, Lot path) {
                     setColor(p, false);
                     setColor(u, false);
                     setColor(pp, true);
-                    job(path.cddr());
+                    path = path.cddr();
                 } else {
                     if (isLeftOf((Few) path.car(), p)) {
                         rightRotate(tree, path.cdr());
@@ -175,6 +176,7 @@ record InsertFixing(RBTree tree, Lot path) {
                     leftRotate(tree, path.cddr());
                     setColor(p, false);
                     setColor(pp, true);
+                    return;
                 }
             }
         }
@@ -246,12 +248,12 @@ private static class DeleteFixing {
 
     void process() {
         x = (Few) path.car();
-        job(path.cdr());
+        process(path.cdr());
         setColor(x, false);
     }
 
-    void job(@NotNull Lot path) {
-        if (!path.isEmpty() && isBlack(x)) {
+    void process(@NotNull Lot path) {
+        while (!path.isEmpty() && isBlack(x)) {
             Few p = (Few) path.car();
             if (isLeftOf(x, p)) {
                 Few s = (Few) right(p);
@@ -265,7 +267,7 @@ private static class DeleteFixing {
                 if (isBlack((Few) left(s)) && isBlack((Few) right(s))) {
                     setColor(s, true);
                     x = p;
-                    job(path.cdr());
+                    path = path.cdr();
                 } else {
                     if (isBlack((Few) right(s))) {
                         rightRotate(tree, cons(s, path));
@@ -277,6 +279,7 @@ private static class DeleteFixing {
                     setColor(s, color(p));
                     setColor(p, false);
                     setColor((Few) right(s), false);
+                    return;
                 }
             } else {
                 Few s = (Few) left(p);
@@ -290,7 +293,7 @@ private static class DeleteFixing {
                 if (isBlack((Few) left(s)) && isBlack((Few) right(s))) {
                     setColor(s, true);
                     x = p;
-                    job(path.cdr());
+                    path = path.cdr();
                 } else {
                     if (isBlack((Few) left(s))) {
                         leftRotate(tree, cons(s, path));
@@ -302,6 +305,7 @@ private static class DeleteFixing {
                     setColor(s, color(p));
                     setColor(p, false);
                     setColor((Few) left(s), false);
+                    return;
                 }
             }
         }

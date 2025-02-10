@@ -39,7 +39,7 @@ void setRoot(Few node) {this.root = node;}
 
 @Override
 public String toString() {
-    return String.format("«Red-Black-Tree %s»", RBTreeMate.stringify(root()));
+    return String.format("«Red-Black-Tree %s»", RBTreeMate._stringOf(root()));
 }
 
 @Override

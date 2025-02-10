@@ -15,15 +15,15 @@ import org.jetbrains.annotations.NotNull;
 
 public class Lot {
 
-Object data;
-Lot next;
+private Object data;
+private Lot next;
 
-Lot() {
-    data = new LotEnd();
-    next = null;
+protected Lot() {
+    this.data = null;
+    this.next = null;
 }
 
-Lot(Object data, Lot next) {
+protected Lot(Object data, Lot next) {
     this.data = data;
     this.next = next;
 }
@@ -54,8 +54,7 @@ public boolean equals(Object datum) {
 }
 
 public boolean isEmpty() {
-    return data instanceof LotEnd &&
-           next == null;
+    return data == null && next == null;
 }
 
 public int length() {
@@ -129,6 +128,22 @@ public @NotNull Object ref(int index) {
     throw new RuntimeException(msg);
 }
 
+public void setCar(@NotNull Object datum) {
+    if (this.isEmpty()) {
+        throw new RuntimeException(Msg.LOT_EMPTY);
+    } else {
+        this.data = datum;
+    }
+}
+
+public void setCdr(@NotNull Lot lt) {
+    if (this.isEmpty()) {
+        throw new RuntimeException(Msg.LOT_EMPTY);
+    } else {
+        this.next = lt;
+    }
+}
+
 public @NotNull Lot reverse() {
     if (this.isEmpty()) {
         return this;
@@ -193,7 +208,7 @@ public @NotNull Lot copy() {
         Lot ooo = head;
         Lot xxx = this.cdr();
         while (!xxx.isEmpty()) {
-            Pr.setCdr(ooo, Pr.lot(xxx.car()));
+            ooo.setCdr(Pr.lot(xxx.car()));
             ooo = ooo.cdr();
             xxx = xxx.cdr();
         }

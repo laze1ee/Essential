@@ -42,7 +42,7 @@ private boolean process(Object datum1, Object datum2) {
 }
 
 private boolean jobFew(@NotNull Few fw1, @NotNull Few fw2) {
-    if (fw1.data.length != fw2.data.length) {
+    if (fw1.length() != fw2.length()) {
         return false;
     } else {
         int key1 = System.identityHashCode(fw1);
@@ -60,10 +60,10 @@ private boolean jobFew(@NotNull Few fw1, @NotNull Few fw2) {
                 self1.set(1, count);
                 self2.set(1, count);
                 count += 1;
-                return equalArray(fw1.data, fw2.data);
+                return equalArray(fw1.data(), fw2.data());
             }
         } else {
-            return equalArray(fw1.data, fw2.data);
+            return equalArray(fw1.data(), fw2.data());
         }
     }
 }
@@ -137,13 +137,13 @@ static boolean lotEqual(@NotNull Lot lt1, Lot lt2) {
 }
 
 static boolean fewEqual(@NotNull Few fw1, @NotNull Few fw2) {
-    if (fw1.data.length == fw2.data.length) {
+    if (fw1.length() == fw2.length()) {
         int i = 0;
-        while (i < fw1.data.length &&
-               equal(fw1.data[i], fw2.data[i])) {
+        while (i < fw1.length() &&
+               equal(fw1.ref(i), fw2.ref(i))) {
             i = i + 1;
         }
-        return i == fw1.data.length;
+        return i == fw1.length();
     } else {
         return false;
     }

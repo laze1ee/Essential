@@ -55,12 +55,12 @@ static boolean isRightOf(Few node, Few parent) {return eq(node, right(parent));}
 
 static boolean isNil(Few node) {return key(node) instanceof Boolean;}
 
-static @NotNull String stringify(Few node) {
+static @NotNull String _stringOf(Few node) {
     if (isNil(node)) {
         return "nil";
     } else {
         return String.format("(%s %s %s %s)", stringOf(key(node)), stringOf(value(node)),
-                             stringify((Few) left(node)), stringify((Few) right(node)));
+                             _stringOf((Few) left(node)), _stringOf((Few) right(node)));
     }
 }
 

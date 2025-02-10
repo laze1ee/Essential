@@ -61,13 +61,12 @@ Object process() {
         case SET_CDR -> {
             Lot lt1 = (Lot) pack.ref(1);
             Lot lt2 = (Lot) share.ref((int) pack.ref(2));
-            //lt2.toString();   // force refresh lt2 for passing junit 5 test
-            setCdr(lt1, lt2);
+            lt1.setCdr(lt2);
         }
         case SET_CAR -> {
             Lot lt = (Lot) pack.ref(1);
             int idx = (int) pack.ref(2);
-            setCar(lt, share.ref(idx));
+            lt.setCar(share.ref(idx));
         }
         case SET_FEW -> {
             Few fw = (Few) pack.ref(1);

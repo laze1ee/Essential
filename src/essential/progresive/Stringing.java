@@ -60,10 +60,10 @@ private @NotNull String jobFew(Few fw) {
             self.set(0, true);
             self.set(1, count);
             count += 1;
-            return String.format("#%s=#(%s)", self.ref(1), connectArray(fw.data));
+            return String.format("#%s=#(%s)", self.ref(1), connectArray(fw.data()));
         }
     } else {
-        return String.format("#(%s)", connectArray(fw.data));
+        return String.format("#(%s)", connectArray(fw.data()));
     }
 }
 
@@ -136,7 +136,7 @@ static @NotNull String identicalString(Object datum, RBTree identical) {
 }
 
 static @NotNull String fewString(@NotNull Few fw) {
-    int len = fw.data.length;
+    int len = fw.length();
     if (len == 0) {
         return "#()";
     } else {
@@ -144,10 +144,10 @@ static @NotNull String fewString(@NotNull Few fw) {
         builder.append("#(");
         len -= 1;
         for (int i = 0; i < len; i = i + 1) {
-            builder.append(stringOf(fw.data[i]));
+            builder.append(stringOf(fw.ref(i)));
             builder.append(' ');
         }
-        builder.append(stringOf(fw.data[len]));
+        builder.append(stringOf(fw.ref(len)));
         builder.append(')');
         return builder.toString();
     }

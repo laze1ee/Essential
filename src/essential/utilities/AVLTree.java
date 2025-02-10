@@ -38,7 +38,7 @@ Few root() {return root;}
 void setRoot(Few node) {this.root = node;}
 
 @Override
-public String toString() {return String.format("«AVL-Tree %s»", AVLTreeMate.stringify(root()));}
+public String toString() {return String.format("«AVL-Tree %s»", AVLTreeMate._stringOf(root()));}
 
 @Override
 public boolean equals(Object datum) {

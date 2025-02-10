@@ -46,8 +46,8 @@ private void collectFew(Few fw) {
     int key = System.identityHashCode(fw);
     boolean success = collector.insert(key, false);
     if (success) {
-        for (int i = 0; i < fw.data.length; i += 1) {
-            collect(fw.data[i]);
+        for (int i = 0; i < fw.length(); i += 1) {
+            collect(fw.ref(i));
         }
     } else {
         identical.insert(key, fw);

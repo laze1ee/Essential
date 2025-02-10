@@ -10,7 +10,6 @@ package essential.progresive;
 import essential.functional.Do1;
 import essential.functional.Predicate2;
 import essential.utilities.RBTree;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -18,9 +17,15 @@ import java.util.Arrays;
 
 public class Few {
 
-final Object[] data;
+private final Object[] data;
 
-Few(Object[] data) {this.data = data;}
+protected Few(Object[] data) {
+    this.data = data;
+}
+
+Object[] data() {
+    return data;
+}
 
 @Override
 public String toString() {
@@ -74,7 +79,6 @@ public void set(int index, Object datum) {
 
 public void fill(@NotNull Object datum) {Arrays.fill(this.data, datum);}
 
-@Contract(pure = true)
 public @NotNull Few copy() {
     int length = this.data.length;
     Object[] arr = new Object[length];
@@ -103,9 +107,8 @@ public @NotNull Few map(Do1 fn) {
 /**
  * Find the first index satisfying the given predicate.
  *
- * @param fn   A predicate taking two arguments.
+ * @param fn    A predicate taking two arguments.
  * @param datum The second argument of the predicate.
- *
  * @return The index if found, -1 otherwise.
  */
 public int find(Predicate2 fn, Object datum) {

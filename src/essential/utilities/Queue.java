@@ -7,6 +7,7 @@
 
 package essential.utilities;
 
+import essential.progresive.Pr;
 import org.jetbrains.annotations.NotNull;
 import essential.progresive.Few;
 import essential.progresive.Lot;
@@ -34,7 +35,8 @@ public boolean isEmpty() {
 
 @Override
 public String toString() {
-    return String.format("«Queue %s %s»", pipe.ref(0), pipe.ref(1));
+    Lot uuf = Pr.append((Lot) pipe.ref(0), ((Lot) pipe.ref(1)).reverse());
+    return String.format("«Queue %s»", uuf);
 }
 
 @Override

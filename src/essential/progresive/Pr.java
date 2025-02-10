@@ -52,22 +52,6 @@ public static @NotNull Lot cons(@NotNull Object datum, @NotNull Lot lt) {
     return new Lot(datum, lt);
 }
 
-public static void setCar(@NotNull Lot lt, @NotNull Object datum) {
-    if (lt.isEmpty()) {
-        throw new RuntimeException(Msg.LOT_EMPTY);
-    } else {
-        lt.data = datum;
-    }
-}
-
-public static void setCdr(@NotNull Lot lt1, @NotNull Lot lt2) {
-    if (lt1.isEmpty()) {
-        throw new RuntimeException(Msg.LOT_EMPTY);
-    } else {
-        lt1.next = lt2;
-    }
-}
-
 /**
  * Returns a new Lot which is the result of appending the elements of {@code lt2} to the elements of {@code lt1}.
  *
@@ -87,11 +71,11 @@ public static @NotNull Lot append(@NotNull Lot lt1, @NotNull Lot lt2) {
         Lot ooo = head;
         Lot xxx = lt1.cdr();
         while (!xxx.isEmpty()) {
-            ooo.next = new Lot(xxx.car(), new Lot());
+            ooo.setCdr(new Lot(xxx.car(), new Lot()));
             ooo = ooo.cdr();
             xxx = xxx.cdr();
         }
-        ooo.next = lt2;
+        ooo.setCdr(lt2);
         return head;
     }
 }
@@ -152,16 +136,6 @@ public static @NotNull Few makeFew(int length, @NotNull Object datum) {
         throw new RuntimeException(msg);
     }
 }
-
-/**
- * Creates a new Few object with a specified length, initializing all elements to 0.
- *
- * @param length the length of the Few to be created. Must be a non-negative integer.
- * @return a Few containing the specified number of elements, all set to 0.
- * @throws RuntimeException if the length is negative.
- */
-@Contract("_ -> new")
-public static @NotNull Few makeFew(int length) {return makeFew(length, 0);}
 //endregion
 
 

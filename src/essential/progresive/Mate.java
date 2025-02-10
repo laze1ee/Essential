@@ -44,6 +44,7 @@ static boolean isBelong(Object datum, @NotNull Lot lt) {
     }
     return false;
 }
+
 static int theHareAndTortoise(@NotNull Lot lt) {
     if (lt.isEmpty()) {
         return 0;
