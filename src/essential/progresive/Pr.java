@@ -9,7 +9,6 @@ package essential.progresive;
 
 import essential.datetime.Time;
 import essential.functional.Predicate2;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -40,14 +39,6 @@ public static @NotNull Lot lot(@NotNull Object @NotNull ... args) {
     }
 }
 
-/**
- * Constructs a new Lot by prepending the given datum to the existing Lot.
- *
- * @param datum the element to be added at the beginning of the Lot.
- * @param lt    the Lot to which the datum will be prepended.
- * @return a new Lot with the datum as the first element followed by the elements of the original Lot.
- */
-@Contract("_, _ -> new")
 public static @NotNull Lot cons(@NotNull Object datum, @NotNull Lot lt) {
     return new Lot(datum, lt);
 }
@@ -117,15 +108,6 @@ public static boolean isBelong(Predicate2 fn, Object datum, @NotNull Lot lt) {
  */
 public static @NotNull Few few(@NotNull Object @NotNull ... args) {return new Few(args);}
 
-/**
- * Creates a new Few object with a specified length, initializing all elements to the provided datum.
- *
- * @param length the length of the Few to be created. Must be a non-negative integer.
- * @param datum  the object to fill the Few with.
- * @return a Few containing the specified number of elements, all set to the given datum.
- * @throws RuntimeException if the length is negative.
- */
-@Contract("_, _ -> new")
 public static @NotNull Few makeFew(int length, @NotNull Object datum) {
     if (0 <= length) {
         Object[] arr = new Object[length];
@@ -198,7 +180,6 @@ public static boolean equal(Object datum1, Object datum2) {
         return datum1.equals(datum2);
     }
 }
-
 
 /**
  * The types supported to compare size:

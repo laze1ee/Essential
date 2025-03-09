@@ -20,7 +20,7 @@ class Mate {
 static final char[] HEX_STR = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                                          'A', 'B', 'C', 'D', 'E', 'F'};
 @SuppressWarnings("SpellCheckingInspection")
-static final char[] CHARS_SET = 
+static final char[] CHARS_SET =
 "_-ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz".toCharArray();
 
 

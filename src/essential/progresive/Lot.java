@@ -144,6 +144,25 @@ public void setCdr(@NotNull Lot lt) {
     }
 }
 
+public void set(int index, Object datum) {
+    Lot lt = this;
+    int i = index;
+    while (i >= 0) {
+        if (lt.isEmpty()) {
+            String msg = String.format(Msg.INDEX_OUT, index, this);
+            throw new RuntimeException(msg);
+        }
+        if (i == 0) {
+            lt.data = datum;
+            return;
+        }
+        i -= 1;
+        lt = lt.cdr();
+    }
+    String msg = String.format(Msg.INDEX_OUT, index, this);
+    throw new RuntimeException(msg);
+}
+
 public @NotNull Lot reverse() {
     if (this.isEmpty()) {
         return this;
