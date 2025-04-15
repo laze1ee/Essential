@@ -9,6 +9,7 @@ package essential.utilities;
 
 import essential.progresive.Few;
 import essential.progresive.Lot;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
@@ -22,6 +23,13 @@ private static class Nothing {}
 private static final String SET_CDR = "set-cdr";
 private static final String SET_CAR = "set-car";
 private static final String SET_FEW = "set-few";
+
+private static final char[] HEX_STR = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                                                 'A', 'B', 'C', 'D', 'E', 'F'};
+
+private static @NotNull String hexOfByte(byte b) {
+    return new String(new char[]{HEX_STR[(b >> 4) & 0xF], HEX_STR[b & 0xF]});
+}
 
 private final byte[] bin;
 private int index;
@@ -61,12 +69,12 @@ Object process() {
         case SET_CDR -> {
             Lot lt1 = (Lot) pack.ref(1);
             Lot lt2 = (Lot) share.ref((int) pack.ref(2));
-            lt1.setCdr(lt2);
+            setCdr(lt1, lt2);
         }
         case SET_CAR -> {
             Lot lt = (Lot) pack.ref(1);
             int idx = (int) pack.ref(2);
-            lt.setCar(share.ref(idx));
+            setCar(lt, share.ref(idx));
         }
         case SET_FEW -> {
             Few fw = (Few) pack.ref(1);

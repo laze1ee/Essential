@@ -11,7 +11,6 @@ class Msg {
 
 // Binary
 static final String INVALID_RANGE = "invalid byte array range [%s %s]";
-static final String NON_NATURAL = "length %s is not a natural number";
 static final String UNSUPPORTED = "unsupported type %s for encoding";
 static final String UNMATCHED_BIN_LABEL = "unmatched binary label %s in index %s";
 

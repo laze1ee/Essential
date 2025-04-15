@@ -17,13 +17,6 @@ import static essential.progresive.Pr.*;
 
 class Mate {
 
-static final char[] HEX_STR = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                                         'A', 'B', 'C', 'D', 'E', 'F'};
-@SuppressWarnings("SpellCheckingInspection")
-static final char[] CHARS_SET =
-"_-ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz".toCharArray();
-
-
 //region Lot
 
 static int length(@NotNull Lot lt) {
@@ -108,6 +101,13 @@ static @NotNull String dataString(@NotNull String str) {
     }
     builder.append('"');
     return builder.toString();
+}
+
+private static final char[] HEX_STR = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                                                 'A', 'B', 'C', 'D', 'E', 'F'};
+
+private static @NotNull String hexOfByte(byte b) {
+    return new String(new char[]{HEX_STR[(b >> 4) & 0xF], HEX_STR[b & 0xF]});
 }
 
 static @NotNull String stringOfArray(@NotNull Object arr) {

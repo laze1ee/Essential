@@ -255,13 +255,13 @@ void testFewAndLot() {
     assertEquals(fw, out_fw);
 
     // Identical Test
-    lt.cddr().setCdr(lt);
+    setCdr(lt.cddr(), lt);
     bin_lt = Binary.encode(lt);
     out_lt = (Lot) Binary.decode(bin_lt);
     assertEquals(lt, out_lt);
 
     Lot ls = cons('a', cons(false, cons("abc", lt)));
-    ls.cdr().setCar(ls);
+    setCar(ls.cdr(), ls);
     byte[] bin_ls = Binary.encode(ls);
     Lot out_ls = (Lot) Binary.decode(bin_ls);
     assertEquals(ls, out_ls);

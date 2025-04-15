@@ -12,7 +12,6 @@ import essential.functional.Predicate2;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
-import java.util.Random;
 
 
 public class Pr {
@@ -23,7 +22,7 @@ public class Pr {
  * Constructs a Lot from the given arguments.
  *
  * @param args the elements to be included in the Lot.
- *             If no arguments are provided, an empty Lot (LotEnd) is returned.
+ *             If no arguments are provided, an empty Lot is returned.
  * @return a Lot containing the provided elements.
  */
 public static @NotNull Lot lot(@NotNull Object @NotNull ... args) {
@@ -39,8 +38,70 @@ public static @NotNull Lot lot(@NotNull Object @NotNull ... args) {
     }
 }
 
+public static void setCar(@NotNull Lot lt, @NotNull Object datum) {
+    if (lt.isEmpty()) {
+        throw new RuntimeException(Msg.LOT_EMPTY);
+    } else {
+        lt.setData(datum);
+    }
+}
+
+public static void setCdr(@NotNull Lot lt1, @NotNull Lot lt2) {
+    if (lt1.isEmpty()) {
+        throw new RuntimeException(Msg.LOT_EMPTY);
+    } else {
+        lt1.setNext(lt2);
+    }
+}
+
 public static @NotNull Lot cons(@NotNull Object datum, @NotNull Lot lt) {
     return new Lot(datum, lt);
+}
+
+public static void setCons(Object datum, @NotNull Lot lt) {
+    if (lt.isEmpty()) {
+        lt.setData(datum);
+        lt.setNext(new Lot());
+    } else {
+        Lot ls = cons(lt.car(), lt.cdr());
+        lt.setData(datum);
+        lt.setNext(ls);
+    }
+}
+
+public static @NotNull Lot append(@NotNull Lot lt, Object datum) {
+    if (lt.isEmpty()) {
+        return new Lot(datum, new Lot());
+    } else if (lt.isBreadthCircle()) {
+        String msg = String.format(Msg.CIRCULAR_BREADTH, lt);
+        throw new RuntimeException(msg);
+    } else {
+        Lot head = new Lot(lt.car(), new Lot());
+        Lot ooo = head.cdr();
+        Lot xxx = lt.cdr();
+        while (!xxx.isEmpty()) {
+            ooo.setData(xxx.car());
+            ooo.setNext(new Lot());
+            ooo = ooo.cdr();
+            xxx = xxx.cdr();
+        }
+        ooo.setData(datum);
+        ooo.setNext(new Lot());
+        return head;
+    }
+}
+
+public static void setAppend(@NotNull Lot lt, Object datum) {
+    if (lt.isBreadthCircle()) {
+        String msg = String.format(Msg.CIRCULAR_BREADTH, lt);
+        throw new RuntimeException(msg);
+    } else {
+        while (!lt.isEmpty()) {
+            lt = lt.cdr();
+        }
+        lt.setData(datum);
+        lt.setNext(new Lot());
+    }
 }
 
 /**
@@ -62,11 +123,11 @@ public static @NotNull Lot append(@NotNull Lot lt1, @NotNull Lot lt2) {
         Lot ooo = head;
         Lot xxx = lt1.cdr();
         while (!xxx.isEmpty()) {
-            ooo.setCdr(new Lot(xxx.car(), new Lot()));
+            ooo.setNext(new Lot(xxx.car(), new Lot()));
             ooo = ooo.cdr();
             xxx = xxx.cdr();
         }
-        ooo.setCdr(lt2);
+        ooo.setNext(lt2);
         return head;
     }
 }
@@ -266,21 +327,6 @@ public static @NotNull String stringOf(Object datum) {
     } else {
         return datum.toString();
     }
-}
-
-public static @NotNull String randomString(int length) {
-    Random rd = new Random();
-    StringBuilder builder = new StringBuilder();
-    for (int i = 0; i < length; i = i + 1) {
-        int index = rd.nextInt(Mate.CHARS_SET.length);
-        char c = Mate.CHARS_SET[index];
-        builder.append(c);
-    }
-    return builder.toString();
-}
-
-public static @NotNull String hexOfByte(byte b) {
-    return new String(new char[]{Mate.HEX_STR[(b >> 4) & 0xF], Mate.HEX_STR[b & 0xF]});
 }
 //endregion
 }

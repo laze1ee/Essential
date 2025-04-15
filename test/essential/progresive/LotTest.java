@@ -21,10 +21,10 @@ final Lot l3;
 LotTest() {
     l1 = lot(1, 2, 3);
     l2 = l1.copy();
-    l2.cddr().setCdr(l2);
+    setCdr(l2.cddr(), l2);
     l3 = l1.copy();
-    l3.cddr().setCdr(l3);
-    l3.cdr().setCar(l2);
+    setCdr(l3.cddr(), l3);
+    setCar(l3.cdr(), l2);
 }
 
 @Test
@@ -39,11 +39,11 @@ void testEquals() {
     Lot m1 = l1.copy();
     assertTrue(equal(l1, m1));
     Lot m2 = l1.copy();
-    m2.cddr().setCdr(m2);
+    setCdr(m2.cddr(), m2);
     assertTrue(equal(l2, m2));
     Lot m3 = l1.copy();
-    m3.cddr().setCdr(m3);
-    m3.cdr().setCdr(l2);
+    setCdr(m3.cddr(), m3);
+    setCar(m3.cdr(), l2);
     assertTrue(equal(l3, m3));
 }
 

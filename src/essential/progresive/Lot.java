@@ -28,6 +28,14 @@ protected Lot(Object data, Lot next) {
     this.next = next;
 }
 
+void setData(@NotNull Object datum) {
+    this.data = datum;
+}
+
+void setNext(@NotNull Lot lt) {
+    this.next = lt;
+}
+
 @Override
 public String toString() {
     RBTree identical = Identical.detect(this);
@@ -128,22 +136,6 @@ public @NotNull Object ref(int index) {
     throw new RuntimeException(msg);
 }
 
-public void setCar(@NotNull Object datum) {
-    if (this.isEmpty()) {
-        throw new RuntimeException(Msg.LOT_EMPTY);
-    } else {
-        this.data = datum;
-    }
-}
-
-public void setCdr(@NotNull Lot lt) {
-    if (this.isEmpty()) {
-        throw new RuntimeException(Msg.LOT_EMPTY);
-    } else {
-        this.next = lt;
-    }
-}
-
 public void set(int index, Object datum) {
     Lot lt = this;
     int i = index;
@@ -227,7 +219,7 @@ public @NotNull Lot copy() {
         Lot ooo = head;
         Lot xxx = this.cdr();
         while (!xxx.isEmpty()) {
-            ooo.setCdr(Pr.lot(xxx.car()));
+            ooo.next = new Lot(xxx.car(), new Lot());
             ooo = ooo.cdr();
             xxx = xxx.cdr();
         }

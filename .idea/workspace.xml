@@ -7,11 +7,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7eecb0c4-2d1d-4b73-bf14-df6f67da83cb" name="Changes" comment="">
+    <list default="true" id="7eecb0c4-2d1d-4b73-bf14-df6f67da83cb" name="Changes" comment="reducing recursive call">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Essential.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Essential.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/progresive/Lot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/Lot.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/progresive/Mate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/Mate.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/progresive/Pr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progresive/Pr.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/Decoding.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/Decoding.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/progresive/LotTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/progresive/LotTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/progresive/PrTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/progresive/PrTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/utilities/BinaryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/BinaryTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,32 +51,42 @@
     <option name="showExcludedFiles" value="false" />
     <option name="showVisibilityIcons" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;JUnit.BinaryTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BinaryTest.testFewAndLot.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.FewTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.LotTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.LotTest.testToString.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PrTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RBTreeTest.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/Rock/TODO/IdeaProject/Essential&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.folding&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Downloaded.Files.Path.Enabled": "false",
+    "JUnit.BinaryTest.executor": "Run",
+    "JUnit.BinaryTest.testFewAndLot.executor": "Run",
+    "JUnit.FewTest.executor": "Run",
+    "JUnit.LotTest.executor": "Run",
+    "JUnit.LotTest.testEquals.executor": "Run",
+    "JUnit.LotTest.testToString.executor": "Run",
+    "JUnit.PrTest.executor": "Run",
+    "JUnit.PrTest.testAppend1.executor": "Run",
+    "JUnit.PrTest.testAppend2.executor": "Run",
+    "JUnit.PrTest.testSetAppend.executor": "Run",
+    "JUnit.PrTest.testSetCons.executor": "Run",
+    "JUnit.RBTreeTest.executor": "Run",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "true",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "com.codeium.enabled": "true",
+    "deletionFromPopupRequiresConfirmation": "false",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "E:/Rock/TODO/IdeaProject/Essential",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.sourceCode.Java",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager" selected="JUnit.RBTreeTest">
+}]]></component>
+  <component name="RunManager" selected="JUnit.BinaryTest">
     <configuration name="BinaryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Essential" />
       <extension name="coverage">
@@ -87,38 +102,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="FewTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Essential" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="essential.progresive.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="essential.progresive" />
-      <option name="MAIN_CLASS_NAME" value="essential.progresive.FewTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="LotTest.testToString" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Essential" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="essential.progresive.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="essential.progresive" />
-      <option name="MAIN_CLASS_NAME" value="essential.progresive.LotTest" />
-      <option name="METHOD_NAME" value="testToString" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="PrTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="PrTest.testAppend1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Essential" />
       <extension name="coverage">
         <pattern>
@@ -128,7 +112,40 @@
       </extension>
       <option name="PACKAGE_NAME" value="essential.progresive" />
       <option name="MAIN_CLASS_NAME" value="essential.progresive.PrTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="METHOD_NAME" value="testAppend1" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PrTest.testAppend2" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Essential" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="essential.progresive.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="essential.progresive" />
+      <option name="MAIN_CLASS_NAME" value="essential.progresive.PrTest" />
+      <option name="METHOD_NAME" value="testAppend2" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PrTest.testSetAppend" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Essential" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="essential.progresive.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="essential.progresive" />
+      <option name="MAIN_CLASS_NAME" value="essential.progresive.PrTest" />
+      <option name="METHOD_NAME" value="testSetAppend" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -149,26 +166,26 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="JUnit.PrTest" />
+      <item itemvalue="JUnit.PrTest.testAppend1" />
+      <item itemvalue="JUnit.PrTest.testAppend2" />
+      <item itemvalue="JUnit.PrTest.testSetAppend" />
       <item itemvalue="JUnit.RBTreeTest" />
-      <item itemvalue="JUnit.FewTest" />
-      <item itemvalue="JUnit.LotTest.testToString" />
       <item itemvalue="JUnit.BinaryTest" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.RBTreeTest" />
         <item itemvalue="JUnit.BinaryTest" />
-        <item itemvalue="JUnit.PrTest" />
-        <item itemvalue="JUnit.FewTest" />
-        <item itemvalue="JUnit.LotTest.testToString" />
+        <item itemvalue="JUnit.RBTreeTest" />
+        <item itemvalue="JUnit.PrTest.testAppend2" />
+        <item itemvalue="JUnit.PrTest.testSetAppend" />
+        <item itemvalue="JUnit.PrTest.testAppend1" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.25659.59" />
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
       </set>
     </attachedChunks>
   </component>
@@ -198,6 +215,8 @@
       <workItem from="1740557959939" duration="633000" />
       <workItem from="1741451490874" duration="62000" />
       <workItem from="1741540073453" duration="138000" />
+      <workItem from="1744701346191" duration="8072000" />
+      <workItem from="1744726043373" duration="194000" />
     </task>
     <task id="LOCAL-00002" summary="simplify Lot">
       <option name="closed" value="true" />
