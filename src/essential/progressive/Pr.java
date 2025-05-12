@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2022-2024. Laze Lee
+ * Copyright (c) 2022-2025. Laze Lee
  * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
  * If a copy of the MPL was not distributed with this file, You can obtain one at
  * https://mozilla.org/MPL/2.0/
  */
 
-package essential.progresive;
+package essential.progressive;
 
 import essential.datetime.Time;
 import essential.functional.Predicate2;
@@ -17,7 +17,6 @@ import java.util.Arrays;
 public class Pr {
 
 //region Lot
-
 /**
  * Constructs a Lot from the given arguments.
  *
@@ -159,7 +158,6 @@ public static boolean isBelong(Predicate2 fn, Object datum, @NotNull Lot lt) {
 
 
 //region Few
-
 /**
  * Constructs a Few from the given arguments.
  *
@@ -167,7 +165,9 @@ public static boolean isBelong(Predicate2 fn, Object datum, @NotNull Lot lt) {
  *             If no arguments are provided, an empty Few is returned.
  * @return a Few containing the provided elements.
  */
-public static @NotNull Few few(@NotNull Object @NotNull ... args) {return new Few(args);}
+public static @NotNull Few few(@NotNull Object @NotNull ... args) {
+    return new Few(args);
+}
 
 public static @NotNull Few makeFew(int length, @NotNull Object datum) {
     if (0 <= length) {
@@ -183,7 +183,6 @@ public static @NotNull Few makeFew(int length, @NotNull Object datum) {
 
 
 //region Comparison
-
 public static boolean eq(Object datum1, Object datum2) {
     if (datum1 == datum2) {
         return true;
@@ -308,7 +307,6 @@ public static boolean greater(Object datum1, Object datum2) {
 
 
 //region To String
-
 public static @NotNull String stringOf(Object datum) {
     if (datum == null) {
         return "«null»";

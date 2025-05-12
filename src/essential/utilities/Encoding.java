@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2024. Laze Lee
+ * Copyright (c) 2022-2025. Laze Lee
  * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
  * If a copy of the MPL was not distributed with this file, You can obtain one at
  * https://mozilla.org/MPL/2.0/
@@ -9,14 +9,11 @@ package essential.utilities;
 
 import essential.datetime.Date;
 import essential.datetime.Time;
-import essential.progresive.Few;
-import essential.progresive.Identical;
-import essential.progresive.Lot;
-import essential.progresive.Pr;
+import essential.progressive.*;
 import org.jetbrains.annotations.NotNull;
 
-import static essential.progresive.Pr.cons;
-import static essential.progresive.Pr.lot;
+import static essential.progressive.Pr.cons;
+import static essential.progressive.Pr.lot;
 
 
 class Encoding {
@@ -26,7 +23,7 @@ private Few share;
 Encoding() {}
 
 byte[] process(Object datum) {
-    RBTree identical = Identical.detect(datum);
+    RBTree identical = Sharing.detect(datum);
     share = identical.travel()
                      .map(o -> ((Lot) o).ref(1))
                      .toFew();

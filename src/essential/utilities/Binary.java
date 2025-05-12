@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2024. Laze Lee
+ * Copyright (c) 2022-2025. Laze Lee
  * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
  * If a copy of the MPL was not distributed with this file, You can obtain one at
  * https://mozilla.org/MPL/2.0/
@@ -7,13 +7,13 @@
 
 package essential.utilities;
 
-import essential.progresive.Few;
+import essential.progressive.Few;
 import org.jetbrains.annotations.NotNull;
-import essential.progresive.Lot;
+import essential.progressive.Lot;
 
 import java.util.Arrays;
 
-import static essential.progresive.Pr.*;
+import static essential.progressive.Pr.*;
 
 
 public class Binary {
@@ -48,7 +48,6 @@ public static final byte BIN_LOT_END = (byte) 0xF4;
 
 
 //region Common Functions
-
 /**
  * Convert a long to a byte array in big-endian order.
  *
@@ -166,7 +165,6 @@ public static byte @NotNull [] connectBytes(@NotNull Lot lt) {
 
 
 //region Variable Length i32 Integer
-
 public static byte @NotNull [] encodeVarI32(int n) {
     if (-0x40 <= n && n < 0x40) {                   // 7 bits
         return new byte[]{(byte) (n & 0x7F)};

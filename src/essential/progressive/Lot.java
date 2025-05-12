@@ -1,15 +1,14 @@
 /*
- * Copyright (c) 2022-2024. Laze Lee
+ * Copyright (c) 2022-2025. Laze Lee
  * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
  * If a copy of the MPL was not distributed with this file, You can obtain one at
  * https://mozilla.org/MPL/2.0/
  */
 
-package essential.progresive;
+package essential.progressive;
 
 import essential.functional.Do1;
 import essential.functional.Predicate1;
-import essential.utilities.RBTree;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -37,28 +36,17 @@ void setNext(@NotNull Lot lt) {
 }
 
 @Override
-public String toString() {
-    RBTree identical = Identical.detect(this);
-    if (identical.isEmpty()) {
-        return Stringing.lotString(this);
+public boolean equals(Object datum) {
+    if (datum instanceof Lot lt) {
+        return Equality.process(this, lt);
     } else {
-        return Stringing.identicalString(this, identical);
+        return false;
     }
 }
 
 @Override
-public boolean equals(Object datum) {
-    if (datum instanceof Lot lt) {
-        RBTree identical1 = Identical.detect(this);
-        RBTree identical2 = Identical.detect(datum);
-        if (identical1.isEmpty() && identical2.isEmpty()) {
-            return Equaling.lotEqual(this, lt);
-        } else {
-            return Equaling.identicalEqual(this, identical1, datum, identical2);
-        }
-    } else {
-        return false;
-    }
+public String toString() {
+    return ToString.process(this);
 }
 
 public boolean isEmpty() {

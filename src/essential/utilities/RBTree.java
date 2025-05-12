@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2024. Laze Lee
+ * Copyright (c) 2022-2025. Laze Lee
  * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
  * If a copy of the MPL was not distributed with this file, You can obtain one at
  * https://mozilla.org/MPL/2.0/
@@ -10,17 +10,24 @@ package essential.utilities;
 import essential.functional.Do1;
 import essential.functional.Predicate1;
 import essential.functional.Predicate2;
-import essential.progresive.Few;
-import essential.progresive.Lot;
+import essential.progressive.Few;
+import essential.progressive.Lot;
 import org.jetbrains.annotations.NotNull;
 
-import static essential.progresive.Pr.lot;
+import static essential.progressive.Pr.lot;
 
 
 public class RBTree {
 
+public static @NotNull RBTree make(Predicate2 less, Predicate2 greater, Few root) {
+    RBTree tree = new RBTree(less, greater);
+    tree.root = root;
+    return tree;
+}
+
 private final Predicate2 less;
 private final Predicate2 greater;
+
 private Few root;
 
 public RBTree(Predicate2 less, Predicate2 greater) {
@@ -64,8 +71,7 @@ public boolean isEmpty() {return RBTreeMate.isNil(root());}
  * @return number of items in the tree.
  */
 public int size() {
-    RBTreeMate.Counting inst = new RBTreeMate.Counting();
-    return inst.process(root());
+    return RBTreeMate.size(root);
 }
 
 /**
@@ -197,8 +203,7 @@ public Object maximum() {
  * @return a list of key-value pairs.
  */
 public Lot travel() {
-    RBTreeMate.Traveling inst = new RBTreeMate.Traveling();
-    return inst.process(root());
+    return RBTreeMate.travel(root);
 }
 
 /**
@@ -208,8 +213,7 @@ public Lot travel() {
  * @return a filtered Red-Black tree.
  */
 public RBTree filter(Predicate1 fn) {
-    RBTreeMate.Filtering inst = new RBTreeMate.Filtering(fn);
-    return inst.process(this);
+    return RBTreeMate.filter(fn, this);
 }
 
 /**
@@ -219,24 +223,16 @@ public RBTree filter(Predicate1 fn) {
  * @return a mapped Red-Black tree.
  */
 public RBTree map(Do1 fn) {
-    RBTreeMate.Mapping inst = new RBTreeMate.Mapping(fn, this);
-    return inst.process(root());
+    return RBTreeMate.map(fn, this);
 }
 
 /**
  * This method analyzes the structure of the Red-Black tree and provides statistics about the depths of its
- * leaf nodes. The result is a lot of the lot form {@code (depth count)}
+ * leaf nodes. The result is a Lot of the form {@code (depth count)}
  *
- * @param tree The Red-Black tree to analyze
  * @return A Lot containing depth statistics, where each element is a Lot of the form {@code (depth count)}
  */
-public static Lot depthStatistic(@NotNull RBTree tree) {
-    return RBTreeMate.depthStatistic(tree.root());
-}
-
-public static @NotNull RBTree make(Predicate2 less, Predicate2 greater, Few root) {
-    RBTree tree = new RBTree(less, greater);
-    tree.root = root;
-    return tree;
+public Lot depthStatistic() {
+    return RBTreeMate.depthStatistic(root);
 }
 }

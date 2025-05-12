@@ -1,3 +1,7 @@
 <component name="CopyrightManager">
-  <settings default="lazelee" />
+  <settings default="lazelee">
+    <module2copyright>
+      <element module="All" copyright="lazelee" />
+    </module2copyright>
+  </settings>
 </component>

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2024. Laze Lee
+ * Copyright (c) 2022-2025. Laze Lee
  * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
  * If a copy of the MPL was not distributed with this file, You can obtain one at
  * https://mozilla.org/MPL/2.0/
@@ -7,20 +7,20 @@
 
 package essential.utilities;
 
-import essential.progresive.Pr;
 import org.jetbrains.annotations.NotNull;
-import essential.progresive.Few;
-import essential.progresive.Lot;
+import essential.progressive.Lot;
 
-import static essential.progresive.Pr.*;
+import static essential.progressive.Pr.*;
 
 
 public class Queue {
 
-private final Few pipe;
+private Lot stack1;
+private Lot stack2;
 
 public Queue(@NotNull Object @NotNull ... args) {
-    pipe = few(few(args).toLot(), lot());
+    stack1 = few(args).toLot();
+    stack2 = lot();
 }
 
 /**
@@ -29,21 +29,20 @@ public Queue(@NotNull Object @NotNull ... args) {
  * @return if the queue is empty, returns true else false.
  */
 public boolean isEmpty() {
-    return ((Lot) pipe.ref(0)).isEmpty() &&
-           ((Lot) pipe.ref(1)).isEmpty();
+    return stack1.isEmpty() &&
+           stack2.isEmpty();
 }
 
 @Override
 public String toString() {
-    Lot uuf = Pr.append((Lot) pipe.ref(0), ((Lot) pipe.ref(1)).reverse());
-    return String.format("«Queue %s»", uuf);
+    return String.format("«Queue %s»", append(stack1, stack2.reverse()));
 }
 
 @Override
 public boolean equals(Object datum) {
     if (datum instanceof Queue que) {
-        return pipe.ref(0).equals(que.pipe.ref(0)) &&
-               pipe.ref(1).equals(que.pipe.ref(1));
+        return stack1.equals(que.stack1) &&
+               stack2.equals(que.stack2);
     } else {
         return false;
     }
@@ -54,31 +53,28 @@ public boolean equals(Object datum) {
  *
  * @param datum the item to add
  */
-public void enQueue(Object datum) {
-    Lot en = (Lot) pipe.ref(1);
-    en = cons(datum, en);
-    pipe.set(1, en);
+public void enqueue(Object datum) {
+    stack2 = cons(datum, stack2);
 }
 
 /**
- * Get an item from the queue.
+ * Get an item from the queue. The item is removed from the queue.
  *
  * @return the item from the queue.
  * @throws RuntimeException if the queue is empty.
  */
-public Object deQueue() {
+public Object dequeue() {
     if (isEmpty()) {
         throw new RuntimeException(Msg.EMPTY_QUEUE);
-    } else if (((Lot) pipe.ref(0)).isEmpty()) {
-        Lot en = (Lot) pipe.ref(1);
-        en = en.reverse();
-        pipe.set(0, en.cdr());
-        pipe.set(1, lot());
-        return en.car();
+    } else if (stack1.isEmpty()) {
+        Lot ixx = stack2.reverse();
+        stack1 = ixx.cdr();
+        stack2 = lot();
+        return ixx.car();
     } else {
-        Lot de = (Lot) pipe.ref(0);
-        pipe.set(0, de.cdr());
-        return de.car();
+        Object datum = stack1.car();
+        stack1 = stack1.cdr();
+        return datum;
     }
 }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2024. Laze Lee
+ * Copyright (c) 2022-2025. Laze Lee
  * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
  * If a copy of the MPL was not distributed with this file, You can obtain one at
  * https://mozilla.org/MPL/2.0/
@@ -8,50 +8,80 @@
 package essential.utilities;
 
 import essential.functional.Do1;
-import essential.progresive.Few;
-import org.jetbrains.annotations.Contract;
+import essential.progressive.Few;
 import org.jetbrains.annotations.NotNull;
 import essential.functional.Predicate1;
-import essential.progresive.Lot;
+import essential.progressive.Lot;
 
-import static essential.progresive.Pr.*;
+import static essential.progressive.Pr.*;
 
 
 @SuppressWarnings("DuplicatedCode")
 class RBTreeMate {
 
-@Contract(value = " -> new", pure = true)
-static @NotNull Few makeNode() {return few(false, false, false, false, false);}
+static @NotNull Few makeNode() {
+    return few(false, false, false, false, false);
+}
 
-static @NotNull Object key(@NotNull Few node) {return node.ref(0);}
+static @NotNull Object key(@NotNull Few node) {
+    return node.ref(0);
+}
 
-static void setKey(@NotNull Few node, Object key) {node.set(0, key);}
+static void setKey(@NotNull Few node, Object key) {
+    node.set(0, key);
+}
 
-static @NotNull Object value(@NotNull Few node) {return node.ref(1);}
+static @NotNull Object value(@NotNull Few node) {
+    return node.ref(1);
+}
 
-static void setValue(@NotNull Few node, Object value) {node.set(1, value);}
+static void setValue(@NotNull Few node, Object value) {
+    node.set(1, value);
+}
 
-static boolean color(@NotNull Few node) {return (boolean) node.ref(2);}
+static boolean color(@NotNull Few node) {
+    return (boolean) node.ref(2);
+}
 
-private static boolean isRed(Few node) {return color(node);}
+private static boolean isRed(Few node) {
+    return color(node);
+}
 
-private static boolean isBlack(Few node) {return !color(node);}
+private static boolean isBlack(Few node) {
+    return !color(node);
+}
 
-static void setColor(@NotNull Few node, boolean color) {node.set(2, color);}
+static void setColor(@NotNull Few node, boolean color) {
+    node.set(2, color);
+}
 
-static @NotNull Object left(@NotNull Few node) {return node.ref(3);}
+static @NotNull Object left(@NotNull Few node) {
+    return node.ref(3);
+}
 
-static void setLeft(@NotNull Few node, Object left) {node.set(3, left);}
+static void setLeft(@NotNull Few node, Object left) {
+    node.set(3, left);
+}
 
-static @NotNull Object right(@NotNull Few node) {return node.ref(4);}
+static @NotNull Object right(@NotNull Few node) {
+    return node.ref(4);
+}
 
-static void setRight(@NotNull Few node, Object right) {node.set(4, right);}
+static void setRight(@NotNull Few node, Object right) {
+    node.set(4, right);
+}
 
-static boolean isLeftOf(Few node, Few parent) {return eq(node, left(parent));}
+static boolean isLeftOf(Few node, Few parent) {
+    return eq(node, left(parent));
+}
 
-static boolean isRightOf(Few node, Few parent) {return eq(node, right(parent));}
+static boolean isRightOf(Few node, Few parent) {
+    return eq(node, right(parent));
+}
 
-static boolean isNil(Few node) {return key(node) instanceof Boolean;}
+static boolean isNil(Few node) {
+    return key(node) instanceof Boolean;
+}
 
 static @NotNull String _stringOf(Few node) {
     if (isNil(node)) {
@@ -115,7 +145,6 @@ private static void rightRotate(RBTree tree, @NotNull Lot path) {
     }
 }
 
-
 static Lot minimum(@NotNull Few node, Lot path) {
     while (!isNil(node)) {
         path = cons(node, path);
@@ -131,7 +160,6 @@ static Lot maximum(@NotNull Few node, Lot path) {
     }
     return path;
 }
-
 
 record InsertFixing(RBTree tree, Lot path) {
 
@@ -182,7 +210,6 @@ record InsertFixing(RBTree tree, Lot path) {
         }
     }
 }
-
 
 private static void transplant(RBTree tree, @NotNull Lot path, Few node) {
     if (1 == path.length()) {
@@ -312,154 +339,82 @@ private static class DeleteFixing {
     }
 }
 
-static class Counting {
-
-    private int size;
-
-    Counting() {
-        size = 0;
-    }
-
-    int process(Few node) {
-        if (isNil(node)) {
-            return 0;
-        } else {
-            Queue que = new Queue(node);
-            while (!que.isEmpty()) {
-                node = (Few) que.deQueue();
-                size += 1;
-                Few left = (Few) left(node);
-                if (!isNil(left)) {
-                    que.enQueue(left);
-                }
-                Few right = (Few) right(node);
-                if (!isNil(right)) {
-                    que.enQueue(right);
-                }
-            }
-            return size;
+static int size(Few root) {
+    int count = 0;
+    Queue que = new Queue(root);
+    while (!que.isEmpty()) {
+        Few node = (Few) que.dequeue();
+        if (!isNil(node)) {
+            count += 1;
+            que.enqueue(left(node));
+            que.enqueue(right(node));
         }
     }
+    return count;
 }
 
-static class Traveling {
-
-    private Lot col;
-
-    Traveling() {
-        col = lot();
-    }
-
-    Lot process(Few node) {
-        if (isNil(node)) {
-            return col;
-        }
-        job(node);
-        return col;
-    }
-
-    private void job(@NotNull Few node) {
-        Lot stack = lot(node);
+static Lot travel(Few root) {
+    Lot col = lot();
+    Lot stack = lot();
+    Few node = root;
+    while (!isNil(node)) {
+        stack = cons(node, stack);
         node = (Few) right(node);
-        while (!stack.isEmpty()) {
-            while (!isNil(node)) {
-                stack = cons(node, stack);
-                node = (Few) right(node);
-            }
-            node = (Few) stack.car();
-            col = cons(lot(key(node), value(node)), col);
-            stack = stack.cdr();
-            node = (Few) left(node);
-            while (!isNil(node)) {
-                stack = cons(node, stack);
-                node = (Few) right(node);
-            }
+    }
+    while (!stack.isEmpty()) {
+        node = (Few) stack.car();
+        col = cons(lot(key(node), value(node)), col);
+        stack = stack.cdr();
+        node = (Few) left(node);
+        while (!isNil(node)) {
+            stack = cons(node, stack);
+            node = (Few) right(node);
         }
     }
+    return col;
 }
 
-static class Filtering {
-
-    private final Predicate1 fn;
-
-    Filtering(Predicate1 fn) {
-        this.fn = fn;
-    }
-
-    RBTree process(@NotNull RBTree tree) {
-        RBTree new_tree = new RBTree(tree.less(), tree.greater());
-        if (tree.isEmpty()) {
-            return new_tree;
-        }
-
-        Queue que = new Queue(tree.root());
-        Few node;
-        while (!que.isEmpty()) {
-            node = (Few) que.deQueue();
+static @NotNull RBTree filter(Predicate1 fn, @NotNull RBTree tree) {
+    RBTree new_tree = new RBTree(tree.less(), tree.greater());
+    Queue que = new Queue(tree.root());
+    while (!que.isEmpty()) {
+        Few node = (Few) que.dequeue();
+        if (!isNil(node)) {
             if (fn.apply(value(node))) {
                 new_tree.insert(key(node), value(node));
             }
-            Few left = (Few) left(node);
-            if (!isNil(left)) {
-                que.enQueue(left);
-            }
-            Few right = (Few) right(node);
-            if (!isNil(right)) {
-                que.enQueue(right);
-            }
+            que.enqueue(left(node));
+            que.enqueue(right(node));
         }
-        return new_tree;
     }
+    return new_tree;
 }
 
-static class Mapping {
-
-    private final RBTree tree;
-    private final Do1 fn;
-
-    Mapping(Do1 fn, @NotNull RBTree tree) {
-        this.fn = fn;
-        this.tree = new RBTree(tree.less(), tree.greater());
-    }
-
-    RBTree process(Few node) {
-        if (isNil(node)) {
-            return tree;
+static @NotNull RBTree map(Do1 fn, @NotNull RBTree tree) {
+    RBTree new_tree = new RBTree(tree.less(), tree.greater());
+    Queue que = new Queue(tree.root());
+    while (!que.isEmpty()) {
+        Few node = (Few) que.dequeue();
+        if (!isNil(node)) {
+            new_tree.insert(key(node), fn.apply(value(node)));
+            que.enqueue(left(node));
+            que.enqueue(right(node));
         }
-
-        Queue que = new Queue(node);
-        while (!que.isEmpty()) {
-            node = (Few) que.deQueue();
-            tree.insert(key(node), fn.apply(value(node)));
-            Few left = (Few) left(node);
-            if (!isNil(left)) {
-                que.enQueue(left);
-            }
-            Few right = (Few) right(node);
-            if (!isNil(right)) {
-                que.enQueue(right);
-            }
-        }
-        return tree;
     }
+    return new_tree;
 }
 
 static Lot depthStatistic(Few root) {
-    if (isNil(root)) {
-        return lot();
-    } else {
-        Few node = root;
-        Lot col = lot();
-        int count = 0;
-        int depth = 0;
-        Queue ooo = new Queue(node);
-        Queue xxx = new Queue(1);
-        while (!ooo.isEmpty()) {
-            node = (Few) ooo.deQueue();
-            int n = (int) xxx.deQueue();
-            Few left = (Few) left(node);
-            Few right = (Few) right(node);
-            if (isNil(right) && isNil(left)) {
+    Lot col = lot();
+    Queue ooo = new Queue(root);
+    Queue xxx = new Queue(1);
+    int depth = 0;
+    int count = 0;
+    while (!ooo.isEmpty()) {
+        Few node = (Few) ooo.dequeue();
+        int n = (int) xxx.dequeue();
+        if (!isNil(node)) {
+            if (isNil((Few) left(node)) && isNil((Few) right(node))) {
                 if (depth == 0) {
                     depth = n;
                     count = 1;
@@ -471,16 +426,12 @@ static Lot depthStatistic(Few root) {
                     count = 1;
                 }
             }
-            if (!isNil(left)) {
-                ooo.enQueue(left);
-                xxx.enQueue(n + 1);
-            }
-            if (!isNil(right)) {
-                ooo.enQueue(right);
-                xxx.enQueue(n + 1);
-            }
+            ooo.enqueue(left(node));
+            ooo.enqueue(right(node));
+            xxx.enqueue(n + 1);
+            xxx.enqueue(n + 1);
         }
-        return col;
     }
+    return col;
 }
 }

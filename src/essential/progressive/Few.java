@@ -1,15 +1,14 @@
 /*
- * Copyright (c) 2022-2024. Laze Lee
+ * Copyright (c) 2022-2025. Laze Lee
  * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
  * If a copy of the MPL was not distributed with this file, You can obtain one at
  * https://mozilla.org/MPL/2.0/
  */
 
-package essential.progresive;
+package essential.progressive;
 
 import essential.functional.Do1;
 import essential.functional.Predicate2;
-import essential.utilities.RBTree;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -28,31 +27,17 @@ Object[] data() {
 }
 
 @Override
-public String toString() {
-    RBTree identical = Identical.detect(this);
-    if (identical.isEmpty()) {
-        return Stringing.fewString(this);
+public boolean equals(Object datum) {
+    if (datum instanceof Few fw) {
+        return Equality.process(this, fw);
     } else {
-        return Stringing.identicalString(this, identical);
+        return false;
     }
 }
 
 @Override
-public boolean equals(Object datum) {
-    if (datum instanceof Few fw) {
-        RBTree identical1 = Identical.detect(this);
-        RBTree identical2 = Identical.detect(fw);
-        if (identical1.isEmpty() && identical2.isEmpty()) {
-            return Equaling.fewEqual(this, fw);
-        } else if (!identical1.isEmpty() && !identical2.isEmpty() &&
-                   this.data.length == fw.data.length) {
-            return Equaling.identicalEqual(this, identical1, fw, identical2);
-        } else {
-            return false;
-        }
-    } else {
-        return false;
-    }
+public String toString() {
+    return ToString.process(this);
 }
 
 public int length() {return data.length;}

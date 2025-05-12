@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2024. Laze Lee
+ * Copyright (c) 2022-2025. Laze Lee
  * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
  * If a copy of the MPL was not distributed with this file, You can obtain one at
  * https://mozilla.org/MPL/2.0/
@@ -8,58 +8,79 @@
 package essential.utilities;
 
 import essential.datetime.Time;
-import essential.progresive.Lot;
+import essential.progressive.Lot;
+import essential.progressive.Pr;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-import static essential.progresive.Pr.*;
+import static essential.progressive.Pr.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class AVLTreeTest {
 
-@Test
-void overall() {
-    AVLTree tree = new AVLTree((o1, o2) -> (int) o1 < (int) o2,
-                               (o1, o2) -> (int) o1 > (int) o2);
-    Random rd = new Random(Time.current().nanosecond());
-    int times = 1000000;
+private static final int SIZE = 10000;
 
-    Lot keys = lot();
-    for (int i = 0; i < times; i += 1) {
-        int key = rd.nextInt();
-        boolean success = tree.insert(key, false);
-        keys = cons(key, keys);
-        if (!success) {
-            System.out.printf("key %s is presented\n", key);
+private final AVLTree tree;
+private Lot keys;
+
+private AVLTreeTest() {
+    tree = new AVLTree(Pr::less, Pr::greater);
+    keys = lot();
+}
+
+void insert() {
+    Random random = new Random(Time.current().nanosecond());
+    Lot repeat = lot();
+    for (int i = 0; i < SIZE; i += 1) {
+        while (true) {
+            String key = RandGenerator.ascii(random.nextInt(3, 8));
+            boolean success = tree.insert(key, random.nextInt(SIZE));
+            if (success) {
+                keys = cons(key, keys);
+                break;
+            }
+            repeat = cons(key, repeat);
         }
     }
+    System.out.println("repeated keys: " + repeat);
+}
+
+void visit() {
     Lot all = tree.travel();
-    System.out.printf("tree length: %s\n", all.length());
+    assertEquals(all.length(), tree.size());
 
-    Lot item = keys;
-    while (!item.isEmpty()) {
-        tree.set(item.car(), rd.nextInt(1000000));
-        item = item.cdr();
-    }
-    System.out.println("set done");
+    AVLTree new_tree = tree.map(o -> ((int) o) * 3);
 
-    AVLTree evens = tree.filter(o -> ((int) o % 2) == 0);
-    System.out.println("filter done");
-    System.out.printf("tree even number length: %s\n", evens.size());
+    AVLTree evens  = new_tree.filter(o -> ((int) o % 2) == 0);
+    int even_size = evens.size();
+    System.out.println("even amount: " + even_size);
+    AVLTree odds   = new_tree.filter(o -> ((int) o % 2) != 0);
+    int odd_size = odds.size();
+    System.out.println("odd amount: " + odd_size);
+    assertEquals(even_size + odd_size, new_tree.size());
 
-    Lot depth = AVLTree.depthStatistic(tree);
-    System.out.printf("tree depth: %s\n", depth);
+    Lot statistic = tree.depthStatistic();
+    System.out.println("depth statistic: " + statistic);
+}
 
+void delete() {
+    keys = RandGenerator.shuffle(keys);
     while (!keys.isEmpty()) {
-        int key = (int) keys.car();
-        boolean success = tree.delete(key);
-        if (!success) {
-            System.out.printf("key %s is not presented\n", key);
-        }
+        boolean success = tree.delete(keys.car());
         keys = keys.cdr();
     }
     assertTrue(tree.isEmpty());
+}
+
+@Test
+void overall() {
+    visit();
+
+    insert();
+    visit();
+    delete();
 }
 }

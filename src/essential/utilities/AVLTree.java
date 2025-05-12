@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2024. Laze Lee
+ * Copyright (c) 2022-2025. Laze Lee
  * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
  * If a copy of the MPL was not distributed with this file, You can obtain one at
  * https://mozilla.org/MPL/2.0/
@@ -10,17 +10,24 @@ package essential.utilities;
 import essential.functional.Do1;
 import essential.functional.Predicate1;
 import essential.functional.Predicate2;
-import essential.progresive.Few;
-import essential.progresive.Lot;
+import essential.progressive.Few;
+import essential.progressive.Lot;
 import org.jetbrains.annotations.NotNull;
 
-import static essential.progresive.Pr.lot;
+import static essential.progressive.Pr.lot;
 
 
 public class AVLTree {
 
+public static @NotNull AVLTree make(Predicate2 less, Predicate2 greater, Few root) {
+    AVLTree tree = new AVLTree(less, greater);
+    tree.root = root;
+    return tree;
+}
+
 private final Predicate2 less;
 private final Predicate2 greater;
+
 private Few root;
 
 public AVLTree(Predicate2 less, Predicate2 greater) {
@@ -64,8 +71,7 @@ public boolean isEmpty() {
  * @return number of items in the tree.
  */
 public int size() {
-    AVLTreeMate.Counting inst = new AVLTreeMate.Counting();
-    return inst.process(root());
+    return AVLTreeMate.size(root);
 }
 
 /**
@@ -195,8 +201,7 @@ public Object maximum() {
  * @return a list of key-value pairs.
  */
 public Lot travel() {
-    AVLTreeMate.Traveling inst = new AVLTreeMate.Traveling();
-    return inst.process(root());
+    return AVLTreeMate.travel(root);
 }
 
 /**
@@ -206,8 +211,7 @@ public Lot travel() {
  * @return a filtered AVL tree.
  */
 public AVLTree filter(Predicate1 fn) {
-    AVLTreeMate.Filtering inst = new AVLTreeMate.Filtering(fn);
-    return inst.process(this);
+    return AVLTreeMate.filter(fn, this);
 }
 
 /**
@@ -217,24 +221,16 @@ public AVLTree filter(Predicate1 fn) {
  * @return a mapped AVL tree.
  */
 public AVLTree map(Do1 fn) {
-    AVLTreeMate.Mapping inst = new AVLTreeMate.Mapping(fn, this);
-    return inst.process(root());
+    return AVLTreeMate.map(fn, this);
 }
 
 /**
  * This method analyzes the structure of the AVL tree and provides statistics about the depths of its
- * leaf nodes. The result is a lot of the lot form {@code (depth count)}
+ * leaf nodes. The result is a Lot of the form {@code (depth count)}
  *
- * @param tree The AVL tree to analyze
  * @return A Lot containing depth statistics, where each element is a Lot of the form {@code (depth count)}
  */
-public static Lot depthStatistic(@NotNull AVLTree tree) {
-    return AVLTreeMate.depthStatistic(tree.root());
-}
-
-public static @NotNull AVLTree make(Predicate2 less, Predicate2 greater, Few root) {
-    AVLTree tree = new AVLTree(less, greater);
-    tree.root = root;
-    return tree;
+public Lot depthStatistic() {
+    return AVLTreeMate.depthStatistic(root);
 }
 }
