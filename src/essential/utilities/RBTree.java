@@ -19,10 +19,15 @@ import static essential.progressive.Pr.lot;
 
 public class RBTree {
 
-public static @NotNull RBTree make(Predicate2 less, Predicate2 greater, Few root) {
-    RBTree tree = new RBTree(less, greater);
-    tree.root = root;
-    return tree;
+public static @NotNull RBTree make(Predicate2 less, Predicate2 greater, Few node) {
+    if (RBTreeMate.isValidNode(node)) {
+        RBTree tree = new RBTree(less, greater);
+        tree.root = node;
+        return tree;
+    } else {
+        String msg = String.format(Msg.INVALID_RB_NODE, node);
+        throw new RuntimeException(msg);
+    }
 }
 
 private final Predicate2 less;
@@ -36,26 +41,34 @@ public RBTree(Predicate2 less, Predicate2 greater) {
     root = RBTreeMate.makeNode();
 }
 
-Predicate2 less() {return less;}
+Predicate2 less() {
+    return less;
+}
 
-Predicate2 greater() {return greater;}
+Predicate2 greater() {
+    return greater;
+}
 
-Few root() {return root;}
+Few root() {
+    return root;
+}
 
-void setRoot(Few node) {this.root = node;}
-
-@Override
-public String toString() {
-    return String.format("«Red-Black-Tree %s»", RBTreeMate._stringOf(root()));
+void setRoot(Few node) {
+    this.root = node;
 }
 
 @Override
 public boolean equals(Object datum) {
     if (datum instanceof RBTree tree) {
-        return root().equals(tree.root());
+        return root.equals(tree.root);
     } else {
         return false;
     }
+}
+
+@Override
+public String toString() {
+    return String.format("«Red-Black-Tree %s»", RBTreeMate.toString(root));
 }
 
 /**
@@ -63,7 +76,9 @@ public boolean equals(Object datum) {
  *
  * @return true if the tree is empty, false otherwise.
  */
-public boolean isEmpty() {return RBTreeMate.isNil(root());}
+public boolean isEmpty() {
+    return RBTreeMate.isNil(root());
+}
 
 /**
  * The number of items in the tree.

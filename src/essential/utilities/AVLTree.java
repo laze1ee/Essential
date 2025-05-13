@@ -19,10 +19,15 @@ import static essential.progressive.Pr.lot;
 
 public class AVLTree {
 
-public static @NotNull AVLTree make(Predicate2 less, Predicate2 greater, Few root) {
-    AVLTree tree = new AVLTree(less, greater);
-    tree.root = root;
-    return tree;
+public static @NotNull AVLTree make(Predicate2 less, Predicate2 greater, Few node) {
+    if (AVLTreeMate.isValidNode(node)) {
+        AVLTree tree = new AVLTree(less, greater);
+        tree.root = node;
+        return tree;
+    } else {
+        String msg = String.format(Msg.INVALID_AVL_NODE, node);
+        throw new RuntimeException(msg);
+    }
 }
 
 private final Predicate2 less;
@@ -36,16 +41,21 @@ public AVLTree(Predicate2 less, Predicate2 greater) {
     this.root = AVLTreeMate.makeNode();
 }
 
-Predicate2 less() {return less;}
+Predicate2 less() {
+    return less;
+}
 
-Predicate2 greater() {return greater;}
+Predicate2 greater() {
+    return greater;
+}
 
-Few root() {return root;}
+Few root() {
+    return root;
+}
 
-void setRoot(Few node) {this.root = node;}
-
-@Override
-public String toString() {return String.format("«AVL-Tree %s»", AVLTreeMate._stringOf(root()));}
+void setRoot(Few node) {
+    this.root = node;
+}
 
 @Override
 public boolean equals(Object datum) {
@@ -54,6 +64,15 @@ public boolean equals(Object datum) {
     } else {
         return false;
     }
+}
+
+@Override
+public String toString() {
+    return String.format("«AVL-Tree %s»", AVLTreeMate.toString(root));
+}
+
+public boolean isValidNode() {
+    return AVLTreeMate.isValidNode(root);
 }
 
 /**

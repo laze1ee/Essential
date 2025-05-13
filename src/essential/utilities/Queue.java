@@ -34,11 +34,6 @@ public boolean isEmpty() {
 }
 
 @Override
-public String toString() {
-    return String.format("«Queue %s»", append(stack1, stack2.reverse()));
-}
-
-@Override
 public boolean equals(Object datum) {
     if (datum instanceof Queue que) {
         return stack1.equals(que.stack1) &&
@@ -46,6 +41,11 @@ public boolean equals(Object datum) {
     } else {
         return false;
     }
+}
+
+@Override
+public String toString() {
+    return String.format("«Queue %s»", append(stack1, stack2.reverse()));
 }
 
 /**

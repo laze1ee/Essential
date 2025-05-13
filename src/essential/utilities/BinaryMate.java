@@ -22,7 +22,6 @@ import static essential.progressive.Pr.lot;
 class BinaryMate {
 
 //region Encoding
-
 static byte @NotNull [] encodeShort(short n) {
     byte[] ooo = Binary.encodeI64(n);
     byte[] xxx = new byte[3];
@@ -212,7 +211,6 @@ static byte @NotNull [] encodeDate(@NotNull Date d) {
 
 
 //region Decoding
-
 static boolean @NotNull [] decodeBooleans(byte[] bin, int start, int len) {
     boolean[] bs = new boolean[len];
     for (int i = 0, j = start; i < len; i += 1, j += 1) {

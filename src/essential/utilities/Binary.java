@@ -37,14 +37,14 @@ static final byte BIN_DOUBLES = (byte) 0x9A;
 public static final byte BIN_CHAR = (byte) 0xA0;
 public static final byte BIN_STRING = (byte) 0xA1;
 
-static final byte BIN_TIME = (byte) 0xB0;
-static final byte BIN_DATE = (byte) 0xB1;
+public static final byte BIN_SHARE_INDEX = (byte) 0xB0;
+public static final byte BIN_FEW = (byte) 0xB1;
+public static final byte BIN_LOT = (byte) 0xB2;
+public static final byte BIN_LOT_BEGIN = (byte) 0xB3;
+public static final byte BIN_LOT_END = (byte) 0xB4;
 
-public static final byte BIN_SHARE_INDEX = (byte) 0xF0;
-public static final byte BIN_FEW = (byte) 0xF1;
-public static final byte BIN_LOT = (byte) 0xF2;
-public static final byte BIN_LOT_BEGIN = (byte) 0xF3;
-public static final byte BIN_LOT_END = (byte) 0xF4;
+static final byte BIN_TIME = (byte) 0xC0;
+static final byte BIN_DATE = (byte) 0xC1;
 
 
 //region Common Functions

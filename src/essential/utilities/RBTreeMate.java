@@ -83,12 +83,144 @@ static boolean isNil(Few node) {
     return key(node) instanceof Boolean;
 }
 
-static @NotNull String _stringOf(Few node) {
-    if (isNil(node)) {
-        return "nil";
-    } else {
-        return String.format("(%s %s %s %s)", stringOf(key(node)), stringOf(value(node)),
-                             _stringOf((Few) left(node)), _stringOf((Few) right(node)));
+static boolean isValidNode(Few node) {
+    NodeChecker checker = new NodeChecker(node);
+    checker.route();
+    return checker.r0;
+}
+
+private static class NodeChecker {
+    private Few cont;
+    private Few node;
+    private boolean r0;
+
+    private NodeChecker(Few node) {
+        cont = few(Label.END_CONT);
+        this.node = node;
+    }
+
+    private void route() {
+        //noinspection DuplicatedCode
+        String next = Label.OF_NODE;
+        while (true) {
+            switch (next) {
+            case Label.OF_NODE -> next = ofNode();
+            case Label.APPLY_CONT -> next = applyCont();
+            case Label.EXIT -> {return;}
+            }
+        }
+    }
+
+    private String ofNode() {
+        if (node.length() == 5 &&
+            node.ref(2) instanceof Boolean) {
+            if (node.ref(3) instanceof Few &&
+                node.ref(4) instanceof Few) {
+                cont = few(Label.RIGHT_NODE, cont, node.ref(4));
+                node = (Few) node.ref(3);
+                return Label.OF_NODE;
+            } else if (node.ref(3) instanceof Few &&
+                       node.ref(4) instanceof Boolean) {
+                node = (Few) node.ref(3);
+                return Label.OF_NODE;
+            } else if (node.ref(3) instanceof Boolean &&
+                       node.ref(4) instanceof Few) {
+                node = (Few) node.ref(4);
+                return Label.OF_NODE;
+            } else {
+                r0 = node.ref(3) instanceof Boolean &&
+                     node.ref(4) instanceof Boolean;
+                return Label.APPLY_CONT;
+            }
+        } else {
+            r0 = false;
+            return Label.APPLY_CONT;
+        }
+    }
+
+    private String applyCont() {
+        String label = (String) cont.ref(0);
+
+        switch (label) {
+        case Label.END_CONT -> {return Label.EXIT;}
+        case Label.RIGHT_NODE -> {
+            if (r0) {
+                node = (Few) cont.ref(2);
+                cont = (Few) cont.ref(1);
+                return Label.OF_NODE;
+            } else {
+                cont = (Few) cont.ref(1);
+                return Label.APPLY_CONT;
+            }
+        }
+        default -> throw new RuntimeException("undefined continuation " + label);
+        }
+    }
+}
+
+static @NotNull String toString(Few node) {
+    ToString inst = new ToString(node);
+    inst.route();
+    return inst.builder.toString();
+}
+
+private static class ToString {
+    private Few cont;
+    private Few node;
+    private final StringBuilder builder;
+
+    private ToString(Few node) {
+        cont = few(Label.END_CONT);
+        this.node = node;
+        builder = new StringBuilder();
+    }
+
+    private void route() {
+        //noinspection DuplicatedCode
+        String next = Label.OF_NODE;
+        while (true) {
+            switch (next) {
+            case Label.OF_NODE -> next = ofNode();
+            case Label.APPLY_CONT -> next = applyCont();
+            case Label.EXIT -> {return;}
+            }
+        }
+    }
+
+    private String ofNode() {
+        if (isNil(node)) {
+            builder.append("nil");
+            return Label.APPLY_CONT;
+        } else {
+            builder.append("(");
+            builder.append(stringOf(key(node)));
+            builder.append(" ");
+            builder.append(stringOf(value(node)));
+            builder.append(" ");
+            cont = few(Label.RIGHT_NODE, cont, right(node));
+            node = (Few) left(node);
+            return Label.OF_NODE;
+        }
+    }
+
+    private String applyCont() {
+        String label = (String) cont.ref(0);
+
+        switch (label) {
+        case Label.END_CONT -> {return Label.EXIT;}
+        case Label.RIGHT_NODE -> {
+            builder.append(" ");
+            node = (Few) cont.ref(2);
+            cont = few(Label.END_NODE, cont.ref(1));
+            return Label.OF_NODE;
+        }
+        case Label.END_NODE -> {
+            builder.append(")");
+            cont = (Few) cont.ref(1);
+            return Label.APPLY_CONT;
+        }
+        default -> throw new RuntimeException("undefined continuation " + label);
+        }
     }
 }
 
