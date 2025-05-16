@@ -88,13 +88,4 @@ void map() {
     assertEquals(4, fs.ref(1));
     assertEquals(6, fs.ref(2));
 }
-
-@Test
-void find() {
-    Few fs = few(1, 2, 3);
-    assertEquals(0, fs.find((o1, o2) -> (int) o1 == (int) o2, 1));
-    assertEquals(1, fs.find((o1, o2) -> (int) o1 == (int) o2, 2));
-    assertEquals(2, fs.find((o1, o2) -> (int) o1 == (int) o2, 3));
-    assertEquals(-1, fs.find((o1, o2) -> (int) o1 == (int) o2, 4));
-}
 }

@@ -12,20 +12,14 @@ import essential.utilities.RBTree;
 import static essential.progressive.Pr.few;
 
 
-public class Sharing {
-
-public static RBTree detect(Object datum) {
-    Sharing inst = new Sharing(datum);
-    inst.route();
-    return inst.identical;
-}
+class Shared {
 
 private final RBTree collector;
-private final RBTree identical;
+final RBTree identical;
 private Few cont;
 private Object datum;
 
-private Sharing(Object datum) {
+Shared(Object datum) {
     collector = new RBTree((o1, o2) -> (int) o1 < (int) o2,
                            (o1, o2) -> (int) o1 > (int) o2);
     identical = new RBTree((o1, o2) -> (int) o1 < (int) o2,
@@ -34,7 +28,7 @@ private Sharing(Object datum) {
     this.datum = datum;
 }
 
-private void route() {
+void route() {
     //noinspection DuplicatedCode
     String next = Label.OF_DATUM;
     while (true) {
@@ -78,6 +72,7 @@ private String applyCont() {
     String token = (String) cont.ref(0);
     switch (token) {
     case Label.END_CONT -> {return Label.EXIT;}
+    //noinspection DuplicatedCode
     case Label.ITER_FEW -> {
         int length = (int) cont.ref(2);
         int index = (int) cont.ref(3);

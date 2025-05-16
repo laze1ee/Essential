@@ -18,36 +18,37 @@ import static essential.progressive.Pr.*;
 
 public class Binary {
 
-public static final byte BIN_BOOLEAN_TRUE = (byte) 0x80;
-public static final byte BIN_BOOLEAN_FALSE = (byte) 0x8F;
+public static final byte BOOLEAN_TRUE = (byte) 0x80;
+public static final byte BOOLEAN_FALSE = (byte) 0x8F;
 
-static final byte BIN_SHORT = (byte) 0x90;
-static final byte BIN_INT = (byte) 0x91;
-static final byte BIN_LONG = (byte) 0x92;
-static final byte BIN_FLOAT = (byte) 0x93;
-static final byte BIN_DOUBLE = (byte) 0x94;
+static final byte SHORT = (byte) 0x90;
+static final byte INT = (byte) 0x91;
+static final byte LONG = (byte) 0x92;
+static final byte FLOAT = (byte) 0x93;
+static final byte DOUBLE = (byte) 0x94;
 
-static final byte BIN_BOOLEANS = (byte) 0x95;
-static final byte BIN_SHORTS = (byte) 0x96;
-static final byte BIN_INTS = (byte) 0x97;
-static final byte BIN_LONGS = (byte) 0x98;
-static final byte BIN_FLOATS = (byte) 0x99;
-static final byte BIN_DOUBLES = (byte) 0x9A;
+static final byte BOOLEANS = (byte) 0x95;
+static final byte SHORTS = (byte) 0x96;
+static final byte INTS = (byte) 0x97;
+static final byte LONGS = (byte) 0x98;
+static final byte FLOATS = (byte) 0x99;
+static final byte DOUBLES = (byte) 0x9A;
 
-public static final byte BIN_CHAR = (byte) 0xA0;
-public static final byte BIN_STRING = (byte) 0xA1;
+public static final byte CHAR = (byte) 0xA0;
+public static final byte STRING = (byte) 0xA1;
 
-public static final byte BIN_SHARE_INDEX = (byte) 0xB0;
-public static final byte BIN_FEW = (byte) 0xB1;
-public static final byte BIN_LOT = (byte) 0xB2;
-public static final byte BIN_LOT_BEGIN = (byte) 0xB3;
-public static final byte BIN_LOT_END = (byte) 0xB4;
+public static final byte SHARE_INDEX = (byte) 0xB0;
+public static final byte FEW = (byte) 0xB1;
+public static final byte LOT_BEGIN = (byte) 0xB2;
+public static final byte LOT_END = (byte) 0xB3;
+public static final byte NEXT_LOT = (byte) 0xB4;
 
-static final byte BIN_TIME = (byte) 0xC0;
-static final byte BIN_DATE = (byte) 0xC1;
+static final byte TIME = (byte) 0xC0;
+static final byte DATE = (byte) 0xC1;
 
 
 //region Common Functions
+
 /**
  * Convert a long to a byte array in big-endian order.
  *
@@ -64,8 +65,8 @@ public static byte @NotNull [] encodeI64(long n) {
 }
 
 public static byte @NotNull [] extendTo64Bits(byte[] bin, int start, int bound) {
-    int len = bound - start;
-    if (len <= 0 || len > 8) {
+    int length = bound - start;
+    if (length <= 0 || length > 8) {
         String msg = String.format(Msg.INVALID_RANGE, start, bound);
         throw new RuntimeException(msg);
     } else {
@@ -73,8 +74,8 @@ public static byte @NotNull [] extendTo64Bits(byte[] bin, int start, int bound) 
         for (int i = bound - 1, j = 7; i >= start; i -= 1, j -= 1) {
             uuf[j] = bin[i];
         }
-        if (bin[start] < 0 && len < 8) {
-            for (int i = 0; i < 8 - len; i += 1) {
+        if (bin[start] < 0 && length < 8) {
+            for (int i = 0; i < 8 - length; i += 1) {
                 uuf[i] = -1;
             }
         }
@@ -99,17 +100,17 @@ public static long decodeI64(byte[] bin) {
 
 public static byte @NotNull [] encodeBoolean(boolean b) {
     if (b) {
-        return new byte[]{BIN_BOOLEAN_TRUE};
+        return new byte[]{BOOLEAN_TRUE};
     } else {
-        return new byte[]{BIN_BOOLEAN_FALSE};
+        return new byte[]{BOOLEAN_FALSE};
     }
 }
 
 public static byte @NotNull [] encodeChar(char c) {
-    byte[] ooo = BinaryMate.encodePureChar(c);
-    byte[] xxx = new byte[ooo.length + 1];
-    xxx[0] = BIN_CHAR;
-    System.arraycopy(ooo, 0, xxx, 1, ooo.length);
+    byte[] lll = BinaryMate.encodePureChar(c);
+    byte[] xxx = new byte[lll.length + 1];
+    xxx[0] = CHAR;
+    System.arraycopy(lll, 0, xxx, 1, lll.length);
     return xxx;
 }
 
@@ -120,10 +121,10 @@ public static @NotNull Few decodeChar(byte @NotNull [] bin, int start) {
 }
 
 public static byte @NotNull [] encodeString(@NotNull String str) {
-    byte[] ooo = BinaryMate.encodePureString(str);
-    byte[] xxx = new byte[ooo.length + 2];
-    xxx[0] = BIN_STRING;
-    System.arraycopy(ooo, 0, xxx, 1, ooo.length);
+    byte[] lll = BinaryMate.encodePureString(str);
+    byte[] xxx = new byte[lll.length + 2];
+    xxx[0] = STRING;
+    System.arraycopy(lll, 0, xxx, 1, lll.length);
     return xxx;
 }
 
@@ -235,39 +236,39 @@ public static int decodeVarI32(byte @NotNull [] bin, int start, int bound) {
         }
     }
     case 2 -> {
-        byte[] ooo = Arrays.copyOfRange(bin, start, bound);
-        ooo[0] = (byte) (ooo[0] & 0x3F);
-        if ((ooo[0] & 0x20) != 0) {
-            ooo[0] = (byte) (ooo[0] | 0xC0);
+        byte[] lll = Arrays.copyOfRange(bin, start, bound);
+        lll[0] = (byte) (lll[0] & 0x3F);
+        if ((lll[0] & 0x20) != 0) {
+            lll[0] = (byte) (lll[0] | 0xC0);
         }
-        byte[] xxx = extendTo64Bits(ooo, 0, 2);
+        byte[] xxx = extendTo64Bits(lll, 0, 2);
         return (int) decodeI64(xxx);
     }
     case 3 -> {
-        byte[] ooo = Arrays.copyOfRange(bin, start, bound);
-        ooo[0] = (byte) (ooo[0] & 0x1F);
-        if ((ooo[0] & 0x10) != 0) {
-            ooo[0] = (byte) (ooo[0] | 0xE0);
+        byte[] lll = Arrays.copyOfRange(bin, start, bound);
+        lll[0] = (byte) (lll[0] & 0x1F);
+        if ((lll[0] & 0x10) != 0) {
+            lll[0] = (byte) (lll[0] | 0xE0);
         }
-        byte[] xxx = extendTo64Bits(ooo, 0, 3);
+        byte[] xxx = extendTo64Bits(lll, 0, 3);
         return (int) decodeI64(xxx);
     }
     case 4 -> {
-        byte[] ooo = Arrays.copyOfRange(bin, start, bound);
-        ooo[0] = (byte) (ooo[0] & 0x0F);
-        if ((ooo[0] & 0x08) != 0) {
-            ooo[0] = (byte) (ooo[0] | 0xF0);
+        byte[] lll = Arrays.copyOfRange(bin, start, bound);
+        lll[0] = (byte) (lll[0] & 0x0F);
+        if ((lll[0] & 0x08) != 0) {
+            lll[0] = (byte) (lll[0] | 0xF0);
         }
-        byte[] xxx = extendTo64Bits(ooo, 0, 4);
+        byte[] xxx = extendTo64Bits(lll, 0, 4);
         return (int) decodeI64(xxx);
     }
     default -> {
-        byte[] ooo = Arrays.copyOfRange(bin, start, bound);
-        ooo[0] = (byte) (ooo[0] & 0x07);
-        if ((ooo[0] & 0x04) != 0) {
-            ooo[0] = (byte) (ooo[0] | 0xF8);
+        byte[] lll = Arrays.copyOfRange(bin, start, bound);
+        lll[0] = (byte) (lll[0] & 0x07);
+        if ((lll[0] & 0x04) != 0) {
+            lll[0] = (byte) (lll[0] | 0xF8);
         }
-        byte[] xxx = extendTo64Bits(ooo, 0, 5);
+        byte[] xxx = extendTo64Bits(lll, 0, 5);
         return (int) decodeI64(xxx);
     }
     }
@@ -275,18 +276,28 @@ public static int decodeVarI32(byte @NotNull [] bin, int start, int bound) {
 //endregion
 
 
-public static byte[] encode(Object datum) {
-    Encoding inst = new Encoding();
-    return inst.process(datum);
+public static byte @NotNull [] encode(Object datum) {
+    Encoding inst = new Encoding(datum);
+    byte[] bin = inst.process();
+    int sum = CheckSum.fletcher32(bin);
+    byte[] bin_sum = Binary.encodeI64(sum);
+    byte[] xxx = new byte[4 + bin.length];
+    System.arraycopy(bin_sum, 4, xxx, 0, 4);
+    System.arraycopy(bin, 0, xxx, 4, bin.length);
+    return xxx;
 }
 
-public static Object decode(byte[] bin) {
-    Decoding inst = new Decoding(bin);
-    return inst.process();
-}
-
-public static Object decode(byte[] bin, int start) {
-    Decoding inst = new Decoding(bin, start);
+public static Object decode(byte @NotNull [] bin) {
+    if (bin.length < 7) {
+        throw new RuntimeException(Msg.INVALID_BIN_SEQ);
+    }
+    byte[] bin_sum = Binary.extendTo64Bits(bin, 0, 4);
+    int read_sum = (int) Binary.decodeI64(bin_sum);
+    int calc_sum = CheckSum.fletcher32(bin, 4, bin.length);
+    if (read_sum != calc_sum) {
+        throw new RuntimeException(Msg.INVALID_BIN_SEQ);
+    }
+    Decoding inst = new Decoding(bin, 4);
     return inst.process();
 }
 

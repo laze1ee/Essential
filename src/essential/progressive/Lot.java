@@ -166,11 +166,11 @@ public @NotNull Lot head(int index) {
     } else if (this.isBreadthCircle() || (0 <= index && index <= Mate.length(this))) {
         int i = index - 1;
         Lot head = new Lot(this.car(), new Lot());
-        Lot ooo = head;
+        Lot lll = head;
         Lot xxx = this.cdr();
         while (i > 0) {
-            ooo.next = new Lot(xxx.car(), new Lot());
-            ooo = ooo.cdr();
+            lll.next = new Lot(xxx.car(), new Lot());
+            lll = lll.cdr();
             xxx = xxx.cdr();
             i -= 1;
         }
@@ -204,11 +204,11 @@ public @NotNull Lot copy() {
         throw new RuntimeException(msg);
     } else {
         Lot head = new Lot(this.car(), new Lot());
-        Lot ooo = head;
+        Lot lll = head;
         Lot xxx = this.cdr();
         while (!xxx.isEmpty()) {
-            ooo.next = new Lot(xxx.car(), new Lot());
-            ooo = ooo.cdr();
+            lll.next = new Lot(xxx.car(), new Lot());
+            lll = lll.cdr();
             xxx = xxx.cdr();
         }
         return head;
@@ -239,12 +239,12 @@ public @NotNull Lot filter(Predicate1 fn) {
         throw new RuntimeException(msg);
     }
     Lot head = new Lot(false, new Lot());
-    Lot ooo = head;
+    Lot lll = head;
     Lot xxx = this;
     while (!xxx.isEmpty()) {
         if (fn.apply(xxx.car())) {
-            ooo.next = new Lot(xxx.car(), new Lot());
-            ooo = ooo.cdr();
+            lll.next = new Lot(xxx.car(), new Lot());
+            lll = lll.cdr();
         }
         xxx = xxx.cdr();
     }
@@ -260,11 +260,11 @@ public @NotNull Lot map(Do1 fn) {
         throw new RuntimeException(msg);
     }
     Lot head = new Lot(fn.apply(this.car()), new Lot());
-    Lot ooo = head;
+    Lot lll = head;
     Lot xxx = this.cdr();
     while (!xxx.isEmpty()) {
-        ooo.next = new Lot(fn.apply(xxx.car()), new Lot());
-        ooo = ooo.cdr();
+        lll.next = new Lot(fn.apply(xxx.car()), new Lot());
+        lll = lll.cdr();
         xxx = xxx.cdr();
     }
     return head;

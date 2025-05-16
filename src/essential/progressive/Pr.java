@@ -9,12 +9,20 @@ package essential.progressive;
 
 import essential.datetime.Time;
 import essential.functional.Predicate2;
+import essential.utilities.RBTree;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
 
 public class Pr {
+
+public static RBTree detectShared(Object datum) {
+    Shared inst = new Shared(datum);
+    inst.route();
+    return inst.identical;
+}
+
 
 //region Lot
 /**
@@ -76,16 +84,16 @@ public static @NotNull Lot append(@NotNull Lot lt, Object datum) {
         throw new RuntimeException(msg);
     } else {
         Lot head = new Lot(lt.car(), new Lot());
-        Lot ooo = head.cdr();
+        Lot lll = head.cdr();
         Lot xxx = lt.cdr();
         while (!xxx.isEmpty()) {
-            ooo.setData(xxx.car());
-            ooo.setNext(new Lot());
-            ooo = ooo.cdr();
+            lll.setData(xxx.car());
+            lll.setNext(new Lot());
+            lll = lll.cdr();
             xxx = xxx.cdr();
         }
-        ooo.setData(datum);
-        ooo.setNext(new Lot());
+        lll.setData(datum);
+        lll.setNext(new Lot());
         return head;
     }
 }
@@ -119,14 +127,14 @@ public static @NotNull Lot append(@NotNull Lot lt1, @NotNull Lot lt2) {
         throw new RuntimeException(msg);
     } else {
         Lot head = new Lot(lt1.car(), new Lot());
-        Lot ooo = head;
+        Lot lll = head;
         Lot xxx = lt1.cdr();
         while (!xxx.isEmpty()) {
-            ooo.setNext(new Lot(xxx.car(), new Lot()));
-            ooo = ooo.cdr();
+            lll.setNext(new Lot(xxx.car(), new Lot()));
+            lll = lll.cdr();
             xxx = xxx.cdr();
         }
-        ooo.setNext(lt2);
+        lll.setNext(lt2);
         return head;
     }
 }

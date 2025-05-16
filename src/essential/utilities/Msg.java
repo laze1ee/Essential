@@ -10,9 +10,10 @@ package essential.utilities;
 class Msg {
 
 // Binary
-static final String INVALID_RANGE = "invalid byte array range [%s %s]";
+static final String INVALID_RANGE = "invalid byte sequence range [%s %s]";
 static final String UNSUPPORTED = "unsupported type %s for encoding";
-static final String UNMATCHED_BIN_LABEL = "unmatched binary label %s in index %s";
+static final String INVALID_BIN_SEQ = "invalid binary sequence";
+static final String INVALID_BIN_BYTE = "invalid binary byte %s in index %s";
 
 // Tree
 static final String INVALID_RB_NODE = "invalid red-black-tree node:\n%s";

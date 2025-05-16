@@ -10,51 +10,68 @@ package essential.utilities;
 import org.jetbrains.annotations.NotNull;
 
 
+@SuppressWarnings("DuplicatedCode")
 public class CheckSum {
 
-private static final int FLETCHER_MOD = 65535;
+// 0 < n and n * (n+1) / 2 * (2^8-1) < (2^31-1)
+// a group size of 4103
+private static final int GROUP_SIZE = 4103;
 private static final int ADLER_MOD = 65521;
+private static final int FLETCHER_MOD = 65535;
 
-public static int fletcher32(byte @NotNull [] bin) {
-    int sum0 = 0;
-    int sum1 = 0;
-    int i = 0;
-    int len = bin.length;
-    while (len > 0) {
-        int block = len;
-        if (block > 4103) {
-            block = 4103;
-        }
-        len -= block;
-        for (; 0 < block; block -= 1, i += 1) {
-            sum0 = (bin[i] & 0xFF) + sum0;
-            sum1 = sum0 + sum1;
-        }
-        sum0 = sum0 % FLETCHER_MOD;
-        sum1 = sum1 % FLETCHER_MOD;
+public static int adler32(byte @NotNull [] bin, int start, int bound) {
+    if (bound > bin.length ||
+        start > bound) {
+        String msg = String.format(Msg.INVALID_RANGE, start, bound);
+        throw new RuntimeException(msg);
     }
-    return (sum1 << 16) | sum0;
-}
 
-
-public static int adler32(byte @NotNull [] bin) {
     int sum0 = 1;
     int sum1 = 0;
-    int i = 0;
-    int len = bin.length;
-    while (len > 0) {
-        int block = len;
-        if (block > 4095) {
-            block = 4095;
+    for (int i = start; i < bound; ) {
+        int block = bound;
+        if (block > i + GROUP_SIZE) {
+            block = i + GROUP_SIZE;
         }
-        len -= block;
-        for (; 0 < block; block -= 1, i += 1) {
-            sum0 = sum0 + (bin[i] & 0xFF);
-            sum1 = sum1 + sum0;
+        for (; i < block; i += 1) {
+            sum0 += bin[i] & 0xFF;
+            sum1 += sum0;
         }
         sum0 %= ADLER_MOD;
         sum1 %= ADLER_MOD;
     }
-    return (sum1 << 16) | sum0;
+    return sum1 << 16 | sum0;
+}
+
+public static int adler32(byte @NotNull [] bin) {
+    return adler32(bin, 0, bin.length);
+}
+
+public static int fletcher32(byte @NotNull [] bin, int start, int bound) {
+    if (bound > bin.length ||
+        start > bound) {
+        String msg = String.format(Msg.INVALID_RANGE, start, bound);
+        throw new RuntimeException(msg);
+    }
+
+    int sum0 = 0;
+    int sum1 = 0;
+    for (int i = start; i < bound; ) {
+        int block = bound;
+        if (block > i + GROUP_SIZE) {
+            block = i + GROUP_SIZE;
+        }
+        for (; i < block; i += 1) {
+            sum0 += bin[i] & 0xFF;
+            sum1 += sum0;
+        }
+        sum0 %= FLETCHER_MOD;
+        sum1 %= FLETCHER_MOD;
+    }
+    return sum1 << 16 | sum0;
+}
+
+public static int fletcher32(byte @NotNull [] bin) {
+    return fletcher32(bin, 0, bin.length);
 }
 }

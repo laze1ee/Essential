@@ -9,24 +9,41 @@ package essential.utilities;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
 class CheckSumTest {
 
-final String str = "Affection is desirable.";
+private final byte[] bin;
 
-@Test
-void fletcher32() {
-    int checksum = CheckSum.fletcher32(str.getBytes(StandardCharsets.UTF_8));
-    assertEquals(0x66d30884, checksum);
+CheckSumTest() {
+    String current_dir = System.getProperty("user.dir");
+    Path file = Path.of(current_dir, "test/essential/utilities/test-checksum.txt");
+    String text;
+    try {
+        text = Files.readString(file);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+    bin = text.getBytes(StandardCharsets.UTF_8);
 }
 
 @Test
 void adler32() {
-    int checksum = CheckSum.adler32(str.getBytes(StandardCharsets.UTF_8));
-    assertEquals(0x66ea0885, checksum);
+    int checksum = CheckSum.adler32(bin);
+    System.out.printf("adler32: %X\n", checksum);
+    assertEquals(0x1AC2823D, checksum);
+}
+
+@Test
+void fletcher32() {
+    int checksum = CheckSum.fletcher32(bin);
+    System.out.printf("fletcher32: %X\n", checksum);
+    assertEquals(0xD09681B0, checksum);
 }
 }

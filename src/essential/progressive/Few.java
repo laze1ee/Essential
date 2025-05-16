@@ -8,7 +8,7 @@
 package essential.progressive;
 
 import essential.functional.Do1;
-import essential.functional.Predicate2;
+import essential.functional.Predicate1;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -92,14 +92,13 @@ public @NotNull Few map(Do1 fn) {
 /**
  * Find the first index satisfying the given predicate.
  *
- * @param fn    A predicate taking two arguments.
- * @param datum The second argument of the predicate.
+ * @param fn    A predicate taking one argument.
  * @return The index if found, -1 otherwise.
  */
-public int find(Predicate2 fn, Object datum) {
+public int find(Predicate1 fn) {
     int length = this.data.length;
     for (int i = 0; i < length; i += 1) {
-        if (fn.apply(this.data[i], datum)) {
+        if (fn.apply(this.data[i])) {
             return i;
         }
     }

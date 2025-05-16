@@ -9,8 +9,7 @@ package essential.progressive;
 
 import essential.utilities.RBTree;
 
-import static essential.progressive.Pr.equal;
-import static essential.progressive.Pr.few;
+import static essential.progressive.Pr.*;
 
 
 class Equality {
@@ -30,8 +29,8 @@ private int order;
 private boolean r0;
 
 private Equality(Object datum1, Object datum2) {
-    identical1 = Sharing.detect(datum1).map(o -> few(false, -1));
-    identical2 = Sharing.detect(datum2).map(o -> few(false, -1));
+    identical1 = detectShared(datum1).map(o -> few(false, -1));
+    identical2 = detectShared(datum2).map(o -> few(false, -1));
     cont = few(Label.END_CONT);
     this.datum1 = datum1;
     this.datum2 = datum2;

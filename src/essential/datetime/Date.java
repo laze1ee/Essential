@@ -99,13 +99,6 @@ public Time toTime() {
 }
 
 @Override
-public String toString() {
-    return String.format("#<date %s %d-%02d-%02d %s %02d:%02d:%02d>",
-                         Mate.stringOfOffset(offset), year, month, day_of_month,
-                         Mate.stringOfWeek(day_of_week), hour, minute, second);
-}
-
-@Override
 public boolean equals(Object datum) {
     if (datum instanceof Date d) {
         return d.year == year &&
@@ -119,6 +112,13 @@ public boolean equals(Object datum) {
     } else {
         return false;
     }
+}
+
+@Override
+public String toString() {
+    return String.format("#<date %s %d-%02d-%02d %s %02d:%02d:%02d>",
+                         Mate.stringOfOffset(offset), year, month, day_of_month,
+                         Mate.stringOfWeek(day_of_week), hour, minute, second);
 }
 
 

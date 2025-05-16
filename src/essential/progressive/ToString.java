@@ -28,7 +28,7 @@ private final StringBuilder builder;
 private int order;
 
 private ToString(Object datum) {
-    identical = Sharing.detect(datum).map(o -> few(false, -1));
+    identical = detectShared(datum).map(o -> few(false, -1));
     cont = few(Label.END_CONT);
     this.datum = datum;
     builder = new StringBuilder();

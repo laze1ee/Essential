@@ -431,12 +431,12 @@ static @NotNull AVLTree map(Do1 fn, @NotNull AVLTree tree) {
 
 static Lot depthStatistic(Few root) {
     Lot col = lot();
-    Queue ooo = new Queue(root);
+    Queue lll = new Queue(root);
     Queue xxx = new Queue(1);
     int depth = 0;
     int count = 0;
-    while (!ooo.isEmpty()) {
-        Few node = (Few) ooo.dequeue();
+    while (!lll.isEmpty()) {
+        Few node = (Few) lll.dequeue();
         int n = (int) xxx.dequeue();
         if (!isNil(node)) {
             if (isNil((Few) left(node)) && isNil((Few) right(node))) {
@@ -451,8 +451,8 @@ static Lot depthStatistic(Few root) {
                     count = 1;
                 }
             }
-            ooo.enqueue(left(node));
-            ooo.enqueue(right(node));
+            lll.enqueue(left(node));
+            lll.enqueue(right(node));
             xxx.enqueue(n + 1);
             xxx.enqueue(n + 1);
         }

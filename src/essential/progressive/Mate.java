@@ -65,7 +65,7 @@ static int theHareAndTortoise(@NotNull Lot lt) {
 //endregion
 
 
-//region Stringing
+//region To String
 
 static @NotNull String stringOfChar(char c) {
     switch (c) {

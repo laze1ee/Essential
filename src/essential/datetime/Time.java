@@ -51,9 +51,6 @@ public boolean less(@NotNull Time t) {
 }
 
 @Override
-public @NotNull String toString() {return String.format("#[time %d.%09d]", second, Math.abs(nanosecond));}
-
-@Override
 public boolean equals(Object datum) {
     if (datum instanceof Time t) {
         return second == t.second &&
@@ -62,6 +59,9 @@ public boolean equals(Object datum) {
         return false;
     }
 }
+
+@Override
+public @NotNull String toString() {return String.format("#[time %d.%09d]", second, Math.abs(nanosecond));}
 
 public @NotNull Date toDate(int offset) {
     if (Mate.checkTime(this)) {

@@ -9,94 +9,157 @@ package essential.utilities;
 
 import essential.datetime.Date;
 import essential.datetime.Time;
-import essential.progressive.*;
+import essential.progressive.Few;
+import essential.progressive.Lot;
 import org.jetbrains.annotations.NotNull;
 
-import static essential.progressive.Pr.cons;
-import static essential.progressive.Pr.lot;
+import static essential.progressive.Pr.*;
 
 
 class Encoding {
 
-private Few share;
+private final RBTree shared_index;
+private final Few shared;
+private Few cont;
+private Object datum;
+private Lot col;
 
-Encoding() {}
-
-byte[] process(Object datum) {
-    RBTree identical = Sharing.detect(datum);
-    share = identical.travel()
-                     .map(o -> ((Lot) o).ref(1))
-                     .toFew();
-
-    Lot col = lot();
-    int length = share.length();
-    for (int i = 0; i < length; i += 1) {
-        Object elem = share.ref(i);
-        if (elem instanceof Lot lt) {
-            col = cons(encodeShareLot(lt), col);
-        } else if (elem instanceof Few fw) {
-            col = cons(encodeShareFew(fw), col);
-        } else {
-            col = cons(encodeNonContainer(elem), col);
-        }
+Encoding(Object datum) {
+    shared_index = detectShared(datum);
+    shared = shared_index.travel()
+                         .map(o -> ((Lot) o).ref(1))
+                         .toFew();
+    Lot keys = shared_index.travel()
+                           .map(o -> ((Lot) o).ref(0));
+    int index = 0;
+    while (!keys.isEmpty()) {
+        shared_index.set(keys.car(), index);
+        index += 1;
+        keys = keys.cdr();
     }
-    col = cons(encodeElem(datum), col);
+
+    cont = few(Label.END_CONT);
+    this.datum = datum;
+    col = lot();
+}
+
+byte @NotNull [] process() {
+    Object datum_bk = datum;
+    int length = shared.length();
+    cont = few(Label.ITER_SHARED, cont, length, 0);
+    col = cons(new byte[]{Binary.FEW}, col);
+    col = cons(Binary.encodeVarI32(length), col);
+    route(Label.APPLY_CONT);
+
+    datum = datum_bk;
+    route(Label.OF_DATUM);
+
     col = col.reverse();
-    col = cons(Binary.encodeVarI32(length), col);
-    col = cons(new byte[]{Binary.BIN_FEW}, col);
     return Binary.connectBytes(col);
 }
 
-private byte @NotNull [] encodeShareFew(@NotNull Few fw) {
-    Lot col = lot();
-    int length = fw.length();
-    for (int i = length - 1; i != -1; i -= 1) {
-        col = cons(encodeElem(fw.ref(i)), col);
-    }
-    col = cons(Binary.encodeVarI32(length), col);
-    col = cons(new byte[]{Binary.BIN_FEW}, col);
-    return Binary.connectBytes(col);
-}
-
-private byte @NotNull [] encodeShareLot(@NotNull Lot lt) {
-    Lot col = lot();
-    col = cons(new byte[]{Binary.BIN_LOT_END}, col);
-    while (!lt.isEmpty()) {
-        col = cons(encodeElem(lt.car()), col);
-        lt = lt.cdr();
-        int found = share.find(Pr::eq, lt);
-        if (found >= 0) {
-            col = cons(shareIndex(found), col);
-            col = cons(new byte[]{Binary.BIN_LOT}, col);
-            return Binary.connectBytes(col);
+private void route(@NotNull String next) {
+    while (true) {
+        switch (next) {
+        case Label.OF_DATUM -> next = ofDatum();
+        case Label.OF_SHARED -> next = ofShared();
+        case Label.APPLY_CONT -> next = applyCont();
+        case Label.EXIT -> {return;}
         }
     }
-    col = cons(new byte[]{Binary.BIN_LOT, Binary.BIN_LOT_BEGIN}, col);
-    return Binary.connectBytes(col);
 }
 
-private byte[] encodeElem(Object elem) {
-    int found = share.find(Pr::eq, elem);
-    if (found >= 0) {
-        return shareIndex(found);
-    } else if (elem instanceof Few fw) {
-        return encodeShareFew(fw);
-    } else if (elem instanceof Lot lt) {
-        return encodeShareLot(lt);
+private String ofShared() {
+    if (datum instanceof Few fw) {
+        int length = fw.length();
+        cont = few(Label.ITER_FEW, cont, length, 0, fw);
+        col = cons(new byte[]{Binary.FEW}, col);
+        col = cons(Binary.encodeVarI32(length), col);
+        return Label.APPLY_CONT;
+    } else if (datum instanceof Lot lt) {
+        if (lt.isEmpty()) {
+            byte[] bin = new byte[]{Binary.LOT_BEGIN, Binary.LOT_END};
+            col = cons(bin, col);
+            return Label.APPLY_CONT;
+        }
+        cont = few(Label.ITER_LOT, cont, lt.cdr());
+        col = cons(new byte[]{Binary.LOT_BEGIN}, col);
+        datum = lt.car();
+        return Label.OF_DATUM;
     } else {
-        return encodeNonContainer(elem);
+        byte[] bin = encodeNonContainer();
+        col = cons(bin, col);
+        return Label.APPLY_CONT;
     }
 }
 
-private static byte @NotNull [] shareIndex(int index) {
-    byte[] ooo = Binary.encodeVarI32(index);
-    byte[] xxx = new byte[1 + ooo.length];
-    xxx[0] = Binary.BIN_SHARE_INDEX;
-    System.arraycopy(ooo, 0, xxx, 1, ooo.length);
-    return xxx;
+private String ofDatum() {
+    int index = getIndex(datum);
+    if (index >= 0) {
+        col = cons(shareIndex(index), col);
+        return Label.APPLY_CONT;
+    }
+
+    return ofShared();
 }
 
-private static byte[] encodeNonContainer(Object datum) {
+private String applyCont() {
+    String label = (String) cont.ref(0);
+
+    switch (label) {
+    case Label.END_CONT -> {return Label.EXIT;}
+    case Label.ITER_SHARED -> {
+        int length = (int) cont.ref(2);
+        int index = (int) cont.ref(3);
+        if (index == length) {
+            cont = (Few) cont.ref(1);
+            return Label.APPLY_CONT;
+        } else {
+            cont.set(3, index + 1);
+            datum = shared.ref(index);
+            return Label.OF_SHARED;
+        }
+    }
+    //noinspection DuplicatedCode
+    case Label.ITER_FEW -> {
+        int length = (int) cont.ref(2);
+        int index = (int) cont.ref(3);
+        Few fw = (Few) cont.ref(4);
+        if (index == length) {
+            cont = (Few) cont.ref(1);
+            return Label.APPLY_CONT;
+        } else {
+            cont.set(3, index + 1);
+            datum = fw.ref(index);
+            return Label.OF_DATUM;
+        }
+    }
+    case Label.ITER_LOT -> {
+        Lot lt = (Lot) cont.ref(2);
+
+        int index = getIndex(lt);
+        if (index >= 0) {
+            col = cons(new byte[]{Binary.NEXT_LOT}, col);
+            col = cons(shareIndex(index), col);
+            cont = (Few) cont.ref(1);
+            return Label.APPLY_CONT;
+        }
+
+        if (lt.isEmpty()) {
+            col = cons(new byte[]{Binary.LOT_END}, col);
+            cont = (Few) cont.ref(1);
+            return Label.APPLY_CONT;
+        } else {
+            cont.set(2, lt.cdr());
+            datum = lt.car();
+            return Label.OF_DATUM;
+        }
+    }
+    default -> throw new RuntimeException("undefined continuation " + label);
+    }
+}
+
+private byte[] encodeNonContainer() {
     if (datum instanceof Boolean b) {
         return Binary.encodeBoolean(b);
     } else if (datum instanceof Short s) {
@@ -130,8 +193,25 @@ private static byte[] encodeNonContainer(Object datum) {
     } else if (datum instanceof Date d) {
         return BinaryMate.encodeDate(d);
     } else {
-        String msg = String.format(Msg.UNSUPPORTED, datum);
+        String msg = String.format(Msg.UNSUPPORTED, datum.getClass().getName());
         throw new RuntimeException(msg);
     }
+}
+
+private int getIndex(Object datum) {
+    int key = System.identityHashCode(datum);
+    if (shared_index.isPresent(key)) {
+        return (int) shared_index.ref(key);
+    } else {
+        return -1;
+    }
+}
+
+private static byte @NotNull [] shareIndex(int index) {
+    byte[] lll = Binary.encodeVarI32(index);
+    byte[] xxx = new byte[1 + lll.length];
+    xxx[0] = Binary.SHARE_INDEX;
+    System.arraycopy(lll, 0, xxx, 1, lll.length);
+    return xxx;
 }
 }
