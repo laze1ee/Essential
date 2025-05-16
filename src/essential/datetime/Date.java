@@ -135,6 +135,8 @@ public static @NotNull Date current(int offset) {
                     offset);
 }
 
-public static @NotNull Date current() {return current(OffsetTime.now().getOffset().getTotalSeconds());}
+public static @NotNull Date current() {
+    return current(OffsetTime.now().getOffset().getTotalSeconds());
+}
 }
 

@@ -11,6 +11,7 @@ import essential.datetime.Date;
 import essential.datetime.Time;
 import essential.progressive.Few;
 import essential.progressive.Lot;
+import essential.progressive.Shared;
 import org.jetbrains.annotations.NotNull;
 
 import static essential.progressive.Pr.*;
@@ -25,7 +26,7 @@ private Object datum;
 private Lot col;
 
 Encoding(Object datum) {
-    shared_index = detectShared(datum);
+    shared_index = Shared.detect(datum);
     shared = shared_index.travel()
                          .map(o -> ((Lot) o).ref(1))
                          .toFew();

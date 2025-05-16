@@ -34,7 +34,6 @@ static final int[][] SUM_DAYS =
 
 private static final int START_DAY_OF_WEEK = 5;
 
-
 private static boolean isLeapYear(int year) {
     if (year % 4 == 0) {
         return year % 100 != 0 || year % 400 == 0;
@@ -42,7 +41,6 @@ private static boolean isLeapYear(int year) {
         return false;
     }
 }
-
 
 static boolean checkDayOfMonth(int year, int month, int day_of_month) {
     int day;
@@ -54,14 +52,11 @@ static boolean checkDayOfMonth(int year, int month, int day_of_month) {
     return day_of_month <= day;
 }
 
-
 static int dayOfWeek(int year, int month, int day_of_month) {
     long days = sumOfDays(year, month, day_of_month);
     return traceDayOfWeek(days);
 }
 
-
-@Contract(pure = true)
 static @NotNull String stringOfOffset(int offset) {
     int n = offset;
     String sign;
@@ -78,7 +73,6 @@ static @NotNull String stringOfOffset(int offset) {
     return String.format("%s%02d:%02d", sign, hour, minute);
 }
 
-@Contract(pure = true)
 static @NotNull String stringOfWeek(int day) {
     if (day == 1) {
         return "Monday";
@@ -99,7 +93,6 @@ static @NotNull String stringOfWeek(int day) {
 
 
 //region Time to Date
-
 static final long UTC_MIN = -62167219200L;
 static final long UTC_MAX = 63113841832780800L;
 
@@ -107,7 +100,6 @@ static boolean checkTime(@NotNull Time t) {
     return COMPLEMENT * -1 <= t.second() && t.second() <= UTC_MAX;
 }
 
-@Contract("_, _ -> new")
 static @NotNull Date timeToDate(@NotNull Time t, int offset) {
     long seconds = t.second() + offset + COMPLEMENT;
     long days = seconds / SEC_DAY;
@@ -182,7 +174,6 @@ private static int daysOfMod1Y(int @NotNull [] degree, int days) {
     }
 }
 
-@Contract(pure = true)
 private static int trackYear(int @NotNull [] degree) {
     return degree[0] * 400 +
            degree[1] * 100 +
@@ -190,7 +181,6 @@ private static int trackYear(int @NotNull [] degree) {
            degree[3];
 }
 
-@Contract(value = "_, _ -> new", pure = true)
 private static int @NotNull [] trackMonthDay(int days, boolean leap_year) {
     int i;
     if (leap_year) {
@@ -212,7 +202,6 @@ private static int traceDayOfWeek(long days) {
     return (int) (week + 1);
 }
 
-@Contract(value = "_ -> new", pure = true)
 private static int @NotNull [] trackTime(int seconds) {
     int hour = seconds / 3600;
     int minute = seconds % 3600 / 60;
@@ -223,7 +212,6 @@ private static int @NotNull [] trackTime(int seconds) {
 
 
 //region Date to Time
-
 static long sumOfDays(int year, int month, int day_of_month) {
     int[] degree = new int[4];
     int y = year;
@@ -240,7 +228,6 @@ static long sumOfDays(int year, int month, int day_of_month) {
     return sum;
 }
 
-@Contract(pure = true)
 private static long daysInYears(int @NotNull [] degree, int year) {
     long sum = (long) degree[0] * DAYS_400Y;
 

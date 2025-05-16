@@ -19,17 +19,6 @@ import static essential.progressive.Pr.lot;
 
 public class AVLTree {
 
-public static @NotNull AVLTree make(Predicate2 less, Predicate2 greater, Few node) {
-    if (AVLTreeMate.isValidNode(node)) {
-        AVLTree tree = new AVLTree(less, greater);
-        tree.root = node;
-        return tree;
-    } else {
-        String msg = String.format(Msg.INVALID_AVL_NODE, node);
-        throw new RuntimeException(msg);
-    }
-}
-
 private final Predicate2 less;
 private final Predicate2 greater;
 
@@ -49,12 +38,21 @@ Predicate2 greater() {
     return greater;
 }
 
-Few root() {
+public Few root() {
     return root;
 }
 
-void setRoot(Few node) {
+void _setRoot(Few node) {
     this.root = node;
+}
+
+public void setRoot(Few node) {
+    if (AVLTreeMate.isValidNode(node)) {
+        root = node;
+    } else {
+        String msg = String.format(Msg.INVALID_AVL_NODE, node);
+        throw new RuntimeException(msg);
+    }
 }
 
 @Override

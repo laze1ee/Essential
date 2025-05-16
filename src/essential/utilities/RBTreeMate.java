@@ -248,7 +248,7 @@ private static void leftRotate(RBTree tree, @NotNull Lot path) {
     setLeft(up, x);
 
     if (path.cdr().isEmpty()) {
-        tree.setRoot(up);
+        tree._setRoot(up);
     } else {
         Few parent = (Few) path.ref(1);
         if (isLeftOf(x, parent)) {
@@ -266,7 +266,7 @@ private static void rightRotate(RBTree tree, @NotNull Lot path) {
     setRight(up, x);
 
     if (path.cdr().isEmpty()) {
-        tree.setRoot(up);
+        tree._setRoot(up);
     } else {
         Few parent = (Few) path.ref(1);
         if (isLeftOf(x, parent)) {
@@ -345,7 +345,7 @@ record InsertFixing(RBTree tree, Lot path) {
 
 private static void transplant(RBTree tree, @NotNull Lot path, Few node) {
     if (1 == path.length()) {
-        tree.setRoot(node);
+        tree._setRoot(node);
     } else {
         Few p = (Few) path.ref(1);
         if (isLeftOf((Few) path.car(), p)) {

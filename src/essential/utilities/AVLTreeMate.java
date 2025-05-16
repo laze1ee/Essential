@@ -268,7 +268,7 @@ private static void rightRotate(AVLTree tree, @NotNull Lot path) {
 
 private static void reconnect(AVLTree tree, @NotNull Lot path, Few x, Few up) {
     if (path.cdr().isEmpty()) {
-        tree.setRoot(up);
+        tree._setRoot(up);
     } else {
         Few parent = (Few) path.ref(1);
         if (isLeftOf(x, parent)) {
@@ -317,7 +317,7 @@ static Lot maximum(@NotNull Few node, Lot path) {
 
 private static void transplant(AVLTree tree, @NotNull Lot path, Few node) {
     if (path.cdr().isEmpty()) {
-        tree.setRoot(node);
+        tree._setRoot(node);
     } else {
         Few parent = (Few) path.ref(1);
         if (isLeftOf((Few) path.car(), parent)) {

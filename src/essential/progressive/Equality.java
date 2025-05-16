@@ -29,8 +29,8 @@ private int order;
 private boolean r0;
 
 private Equality(Object datum1, Object datum2) {
-    identical1 = detectShared(datum1).map(o -> few(false, -1));
-    identical2 = detectShared(datum2).map(o -> few(false, -1));
+    identical1 = Shared.detect(datum1).map(o -> few(false, -1));
+    identical2 = Shared.detect(datum2).map(o -> few(false, -1));
     cont = few(Label.END_CONT);
     this.datum1 = datum1;
     this.datum2 = datum2;

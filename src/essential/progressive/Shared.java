@@ -12,7 +12,13 @@ import essential.utilities.RBTree;
 import static essential.progressive.Pr.few;
 
 
-class Shared {
+public class Shared {
+
+public static RBTree detect(Object datum) {
+    Shared inst = new Shared(datum);
+    inst.route();
+    return inst.identical;
+}
 
 private final RBTree collector;
 final RBTree identical;
@@ -62,10 +68,10 @@ private String ofDatum() {
         } else {
             return Label.APPLY_CONT;
         }
-    } else {
-        identical.insert(key, datum);
-        return Label.APPLY_CONT;
     }
+
+    identical.insert(key, datum);
+    return Label.APPLY_CONT;
 }
 
 private String applyCont() {

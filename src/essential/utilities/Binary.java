@@ -48,7 +48,6 @@ static final byte DATE = (byte) 0xC1;
 
 
 //region Common Functions
-
 /**
  * Convert a long to a byte array in big-endian order.
  *
@@ -303,6 +302,7 @@ public static Object decode(byte @NotNull [] bin) {
 
 public static int hashcode(Object datum) {
     byte[] bin = encode(datum);
-    return CheckSum.fletcher32(bin);
+    byte[] bin_sum = Binary.extendTo64Bits(bin, 0, 4);
+    return (int) Binary.decodeI64(bin_sum);
 }
 }

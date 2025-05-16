@@ -17,13 +17,6 @@ import java.util.Arrays;
 
 public class Pr {
 
-public static RBTree detectShared(Object datum) {
-    Shared inst = new Shared(datum);
-    inst.route();
-    return inst.identical;
-}
-
-
 //region Lot
 /**
  * Constructs a Lot from the given arguments.

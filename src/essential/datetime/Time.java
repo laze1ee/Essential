@@ -7,7 +7,6 @@
 
 package essential.datetime;
 
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.management.ManagementFactory;
@@ -37,7 +36,6 @@ public Time(long second, int nanosecond) {
     }
 }
 
-@Contract(" -> new")
 public @NotNull Time neg() {return new Time(-second, -nanosecond);}
 
 public boolean less(@NotNull Time t) {
@@ -61,7 +59,9 @@ public boolean equals(Object datum) {
 }
 
 @Override
-public @NotNull String toString() {return String.format("#[time %d.%09d]", second, Math.abs(nanosecond));}
+public @NotNull String toString() {
+    return String.format("#[time %d.%09d]", second, Math.abs(nanosecond));
+}
 
 public @NotNull Date toDate(int offset) {
     if (Mate.checkTime(this)) {
@@ -72,8 +72,6 @@ public @NotNull Date toDate(int offset) {
     }
 }
 
-
-@Contract("_ -> new")
 public static @NotNull Time current(@NotNull TimeType type) {
     switch (type) {
     case UTC -> {
@@ -98,10 +96,8 @@ public static @NotNull Time current(@NotNull TimeType type) {
     }
 }
 
-@Contract(" -> new")
 public static @NotNull Time current() {return current(TimeType.UTC);}
 
-@Contract("_, _ -> new")
 public static @NotNull Time add(@NotNull Time t1, @NotNull Time t2) {
     long second = t1.second + t2.second;
     int nanosecond = t1.nanosecond + t2.nanosecond;
