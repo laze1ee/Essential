@@ -25,48 +25,50 @@ private final Predicate2 greater;
 private Few root;
 
 public RBTree(Predicate2 less, Predicate2 greater) {
-    this.less = less;
-    this.greater = greater;
-    root = RBTreeMate.makeNode();
+  this.less = less;
+  this.greater = greater;
+  root = RBTreeMate.makeNode();
 }
 
 Predicate2 less() {
-    return less;
+  return less;
 }
 
 Predicate2 greater() {
-    return greater;
+  return greater;
 }
 
 public Few root() {
-    return root;
+  return root;
 }
 
 void _setRoot(Few node) {
-    this.root = node;
+  this.root = node;
 }
 
 public void setRoot(Few node) {
-    if (RBTreeMate.isValidNode(node)) {
-        root = node;
-    } else {
-        String msg = String.format(Msg.INVALID_RB_NODE, node);
-        throw new RuntimeException(msg);
-    }
+  if (RBTreeMate.isValidNode(node)) {
+    root = node;
+  }
+  else {
+    String msg = String.format(Msg.INVALID_RB_NODE, node);
+    throw new RuntimeException(msg);
+  }
 }
 
 @Override
 public boolean equals(Object datum) {
-    if (datum instanceof RBTree tree) {
-        return root.equals(tree.root);
-    } else {
-        return false;
-    }
+  if (datum instanceof RBTree tree) {
+    return root.equals(tree.root);
+  }
+  else {
+    return false;
+  }
 }
 
 @Override
 public String toString() {
-    return String.format("«Red-Black-Tree %s»", RBTreeMate.toString(root));
+  return String.format("«Red-Black-Tree %s»", RBTreeMate.toString(root));
 }
 
 /**
@@ -75,7 +77,7 @@ public String toString() {
  * @return true if the tree is empty, false otherwise.
  */
 public boolean isEmpty() {
-    return RBTreeMate.isNil(root());
+  return RBTreeMate.isNil(root());
 }
 
 /**
@@ -84,7 +86,7 @@ public boolean isEmpty() {
  * @return number of items in the tree.
  */
 public int size() {
-    return RBTreeMate.size(root);
+  return RBTreeMate.size(root);
 }
 
 /**
@@ -96,20 +98,21 @@ public int size() {
  * @return {@code true} if inserting succeeded, {@code false} otherwise.
  */
 public boolean insert(@NotNull Object key, Object value) {
-    Lot path = RBTreeMate.pathOf(this, key);
-    Few node = (Few) path.car();
-    if (RBTreeMate.isNil(node)) {
-        RBTreeMate.setKey(node, key);
-        RBTreeMate.setValue(node, value);
-        RBTreeMate.setColor(node, true);
-        RBTreeMate.setLeft(node, RBTreeMate.makeNode());
-        RBTreeMate.setRight(node, RBTreeMate.makeNode());
-        RBTreeMate.InsertFixing fixer = new RBTreeMate.InsertFixing(this, path);
-        fixer.process();
-        return true;
-    } else {
-        return false;
-    }
+  Lot path = RBTreeMate.pathOf(this, key);
+  Few node = (Few) path.car();
+  if (RBTreeMate.isNil(node)) {
+    RBTreeMate.setKey(node, key);
+    RBTreeMate.setValue(node, value);
+    RBTreeMate.setColor(node, true);
+    RBTreeMate.setLeft(node, RBTreeMate.makeNode());
+    RBTreeMate.setRight(node, RBTreeMate.makeNode());
+    RBTreeMate.InsertFixing fixer = new RBTreeMate.InsertFixing(this, path);
+    fixer.process();
+    return true;
+  }
+  else {
+    return false;
+  }
 }
 
 /**
@@ -119,9 +122,9 @@ public boolean insert(@NotNull Object key, Object value) {
  * @return true if the key is present, false otherwise.
  */
 public boolean isPresent(@NotNull Object key) {
-    Lot path = RBTreeMate.pathOf(this, key);
-    Few node = (Few) path.car();
-    return !RBTreeMate.isNil(node);
+  Lot path = RBTreeMate.pathOf(this, key);
+  Few node = (Few) path.car();
+  return !RBTreeMate.isNil(node);
 }
 
 
@@ -133,14 +136,15 @@ public boolean isPresent(@NotNull Object key) {
  * @throws RuntimeException if the key is not present in the tree.
  */
 public @NotNull Object ref(@NotNull Object key) {
-    Lot path = RBTreeMate.pathOf(this, key);
-    Few node = (Few) path.car();
-    if (RBTreeMate.isNil(node)) {
-        String msg = String.format(Msg.NOT_PRESENT, key, this);
-        throw new RuntimeException(msg);
-    } else {
-        return RBTreeMate.value(node);
-    }
+  Lot path = RBTreeMate.pathOf(this, key);
+  Few node = (Few) path.car();
+  if (RBTreeMate.isNil(node)) {
+    String msg = String.format(Msg.NOT_PRESENT, key, this);
+    throw new RuntimeException(msg);
+  }
+  else {
+    return RBTreeMate.value(node);
+  }
 }
 
 /**
@@ -151,14 +155,15 @@ public @NotNull Object ref(@NotNull Object key) {
  * @throws RuntimeException if the key is not present in the tree
  */
 public void set(@NotNull Object key, Object new_value) {
-    Lot path = RBTreeMate.pathOf(this, key);
-    Few node = (Few) path.car();
-    if (RBTreeMate.isNil(node)) {
-        String msg = String.format(Msg.NOT_PRESENT, key, this);
-        throw new RuntimeException(msg);
-    } else {
-        RBTreeMate.setValue(node, new_value);
-    }
+  Lot path = RBTreeMate.pathOf(this, key);
+  Few node = (Few) path.car();
+  if (RBTreeMate.isNil(node)) {
+    String msg = String.format(Msg.NOT_PRESENT, key, this);
+    throw new RuntimeException(msg);
+  }
+  else {
+    RBTreeMate.setValue(node, new_value);
+  }
 }
 
 /**
@@ -170,11 +175,12 @@ public void set(@NotNull Object key, Object new_value) {
  * @return {@code true} if the key was present and deleted, {@code false} otherwise.
  */
 public boolean delete(@NotNull Object key) {
-    if (isEmpty()) {
-        return false;
-    } else {
-        return RBTreeMate.delete(this, key);
-    }
+  if (isEmpty()) {
+    return false;
+  }
+  else {
+    return RBTreeMate.delete(this, key);
+  }
 }
 
 /**
@@ -184,13 +190,14 @@ public boolean delete(@NotNull Object key) {
  * @throws RuntimeException if the tree is empty.
  */
 public Object minimum() {
-    Lot path = RBTreeMate.minimum(root(), lot());
-    if (path.isEmpty()) {
-        throw new RuntimeException(Msg.EMPTY_TREE);
-    } else {
-        Few node = (Few) path.car();
-        return RBTreeMate.key(node);
-    }
+  Lot path = RBTreeMate.minimum(root(), lot());
+  if (path.isEmpty()) {
+    throw new RuntimeException(Msg.EMPTY_TREE);
+  }
+  else {
+    Few node = (Few) path.car();
+    return RBTreeMate.key(node);
+  }
 }
 
 /**
@@ -200,13 +207,14 @@ public Object minimum() {
  * @throws RuntimeException if the tree is empty.
  */
 public Object maximum() {
-    Lot path = RBTreeMate.maximum(root(), lot());
-    if (path.isEmpty()) {
-        throw new RuntimeException(Msg.EMPTY_TREE);
-    } else {
-        Few node = (Few) path.car();
-        return RBTreeMate.key(node);
-    }
+  Lot path = RBTreeMate.maximum(root(), lot());
+  if (path.isEmpty()) {
+    throw new RuntimeException(Msg.EMPTY_TREE);
+  }
+  else {
+    Few node = (Few) path.car();
+    return RBTreeMate.key(node);
+  }
 }
 
 /**
@@ -216,7 +224,7 @@ public Object maximum() {
  * @return a list of key-value pairs.
  */
 public Lot travel() {
-    return RBTreeMate.travel(root);
+  return RBTreeMate.travel(root);
 }
 
 /**
@@ -226,7 +234,7 @@ public Lot travel() {
  * @return a filtered Red-Black tree.
  */
 public RBTree filter(Predicate1 fn) {
-    return RBTreeMate.filter(fn, this);
+  return RBTreeMate.filter(fn, this);
 }
 
 /**
@@ -236,7 +244,7 @@ public RBTree filter(Predicate1 fn) {
  * @return a mapped Red-Black tree.
  */
 public RBTree map(Do1 fn) {
-    return RBTreeMate.map(fn, this);
+  return RBTreeMate.map(fn, this);
 }
 
 /**
@@ -246,6 +254,6 @@ public RBTree map(Do1 fn) {
  * @return A Lot containing depth statistics, where each element is a Lot of the form {@code (depth count)}
  */
 public Lot depthStatistic() {
-    return RBTreeMate.depthStatistic(root);
+  return RBTreeMate.depthStatistic(root);
 }
 }

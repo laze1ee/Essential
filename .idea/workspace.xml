@@ -7,18 +7,43 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7eecb0c4-2d1d-4b73-bf14-df6f67da83cb" name="Changes" comment="- Binary: add checksum validation and improve binary encoding/decoding&#10;- update CheckSum and add unit tests for adler32 and fletcher32">
+    <list default="true" id="7eecb0c4-2d1d-4b73-bf14-df6f67da83cb" name="Changes" comment="add checksum validation and improve binary encoding/decoding">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/datetime/Date.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/datetime/Date.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/datetime/Mate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/datetime/Mate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/datetime/Time.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/datetime/Time.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/datetime/TimeType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/datetime/TimeType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/progressive/Equality.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progressive/Equality.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/progressive/Few.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progressive/Few.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/progressive/Lot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progressive/Lot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/progressive/Mate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progressive/Mate.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/progressive/Pr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progressive/Pr.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/progressive/Shared.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progressive/Shared.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/progressive/ToString.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progressive/ToString.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/utilities/AVLTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/AVLTree.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/utilities/AVLTreeMate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/AVLTreeMate.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/utilities/Binary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/Binary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/BinaryMate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/BinaryMate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/CheckSum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/CheckSum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/Decoding.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/Decoding.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/utilities/Encoding.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/Encoding.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/Queue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/Queue.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/utilities/RBTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/RBTree.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/utilities/RBTreeMate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/RBTreeMate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/RandGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/RandGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/datetime/DateTimeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/datetime/DateTimeTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/progressive/EqualityTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/progressive/EqualityTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/progressive/FewTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/progressive/FewTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/progressive/LotTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/progressive/LotTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/progressive/PrTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/progressive/PrTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/progressive/ToStringTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/progressive/ToStringTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/utilities/AVLTreeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/AVLTreeTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/utilities/BinaryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/BinaryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/utilities/CheckSumTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/CheckSumTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/utilities/DecodingTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/DecodingTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/utilities/EncodingTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/EncodingTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/utilities/RBTreeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/RBTreeTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/utilities/RandGeneratorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/RandGeneratorTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,63 +80,64 @@
     <option name="showExcludedFiles" value="false" />
     <option name="showVisibilityIcons" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.CheckSum.executor&quot;: &quot;Run&quot;,
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
-    &quot;JUnit.AVLTreeTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BinaryTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BinaryTest.testBoolean.executor&quot;: &quot;Debug&quot;,
-    &quot;JUnit.BinaryTest.testFewAndLot.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CheckSumTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.DecodingTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.EncodingTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.EqualityTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.FewTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.FewTest.testToString.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.LotTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.LotTest.testEquals.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.LotTest.testToString.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PrTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PrTest.testAppend1.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PrTest.testAppend2.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PrTest.testSetAppend.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PrTest.testSetCons.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RBTreeTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RBTreeTest.insert.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RBTreeTest.overall.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RandTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RandTest.shuffle.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ToStringTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ToStringTest.process.executor&quot;: &quot;Run&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;true&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;deletionFromPopupRequiresConfirmation&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/Rock/TODO/IdeaProject/Essential&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.CheckSum.executor": "Run",
+    "Application.Mate.executor": "Run",
+    "Downloaded.Files.Path.Enabled": "false",
+    "JUnit.AVLTreeTest.executor": "Run",
+    "JUnit.BinaryTest.executor": "Run",
+    "JUnit.BinaryTest.testBoolean.executor": "Debug",
+    "JUnit.BinaryTest.testFewAndLot.executor": "Run",
+    "JUnit.CheckSumTest.executor": "Run",
+    "JUnit.DecodingTest.executor": "Run",
+    "JUnit.EncodingTest.executor": "Run",
+    "JUnit.EqualityTest.executor": "Run",
+    "JUnit.FewTest.executor": "Run",
+    "JUnit.FewTest.testToString.executor": "Run",
+    "JUnit.LotTest.executor": "Run",
+    "JUnit.LotTest.testEquals.executor": "Run",
+    "JUnit.LotTest.testToString.executor": "Run",
+    "JUnit.PrTest.executor": "Run",
+    "JUnit.PrTest.testAppend1.executor": "Run",
+    "JUnit.PrTest.testAppend2.executor": "Run",
+    "JUnit.PrTest.testSetAppend.executor": "Run",
+    "JUnit.PrTest.testSetCons.executor": "Run",
+    "JUnit.RBTreeTest.executor": "Run",
+    "JUnit.RBTreeTest.insert.executor": "Run",
+    "JUnit.RBTreeTest.overall.executor": "Run",
+    "JUnit.RandTest.executor": "Run",
+    "JUnit.RandTest.shuffle.executor": "Run",
+    "JUnit.ToStringTest.executor": "Run",
+    "JUnit.ToStringTest.process.executor": "Run",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "true",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "com.codeium.enabled": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "deletionFromPopupRequiresConfirmation": "false",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "E:/Rock/TODO/IdeaProject/Essential",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "Lingma",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
-      &quot;TEXT&quot;
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "TEXT"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
@@ -127,18 +153,16 @@
       <recent name="essential.progresive" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.BinaryTest">
-    <configuration name="BinaryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Application.Mate">
+    <configuration name="Mate" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="essential.progressive.Mate" />
       <module name="Essential" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="essential.utilities.*" />
+          <option name="PATTERN" value="essential.progressive.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="essential.utilities" />
-      <option name="MAIN_CLASS_NAME" value="essential.utilities.BinaryTest" />
-      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -206,18 +230,18 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.BinaryTest" />
-        <item itemvalue="JUnit.BinaryTest.testBoolean" />
-        <item itemvalue="JUnit.CheckSumTest" />
-        <item itemvalue="JUnit.DecodingTest" />
+        <item itemvalue="Application.Mate" />
         <item itemvalue="JUnit.EncodingTest" />
+        <item itemvalue="JUnit.DecodingTest" />
+        <item itemvalue="JUnit.CheckSumTest" />
+        <item itemvalue="JUnit.BinaryTest.testBoolean" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.25410.129" />
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.26094.121" />
       </set>
     </attachedChunks>
   </component>
@@ -272,7 +296,13 @@
       <workItem from="1747290127163" duration="9760000" />
       <workItem from="1747318199080" duration="8695000" />
       <workItem from="1747358113839" duration="4496000" />
-      <workItem from="1747398317360" duration="983000" />
+      <workItem from="1747398317360" duration="1778000" />
+      <workItem from="1749058096246" duration="852000" />
+      <workItem from="1749059015658" duration="1566000" />
+      <workItem from="1749060614304" duration="171000" />
+      <workItem from="1749092312775" duration="1228000" />
+      <workItem from="1749093894279" duration="314000" />
+      <workItem from="1749216449836" duration="11916000" />
     </task>
     <task id="LOCAL-00002" summary="simplify Lot">
       <option name="closed" value="true" />
@@ -322,7 +352,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747362606093</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="add checksum validation and improve binary encoding/decoding">
+      <option name="closed" value="true" />
+      <created>1747399997935</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1747399997935</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -347,7 +385,8 @@
     <MESSAGE value="- Standardize copyright year to 2025 across multiple files&#10;- refactor most mapping methods of AVLTree and RBTree&#10;- refactor the algorithm of Sharing, Equality and ToString." />
     <MESSAGE value="enhance AVLTree and RBTree functionality" />
     <MESSAGE value="- Binary: add checksum validation and improve binary encoding/decoding&#10;- update CheckSum and add unit tests for adler32 and fletcher32" />
-    <option name="LAST_COMMIT_MESSAGE" value="- Binary: add checksum validation and improve binary encoding/decoding&#10;- update CheckSum and add unit tests for adler32 and fletcher32" />
+    <MESSAGE value="add checksum validation and improve binary encoding/decoding" />
+    <option name="LAST_COMMIT_MESSAGE" value="add checksum validation and improve binary encoding/decoding" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

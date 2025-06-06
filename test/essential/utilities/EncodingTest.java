@@ -18,14 +18,14 @@ class EncodingTest {
 
 @Test
 void process() {
-    Few fw = few(1, 2, 3, false);
-    Lot lt = lot('a', lot('b'), 'c', true);
+  Few fw = few(1, 2, 3, false);
+  Lot lt = lot('a', lot('b'), 'c', true);
 
-    fw.set(2, fw);
-    setCdr(lt.cddr().cdr(), lt);
-    lt = cons(fw, lt);
-    Encoding inst = new Encoding(lt);
-    byte[] bin = inst.process();
-    System.out.println(stringOf(bin));
+  fw.set(2, fw);
+  setCdr(lt.cddr().cdr(), lt);
+  lt = cons(fw, lt);
+  Encoding inst = new Encoding(lt);
+  byte[] bin = inst.process();
+  System.out.println(stringOf(bin));
 }
 }

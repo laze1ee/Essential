@@ -18,95 +18,103 @@ import java.time.ZonedDateTime;
 public record Time(long second, int nanosecond) {
 
 public Time(long second, int nanosecond) {
-    if (nanosecond <= Mate.NEG_NANO_OF_SECOND ||
-        Mate.POS_NANO_OF_SECOND <= nanosecond) {
-        String msg = String.format(Msg.OUT_RANGE_NANO, nanosecond, Mate.NEG_NANO_OF_SECOND + 1,
-                                   Mate.POS_NANO_OF_SECOND - 1);
-        throw new RuntimeException(msg);
-    }
-    if (second > 0 && nanosecond < 0) {
-        this.second = second - 1;
-        this.nanosecond = Mate.POS_NANO_OF_SECOND + nanosecond;
-    } else if (second < 0 && nanosecond > 0) {
-        this.second = second + 1;
-        this.nanosecond = nanosecond - Mate.POS_NANO_OF_SECOND;
-    } else {
-        this.second = second;
-        this.nanosecond = nanosecond;
-    }
+  if (nanosecond <= Mate.NEG_NANO_OF_SECOND ||
+      Mate.POS_NANO_OF_SECOND <= nanosecond) {
+    String msg = String.format(Msg.OUT_RANGE_NANO, nanosecond, Mate.NEG_NANO_OF_SECOND + 1,
+                               Mate.POS_NANO_OF_SECOND - 1);
+    throw new RuntimeException(msg);
+  }
+  if (second > 0 && nanosecond < 0) {
+    this.second = second - 1;
+    this.nanosecond = Mate.POS_NANO_OF_SECOND + nanosecond;
+  }
+  else if (second < 0 && nanosecond > 0) {
+    this.second = second + 1;
+    this.nanosecond = nanosecond - Mate.POS_NANO_OF_SECOND;
+  }
+  else {
+    this.second = second;
+    this.nanosecond = nanosecond;
+  }
 }
 
 public @NotNull Time neg() {return new Time(-second, -nanosecond);}
 
 public boolean less(@NotNull Time t) {
-    if (this.second() < t.second()) {
-        return true;
-    } else if (this.second() == t.second()) {
-        return this.nanosecond() < t.nanosecond();
-    } else {
-        return false;
-    }
+  if (this.second() < t.second()) {
+    return true;
+  }
+  else if (this.second() == t.second()) {
+    return this.nanosecond() < t.nanosecond();
+  }
+  else {
+    return false;
+  }
 }
 
 @Override
 public boolean equals(Object datum) {
-    if (datum instanceof Time t) {
-        return second == t.second &&
-               nanosecond == t.nanosecond;
-    } else {
-        return false;
-    }
+  if (datum instanceof Time t) {
+    return second == t.second &&
+           nanosecond == t.nanosecond;
+  }
+  else {
+    return false;
+  }
 }
 
 @Override
 public @NotNull String toString() {
-    return String.format("#[time %d.%09d]", second, Math.abs(nanosecond));
+  return String.format("#[time %d.%09d]", second, Math.abs(nanosecond));
 }
 
 public @NotNull Date toDate(int offset) {
-    if (Mate.checkTime(this)) {
-        return Mate.timeToDate(this, offset);
-    } else {
-        String msg = String.format(Msg.OUT_TIME, this, Mate.UTC_MIN, Mate.UTC_MAX);
-        throw new RuntimeException(msg);
-    }
+  if (Mate.checkTime(this)) {
+    return Mate.timeToDate(this, offset);
+  }
+  else {
+    String msg = String.format(Msg.OUT_TIME, this, Mate.UTC_MIN, Mate.UTC_MAX);
+    throw new RuntimeException(msg);
+  }
 }
 
 public static @NotNull Time current(@NotNull TimeType type) {
-    switch (type) {
+  switch (type) {
     case UTC -> {
-        ZonedDateTime utc = ZonedDateTime.now(ZoneOffset.UTC);
-        long second = utc.toEpochSecond();
-        int nanosecond = utc.getNano();
-        return new Time(second, nanosecond);
+      ZonedDateTime utc = ZonedDateTime.now(ZoneOffset.UTC);
+      long second = utc.toEpochSecond();
+      int nanosecond = utc.getNano();
+      return new Time(second, nanosecond);
     }
     case Monotonic -> {
-        long stamp = System.nanoTime();
-        long second = stamp / Mate.POS_NANO_OF_SECOND;
-        int nanosecond = (int) (stamp % Mate.POS_NANO_OF_SECOND);
-        return new Time(second, nanosecond);
+      long stamp = System.nanoTime();
+      long second = stamp / Mate.POS_NANO_OF_SECOND;
+      int nanosecond = (int) (stamp % Mate.POS_NANO_OF_SECOND);
+      return new Time(second, nanosecond);
     }
     default -> {
-        ThreadMXBean bean = ManagementFactory.getThreadMXBean();
-        long stamp = bean.getCurrentThreadCpuTime();
-        long second = stamp / Mate.POS_NANO_OF_SECOND;
-        int nanosecond = (int) (stamp % Mate.POS_NANO_OF_SECOND);
-        return new Time(second, nanosecond);
+      ThreadMXBean bean = ManagementFactory.getThreadMXBean();
+      long stamp = bean.getCurrentThreadCpuTime();
+      long second = stamp / Mate.POS_NANO_OF_SECOND;
+      int nanosecond = (int) (stamp % Mate.POS_NANO_OF_SECOND);
+      return new Time(second, nanosecond);
     }
-    }
+  }
 }
 
 public static @NotNull Time current() {return current(TimeType.UTC);}
 
 public static @NotNull Time add(@NotNull Time t1, @NotNull Time t2) {
-    long second = t1.second + t2.second;
-    int nanosecond = t1.nanosecond + t2.nanosecond;
-    if (nanosecond >= Mate.POS_NANO_OF_SECOND) {
-        return new Time(second + 1, nanosecond - Mate.POS_NANO_OF_SECOND);
-    } else if (nanosecond <= Mate.NEG_NANO_OF_SECOND) {
-        return new Time(second - 1, nanosecond + Mate.POS_NANO_OF_SECOND);
-    } else {
-        return new Time(second, nanosecond);
-    }
+  long second = t1.second + t2.second;
+  int nanosecond = t1.nanosecond + t2.nanosecond;
+  if (nanosecond >= Mate.POS_NANO_OF_SECOND) {
+    return new Time(second + 1, nanosecond - Mate.POS_NANO_OF_SECOND);
+  }
+  else if (nanosecond <= Mate.NEG_NANO_OF_SECOND) {
+    return new Time(second - 1, nanosecond + Mate.POS_NANO_OF_SECOND);
+  }
+  else {
+    return new Time(second, nanosecond);
+  }
 }
 }

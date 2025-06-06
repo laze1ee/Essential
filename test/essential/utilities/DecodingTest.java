@@ -18,19 +18,19 @@ class DecodingTest {
 
 @Test
 void process() {
-    Few fw = few(1, 2, 3, false);
-    Lot lt = lot('a', lot('b'), 'c', true);
+  Few fw = few(1, 2, 3, false);
+  Lot lt = lot('a', lot('b'), 'c', true);
 
-    fw.set(1, fw);
-    lt.set(2, lt);
-    setCdr(lt.cdr().cddr(), lt);
-    lt = cons(fw, lt);
+  fw.set(1, fw);
+  setCar(lt.cddr(), lt);
+  setCdr(lt.cdr().cddr(), lt);
+  lt = cons(fw, lt);
 
-    Encoding en = new Encoding(lt);
-    byte[] bin = en.process();
-    Decoding de = new Decoding(bin, 0);
-    Object datum = de.process();
-    System.out.println(datum);
-    assertEquals(lt, datum);
+  Encoding en = new Encoding(lt);
+  byte[] bin = en.process();
+  Decoding de = new Decoding(bin, 0);
+  Object datum = de.process();
+  System.out.println(datum);
+  assertEquals(lt, datum);
 }
 }

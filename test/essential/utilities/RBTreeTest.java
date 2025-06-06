@@ -27,60 +27,60 @@ private final RBTree tree;
 private Lot keys;
 
 private RBTreeTest() {
-    tree = new RBTree(Pr::less, Pr::greater);
-    keys = lot();
+  tree = new RBTree(Pr::less, Pr::greater);
+  keys = lot();
 }
 
 void insert() {
-    Random random = new Random(Time.current().nanosecond());
-    Lot repeat = lot();
-    for (int i = 0; i < SIZE; i += 1) {
-        while (true) {
-            String key = RandGenerator.ascii(random.nextInt(3, 8));
-            boolean success = tree.insert(key, random.nextInt(SIZE));
-            if (success) {
-                keys = cons(key, keys);
-                break;
-            }
-            repeat = cons(key, repeat);
-        }
+  Random random = new Random(Time.current().nanosecond());
+  Lot repeat = lot();
+  for (int i = 0; i < SIZE; i += 1) {
+    while (true) {
+      String key = RandGenerator.ascii(random.nextInt(3, 8));
+      boolean success = tree.insert(key, random.nextInt(SIZE));
+      if (success) {
+        keys = cons(key, keys);
+        break;
+      }
+      repeat = cons(key, repeat);
     }
-    System.out.println("repeated keys: " + repeat);
+  }
+  System.out.println("repeated keys: " + repeat);
 }
 
 void visit() {
-    Lot all = tree.travel();
-    assertEquals(all.length(), tree.size());
+  Lot all = tree.travel();
+  assertEquals(all.length(), tree.size());
 
-    RBTree new_tree = tree.map(o -> ((int) o) * 3);
+  RBTree new_tree = tree.map(o -> ((int) o) * 3);
 
-    RBTree evens  = new_tree.filter(o -> ((int) o % 2) == 0);
-    int even_size = evens.size();
-    System.out.println("even amount: " + even_size);
-    RBTree odds   = new_tree.filter(o -> ((int) o % 2) != 0);
-    int odd_size = odds.size();
-    System.out.println("odd amount: " + odd_size);
-    assertEquals(even_size + odd_size, new_tree.size());
+  RBTree evens = new_tree.filter(o -> ((int) o % 2) == 0);
+  int even_size = evens.size();
+  System.out.println("even amount: " + even_size);
+  RBTree odds = new_tree.filter(o -> ((int) o % 2) != 0);
+  int odd_size = odds.size();
+  System.out.println("odd amount: " + odd_size);
+  assertEquals(even_size + odd_size, new_tree.size());
 
-    Lot statistic = tree.depthStatistic();
-    System.out.println("depth statistic: " + statistic);
+  Lot statistic = tree.depthStatistic();
+  System.out.println("depth statistic: " + statistic);
 }
 
 void delete() {
-    keys = RandGenerator.shuffle(keys);
-    while (!keys.isEmpty()) {
-        boolean success = tree.delete(keys.car());
-        keys = keys.cdr();
-    }
-    assertTrue(tree.isEmpty());
+  keys = RandGenerator.shuffle(keys);
+  while (!keys.isEmpty()) {
+    boolean success = tree.delete(keys.car());
+    keys = keys.cdr();
+  }
+  assertTrue(tree.isEmpty());
 }
 
 @Test
 void overall() {
-    visit();
+  visit();
 
-    insert();
-    visit();
-    delete();
+  insert();
+  visit();
+  delete();
 }
 }

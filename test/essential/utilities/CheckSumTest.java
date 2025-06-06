@@ -22,28 +22,28 @@ class CheckSumTest {
 private final byte[] bin;
 
 CheckSumTest() {
-    String current_dir = System.getProperty("user.dir");
-    Path file = Path.of(current_dir, "test/essential/utilities/test-checksum.txt");
-    String text;
-    try {
-        text = Files.readString(file);
-    } catch (IOException e) {
-        throw new RuntimeException(e);
-    }
-    bin = text.getBytes(StandardCharsets.UTF_8);
+  String current_dir = System.getProperty("user.dir");
+  Path file = Path.of(current_dir, "test/essential/utilities/test-checksum.txt");
+  String text;
+  try {
+    text = Files.readString(file);
+  } catch (IOException e) {
+    throw new RuntimeException(e);
+  }
+  bin = text.getBytes(StandardCharsets.UTF_8);
 }
 
 @Test
 void adler32() {
-    int checksum = CheckSum.adler32(bin);
-    System.out.printf("adler32: %X\n", checksum);
-    assertEquals(0x1AC2823D, checksum);
+  int checksum = CheckSum.adler32(bin);
+  System.out.printf("adler32: %X\n", checksum);
+  assertEquals(0x1AC2823D, checksum);
 }
 
 @Test
 void fletcher32() {
-    int checksum = CheckSum.fletcher32(bin);
-    System.out.printf("fletcher32: %X\n", checksum);
-    assertEquals(0xD09681B0, checksum);
+  int checksum = CheckSum.fletcher32(bin);
+  System.out.printf("fletcher32: %X\n", checksum);
+  assertEquals(0xD09681B0, checksum);
 }
 }

@@ -19,8 +19,8 @@ private Lot stack1;
 private Lot stack2;
 
 public Queue(@NotNull Object @NotNull ... args) {
-    stack1 = few(args).toLot();
-    stack2 = lot();
+  stack1 = few(args).toLot();
+  stack2 = lot();
 }
 
 /**
@@ -29,23 +29,24 @@ public Queue(@NotNull Object @NotNull ... args) {
  * @return if the queue is empty, returns true else false.
  */
 public boolean isEmpty() {
-    return stack1.isEmpty() &&
-           stack2.isEmpty();
+  return stack1.isEmpty() &&
+         stack2.isEmpty();
 }
 
 @Override
 public boolean equals(Object datum) {
-    if (datum instanceof Queue que) {
-        return stack1.equals(que.stack1) &&
-               stack2.equals(que.stack2);
-    } else {
-        return false;
-    }
+  if (datum instanceof Queue que) {
+    return stack1.equals(que.stack1) &&
+           stack2.equals(que.stack2);
+  }
+  else {
+    return false;
+  }
 }
 
 @Override
 public String toString() {
-    return String.format("«Queue %s»", append(stack1, stack2.reverse()));
+  return String.format("«Queue %s»", append(stack1, stack2.reverse()));
 }
 
 /**
@@ -54,7 +55,7 @@ public String toString() {
  * @param datum the item to add
  */
 public void enqueue(Object datum) {
-    stack2 = cons(datum, stack2);
+  stack2 = cons(datum, stack2);
 }
 
 /**
@@ -64,17 +65,19 @@ public void enqueue(Object datum) {
  * @throws RuntimeException if the queue is empty.
  */
 public Object dequeue() {
-    if (isEmpty()) {
-        throw new RuntimeException(Msg.EMPTY_QUEUE);
-    } else if (stack1.isEmpty()) {
-        Lot ixx = stack2.reverse();
-        stack1 = ixx.cdr();
-        stack2 = lot();
-        return ixx.car();
-    } else {
-        Object datum = stack1.car();
-        stack1 = stack1.cdr();
-        return datum;
-    }
+  if (isEmpty()) {
+    throw new RuntimeException(Msg.EMPTY_QUEUE);
+  }
+  else if (stack1.isEmpty()) {
+    Lot ixx = stack2.reverse();
+    stack1 = ixx.cdr();
+    stack2 = lot();
+    return ixx.car();
+  }
+  else {
+    Object datum = stack1.car();
+    stack1 = stack1.cdr();
+    return datum;
+  }
 }
 }

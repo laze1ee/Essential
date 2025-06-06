@@ -17,38 +17,38 @@ class ToStringTest {
 
 @Test
 void process() {
-    Few fw = few(1, 2, 3, false);
-    Lot lt = lot('a', 'b', 'c');
+  Few fw = few(1, 2, 3, false);
+  Lot lt = lot('a', 'b', 'c');
 
-    // non-sharing
-    assertEquals("#(1 2 3 #f)", ToString.process(fw));
-    assertEquals("(#\\a #\\b #\\c)", ToString.process(lt));
+  // non-sharing
+  assertEquals("#(1 2 3 #f)", ToString.process(fw));
+  assertEquals("(#\\a #\\b #\\c)", ToString.process(lt));
 
-    // contains sharing item
-    String share = "share";
-    fw.set(1, share);
-    fw.set(3, share);
-    assertEquals("#(1 #0=\"share\" 3 #0#)", ToString.process(fw));
-    setCar(lt.cddr(), share);
-    lt = cons(share, lt);
-    assertEquals("(#0=\"share\" #\\a #\\b #0#)", ToString.process(lt));
+  // contains sharing item
+  String share = "share";
+  fw.set(1, share);
+  fw.set(3, share);
+  assertEquals("#(1 #0=\"share\" 3 #0#)", ToString.process(fw));
+  setCar(lt.cddr(), share);
+  lt = cons(share, lt);
+  assertEquals("(#0=\"share\" #\\a #\\b #0#)", ToString.process(lt));
 
-    // recursive sharing item
-    fw.set(2, fw);
-    assertEquals("#0=#(1 #1=\"share\" #0# #1#)", ToString.process(fw));
-    setCar(lt.cdr(), lt);
-    setCdr(lt.cdr().cddr(), lt);
-    assertEquals("#0=(#1=\"share\" #0# #\\b #1# . #0#)", ToString.process(lt));
+  // recursive sharing item
+  fw.set(2, fw);
+  assertEquals("#0=#(1 #1=\"share\" #0# #1#)", ToString.process(fw));
+  setCar(lt.cdr(), lt);
+  setCdr(lt.cdr().cddr(), lt);
+  assertEquals("#0=(#1=\"share\" #0# #\\b #1# . #0#)", ToString.process(lt));
 
-    // make it more complex
-    lt = cons(fw, lt);
-    fw.set(0, lt);
-    assertEquals("#0=(#1=#(#0# #2=\"share\" #1# #2#) . #3=(#2# #3# #\\b #2# . #3#))",
-                 ToString.process(lt));
+  // make it more complex
+  lt = cons(fw, lt);
+  fw.set(0, lt);
+  assertEquals("#0=(#1=#(#0# #2=\"share\" #1# #2#) . #3=(#2# #3# #\\b #2# . #3#))",
+               ToString.process(lt));
 
-    // test empty Lot
-    Lot l1 = lot();
-    Lot l2 = cons(1, cons(l1, cons(3, l1)));
-    assertEquals("(1 #0=() 3 . #0#)", ToString.process(l2));
+  // test empty Lot
+  Lot l1 = lot();
+  Lot l2 = cons(1, cons(l1, cons(3, l1)));
+  assertEquals("(1 #0=() 3 . #0#)", ToString.process(l2));
 }
 }

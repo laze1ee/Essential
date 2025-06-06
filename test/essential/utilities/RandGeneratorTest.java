@@ -16,15 +16,15 @@ class RandGeneratorTest {
 
 @Test
 void string() {
-    String text = "Unity is strength when there is teamwork.";
-    String str2 = RandGenerator.string(text, 10);
-    System.out.println(str2);
+  String text = "Unity is strength when there is teamwork.";
+  String str2 = RandGenerator.string(text, 10);
+  System.out.println(str2);
 }
 
 @Test
 void shuffle() {
-    Lot lt = lot(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
-    Lot ls = RandGenerator.shuffle(lt);
-    System.out.println(ls);
+  Lot lt = lot(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+  Lot ls = RandGenerator.shuffle(lt);
+  System.out.println(ls);
 }
 }

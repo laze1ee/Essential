@@ -25,52 +25,54 @@ private final Predicate2 greater;
 private Few root;
 
 public AVLTree(Predicate2 less, Predicate2 greater) {
-    this.less = less;
-    this.greater = greater;
-    this.root = AVLTreeMate.makeNode();
+  this.less = less;
+  this.greater = greater;
+  this.root = AVLTreeMate.makeNode();
 }
 
 Predicate2 less() {
-    return less;
+  return less;
 }
 
 Predicate2 greater() {
-    return greater;
+  return greater;
 }
 
 public Few root() {
-    return root;
+  return root;
 }
 
 void _setRoot(Few node) {
-    this.root = node;
+  this.root = node;
 }
 
 public void setRoot(Few node) {
-    if (AVLTreeMate.isValidNode(node)) {
-        root = node;
-    } else {
-        String msg = String.format(Msg.INVALID_AVL_NODE, node);
-        throw new RuntimeException(msg);
-    }
+  if (AVLTreeMate.isValidNode(node)) {
+    root = node;
+  }
+  else {
+    String msg = String.format(Msg.INVALID_AVL_NODE, node);
+    throw new RuntimeException(msg);
+  }
 }
 
 @Override
 public boolean equals(Object datum) {
-    if (datum instanceof AVLTree tree) {
-        return root().equals(tree.root());
-    } else {
-        return false;
-    }
+  if (datum instanceof AVLTree tree) {
+    return root().equals(tree.root());
+  }
+  else {
+    return false;
+  }
 }
 
 @Override
 public String toString() {
-    return String.format("«AVL-Tree %s»", AVLTreeMate.toString(root));
+  return String.format("«AVL-Tree %s»", AVLTreeMate.toString(root));
 }
 
 public boolean isValidNode() {
-    return AVLTreeMate.isValidNode(root);
+  return AVLTreeMate.isValidNode(root);
 }
 
 /**
@@ -79,7 +81,7 @@ public boolean isValidNode() {
  * @return if the tree is empty, return true else false.
  */
 public boolean isEmpty() {
-    return AVLTreeMate.isNil(root());
+  return AVLTreeMate.isNil(root());
 }
 
 /**
@@ -88,7 +90,7 @@ public boolean isEmpty() {
  * @return number of items in the tree.
  */
 public int size() {
-    return AVLTreeMate.size(root);
+  return AVLTreeMate.size(root);
 }
 
 /**
@@ -100,19 +102,20 @@ public int size() {
  * @return true if inserting succeeded, false otherwise.
  */
 public boolean insert(@NotNull Object key, Object value) {
-    Lot path = AVLTreeMate.pathOf(this, key);
-    Few node = (Few) path.car();
-    if (AVLTreeMate.isNil(node)) {
-        AVLTreeMate.setKey(node, key);
-        AVLTreeMate.setValue(node, value);
-        AVLTreeMate.setHeight(node, 1);
-        AVLTreeMate.setLeft(node, AVLTreeMate.makeNode());
-        AVLTreeMate.setRight(node, AVLTreeMate.makeNode());
-        AVLTreeMate.update(this, path);
-        return true;
-    } else {
-        return false;
-    }
+  Lot path = AVLTreeMate.pathOf(this, key);
+  Few node = (Few) path.car();
+  if (AVLTreeMate.isNil(node)) {
+    AVLTreeMate.setKey(node, key);
+    AVLTreeMate.setValue(node, value);
+    AVLTreeMate.setHeight(node, 1);
+    AVLTreeMate.setLeft(node, AVLTreeMate.makeNode());
+    AVLTreeMate.setRight(node, AVLTreeMate.makeNode());
+    AVLTreeMate.update(this, path);
+    return true;
+  }
+  else {
+    return false;
+  }
 }
 
 /**
@@ -122,9 +125,9 @@ public boolean insert(@NotNull Object key, Object value) {
  * @return true if the key is present, false otherwise.
  */
 public boolean isPresent(@NotNull Object key) {
-    Lot path = AVLTreeMate.pathOf(this, key);
-    Few node = (Few) path.car();
-    return !AVLTreeMate.isNil(node);
+  Lot path = AVLTreeMate.pathOf(this, key);
+  Few node = (Few) path.car();
+  return !AVLTreeMate.isNil(node);
 }
 
 /**
@@ -135,14 +138,15 @@ public boolean isPresent(@NotNull Object key) {
  * @throws RuntimeException if the key is not present in the tree.
  */
 public @NotNull Object ref(@NotNull Object key) {
-    Lot path = AVLTreeMate.pathOf(this, key);
-    Few node = (Few) path.car();
-    if (AVLTreeMate.isNil(node)) {
-        String msg = String.format(Msg.NOT_PRESENT, key, this);
-        throw new RuntimeException(msg);
-    } else {
-        return AVLTreeMate.value(node);
-    }
+  Lot path = AVLTreeMate.pathOf(this, key);
+  Few node = (Few) path.car();
+  if (AVLTreeMate.isNil(node)) {
+    String msg = String.format(Msg.NOT_PRESENT, key, this);
+    throw new RuntimeException(msg);
+  }
+  else {
+    return AVLTreeMate.value(node);
+  }
 }
 
 /**
@@ -153,14 +157,15 @@ public @NotNull Object ref(@NotNull Object key) {
  * @throws RuntimeException if the key is not present in the tree.
  */
 public void set(@NotNull Object key, Object new_value) {
-    Lot path = AVLTreeMate.pathOf(this, key);
-    Few node = (Few) path.car();
-    if (AVLTreeMate.isNil(node)) {
-        String msg = String.format(Msg.NOT_PRESENT, key, this);
-        throw new RuntimeException(msg);
-    } else {
-        AVLTreeMate.setValue(node, new_value);
-    }
+  Lot path = AVLTreeMate.pathOf(this, key);
+  Few node = (Few) path.car();
+  if (AVLTreeMate.isNil(node)) {
+    String msg = String.format(Msg.NOT_PRESENT, key, this);
+    throw new RuntimeException(msg);
+  }
+  else {
+    AVLTreeMate.setValue(node, new_value);
+  }
 }
 
 /**
@@ -172,11 +177,12 @@ public void set(@NotNull Object key, Object new_value) {
  * @return {@code true} if the key was present and deleted, {@code false} otherwise.
  */
 public boolean delete(@NotNull Object key) {
-    if (isEmpty()) {
-        return false;
-    } else {
-        return AVLTreeMate.delete(this, key);
-    }
+  if (isEmpty()) {
+    return false;
+  }
+  else {
+    return AVLTreeMate.delete(this, key);
+  }
 }
 
 /**
@@ -186,13 +192,14 @@ public boolean delete(@NotNull Object key) {
  * @throws RuntimeException if the tree is empty.
  */
 public Object minimum() {
-    Lot path = AVLTreeMate.minimum(root(), lot());
-    if (path.isEmpty()) {
-        throw new RuntimeException(Msg.EMPTY_TREE);
-    } else {
-        Few node = (Few) path.car();
-        return AVLTreeMate.key(node);
-    }
+  Lot path = AVLTreeMate.minimum(root(), lot());
+  if (path.isEmpty()) {
+    throw new RuntimeException(Msg.EMPTY_TREE);
+  }
+  else {
+    Few node = (Few) path.car();
+    return AVLTreeMate.key(node);
+  }
 }
 
 /**
@@ -202,13 +209,14 @@ public Object minimum() {
  * @throws RuntimeException if the tree is empty.
  */
 public Object maximum() {
-    Lot path = AVLTreeMate.maximum(root(), lot());
-    if (path.isEmpty()) {
-        throw new RuntimeException(Msg.EMPTY_TREE);
-    } else {
-        Few node = (Few) path.car();
-        return AVLTreeMate.key(node);
-    }
+  Lot path = AVLTreeMate.maximum(root(), lot());
+  if (path.isEmpty()) {
+    throw new RuntimeException(Msg.EMPTY_TREE);
+  }
+  else {
+    Few node = (Few) path.car();
+    return AVLTreeMate.key(node);
+  }
 }
 
 /**
@@ -218,7 +226,7 @@ public Object maximum() {
  * @return a list of key-value pairs.
  */
 public Lot travel() {
-    return AVLTreeMate.travel(root);
+  return AVLTreeMate.travel(root);
 }
 
 /**
@@ -228,7 +236,7 @@ public Lot travel() {
  * @return a filtered AVL tree.
  */
 public AVLTree filter(Predicate1 fn) {
-    return AVLTreeMate.filter(fn, this);
+  return AVLTreeMate.filter(fn, this);
 }
 
 /**
@@ -238,7 +246,7 @@ public AVLTree filter(Predicate1 fn) {
  * @return a mapped AVL tree.
  */
 public AVLTree map(Do1 fn) {
-    return AVLTreeMate.map(fn, this);
+  return AVLTreeMate.map(fn, this);
 }
 
 /**
@@ -248,6 +256,6 @@ public AVLTree map(Do1 fn) {
  * @return A Lot containing depth statistics, where each element is a Lot of the form {@code (depth count)}
  */
 public Lot depthStatistic() {
-    return AVLTreeMate.depthStatistic(root);
+  return AVLTreeMate.depthStatistic(root);
 }
 }
