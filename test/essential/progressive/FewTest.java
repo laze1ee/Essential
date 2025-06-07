@@ -9,6 +9,8 @@ package essential.progressive;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import static essential.progressive.Pr.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -87,5 +89,19 @@ void map() {
   assertEquals(2, fs.ref(0));
   assertEquals(4, fs.ref(1));
   assertEquals(6, fs.ref(2));
+}
+
+@Test
+void sort() {
+  int length = 153;
+  Few fw = makeFew(length, 0);
+  for (int i = 0; i < length; i += 1) {
+    fw.set(i, ThreadLocalRandom.current().nextInt(1000) - 500);
+  }
+
+  fw.sort((o1, o2) -> (int) o1 < (int) o2);
+  System.out.println(fw);
+  fw.sort((o1, o2) -> (int) o1 > (int) o2);
+  System.out.println(fw);
 }
 }

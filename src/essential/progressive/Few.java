@@ -121,8 +121,7 @@ public int find(Predicate1 fn) {
  * @param compare A predicate to determine the ordering between two elements.
  */
 public void sort(Predicate2 compare) {
-  Mate.QuickSort inst = new Mate.QuickSort(compare, this);
-  inst.sort();
+  Mate.quickSort(compare, this);
 }
 
 /**
@@ -133,8 +132,7 @@ public void sort(Predicate2 compare) {
  */
 public Few sorted(Predicate2 compare) {
   Few fw = this.copy();
-  Mate.QuickSort inst = new Mate.QuickSort(compare, fw);
-  inst.sort();
+  Mate.quickSort(compare, fw);
   return fw;
 }
 }

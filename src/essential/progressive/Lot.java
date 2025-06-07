@@ -271,8 +271,7 @@ public @NotNull Lot map(Do1 fn) {
  */
 public Lot sorted(Predicate2 compare) {
   Few fw = this.toFew();
-  Mate.QuickSort inst = new Mate.QuickSort(compare, fw);
-  inst.sort();
+  Mate.quickSort(compare, fw);
   return fw.toLot();
 }
 }

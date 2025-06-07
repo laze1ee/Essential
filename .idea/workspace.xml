@@ -7,43 +7,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7eecb0c4-2d1d-4b73-bf14-df6f67da83cb" name="Changes" comment="add checksum validation and improve binary encoding/decoding">
+    <list default="true" id="7eecb0c4-2d1d-4b73-bf14-df6f67da83cb" name="Changes" comment="feat(essential): add sorting functionality to Few and Lot&#10;&#10;- Add sort method to Few class for in-place sorting&#10;- Add sorted method to Few class for returning a new sorted Few&#10;- Add sorted method to Lot class for returning a new sorted Lot">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/datetime/Date.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/datetime/Date.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/datetime/Mate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/datetime/Mate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/datetime/Time.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/datetime/Time.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/datetime/TimeType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/datetime/TimeType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/progressive/Equality.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progressive/Equality.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/progressive/Few.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progressive/Few.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/progressive/Lot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progressive/Lot.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/progressive/Mate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progressive/Mate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/progressive/Pr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progressive/Pr.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/progressive/Shared.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progressive/Shared.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/progressive/ToString.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progressive/ToString.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/utilities/AVLTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/AVLTree.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/utilities/AVLTreeMate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/AVLTreeMate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/utilities/Binary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/Binary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/utilities/BinaryMate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/BinaryMate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/utilities/CheckSum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/CheckSum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/utilities/Decoding.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/Decoding.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/utilities/Encoding.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/Encoding.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/utilities/Queue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/Queue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/utilities/RBTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/RBTree.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/utilities/RBTreeMate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/RBTreeMate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/essential/utilities/RandGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/RandGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/essential/datetime/DateTimeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/datetime/DateTimeTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/essential/progressive/EqualityTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/progressive/EqualityTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/essential/progressive/FewTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/progressive/FewTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/essential/progressive/LotTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/progressive/LotTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/essential/progressive/PrTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/progressive/PrTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/essential/progressive/ToStringTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/progressive/ToStringTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/essential/utilities/AVLTreeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/AVLTreeTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/essential/utilities/BinaryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/BinaryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/essential/utilities/CheckSumTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/CheckSumTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/essential/utilities/DecodingTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/DecodingTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/essential/utilities/EncodingTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/EncodingTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/essential/utilities/RBTreeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/RBTreeTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/essential/utilities/RandGeneratorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/RandGeneratorTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,6 +63,7 @@
     "JUnit.EncodingTest.executor": "Run",
     "JUnit.EqualityTest.executor": "Run",
     "JUnit.FewTest.executor": "Run",
+    "JUnit.FewTest.sort.executor": "Run",
     "JUnit.FewTest.testToString.executor": "Run",
     "JUnit.LotTest.executor": "Run",
     "JUnit.LotTest.testEquals.executor": "Run",
@@ -129,7 +99,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "Lingma",
+    "settings.editor.selected.configurable": "Code Search",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -153,20 +123,7 @@
       <recent name="essential.progresive" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Mate">
-    <configuration name="Mate" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="essential.progressive.Mate" />
-      <module name="Essential" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="essential.progressive.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="JUnit.FewTest.sort">
     <configuration name="BinaryTest.testBoolean" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Essential" />
       <extension name="coverage">
@@ -228,9 +185,25 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="FewTest.sort" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Essential" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="essential.progressive.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="essential.progressive" />
+      <option name="MAIN_CLASS_NAME" value="essential.progressive.FewTest" />
+      <option name="METHOD_NAME" value="sort" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Mate" />
+        <item itemvalue="JUnit.FewTest.sort" />
         <item itemvalue="JUnit.EncodingTest" />
         <item itemvalue="JUnit.DecodingTest" />
         <item itemvalue="JUnit.CheckSumTest" />
@@ -302,7 +275,8 @@
       <workItem from="1749060614304" duration="171000" />
       <workItem from="1749092312775" duration="1228000" />
       <workItem from="1749093894279" duration="314000" />
-      <workItem from="1749216449836" duration="11916000" />
+      <workItem from="1749216449836" duration="13019000" />
+      <workItem from="1749281813113" duration="1531000" />
     </task>
     <task id="LOCAL-00002" summary="simplify Lot">
       <option name="closed" value="true" />
@@ -360,7 +334,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747399997935</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="feat(essential): add sorting functionality to Few and Lot&#10;&#10;- Add sort method to Few class for in-place sorting&#10;- Add sorted method to Few class for returning a new sorted Few&#10;- Add sorted method to Lot class for returning a new sorted Lot">
+      <option name="closed" value="true" />
+      <created>1749230861411</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1749230861411</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -386,7 +368,8 @@
     <MESSAGE value="enhance AVLTree and RBTree functionality" />
     <MESSAGE value="- Binary: add checksum validation and improve binary encoding/decoding&#10;- update CheckSum and add unit tests for adler32 and fletcher32" />
     <MESSAGE value="add checksum validation and improve binary encoding/decoding" />
-    <option name="LAST_COMMIT_MESSAGE" value="add checksum validation and improve binary encoding/decoding" />
+    <MESSAGE value="feat(essential): add sorting functionality to Few and Lot&#10;&#10;- Add sort method to Few class for in-place sorting&#10;- Add sorted method to Few class for returning a new sorted Few&#10;- Add sorted method to Lot class for returning a new sorted Lot" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(essential): add sorting functionality to Few and Lot&#10;&#10;- Add sort method to Few class for in-place sorting&#10;- Add sorted method to Few class for returning a new sorted Few&#10;- Add sorted method to Lot class for returning a new sorted Lot" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
