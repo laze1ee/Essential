@@ -97,11 +97,11 @@ public static @NotNull String shuffle(@NotNull String text) {
 public static @NotNull Few shuffle(@NotNull Few fw) {
   int length = fw.length();
   if (length == 0) {
-    return few();
+    return Few.of();
   }
 
   boolean[] used = new boolean[length];
-  Lot col = lot();
+  Lot col = Lot.of();
   for (int i = 0; i < length; i += 1) {
     int index = random.nextInt(length);
     if (!used[index]) {
@@ -124,7 +124,7 @@ public static @NotNull Few shuffle(@NotNull Few fw) {
 
 public static Lot shuffle(@NotNull Lot lt) {
   if (lt.isEmpty()) {
-    return lot();
+    return Lot.of();
   }
 
   Few fw = shuffle(lt.toFew());

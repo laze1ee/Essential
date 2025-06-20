@@ -39,15 +39,15 @@ Encoding(Object datum) {
     keys = keys.cdr();
   }
 
-  cont = few(Label.END_CONT);
+  cont = Few.of(Label.END_CONT);
   this.datum = datum;
-  col = lot();
+  col = Lot.of();
 }
 
 byte @NotNull [] process() {
   Object datum_bk = datum;
   int length = shared.length();
-  cont = few(Label.ITER_SHARED, cont, length, 0);
+  cont = Few.of(Label.ITER_SHARED, cont, length, 0);
   col = cons(new byte[]{Binary.FEW}, col);
   col = cons(Binary.encodeVarI32(length), col);
   route(Label.APPLY_CONT);
@@ -73,7 +73,7 @@ private void route(@NotNull String next) {
 private String ofShared() {
   if (datum instanceof Few fw) {
     int length = fw.length();
-    cont = few(Label.ITER_FEW, cont, length, 0, fw);
+    cont = Few.of(Label.ITER_FEW, cont, length, 0, fw);
     col = cons(new byte[]{Binary.FEW}, col);
     col = cons(Binary.encodeVarI32(length), col);
     return Label.APPLY_CONT;
@@ -84,7 +84,7 @@ private String ofShared() {
       col = cons(bin, col);
       return Label.APPLY_CONT;
     }
-    cont = few(Label.ITER_LOT, cont, lt.cdr());
+    cont = Few.of(Label.ITER_LOT, cont, lt.cdr());
     col = cons(new byte[]{Binary.LOT_BEGIN}, col);
     datum = lt.car();
     return Label.OF_DATUM;

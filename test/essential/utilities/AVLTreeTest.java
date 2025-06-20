@@ -28,12 +28,12 @@ private Lot keys;
 
 private AVLTreeTest() {
   tree = new AVLTree(Pr::less, Pr::greater);
-  keys = lot();
+  keys = Lot.of();
 }
 
 void insert() {
   Random random = new Random(Time.current().nanosecond());
-  Lot repeat = lot();
+  Lot repeat = Lot.of();
   for (int i = 0; i < SIZE; i += 1) {
     while (true) {
       String key = RandGenerator.ascii(random.nextInt(3, 8));

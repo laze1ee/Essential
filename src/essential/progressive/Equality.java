@@ -29,9 +29,9 @@ private int order;
 private boolean r0;
 
 private Equality(Object datum1, Object datum2) {
-  identical1 = Shared.detect(datum1).map(o -> few(false, -1));
-  identical2 = Shared.detect(datum2).map(o -> few(false, -1));
-  cont = few(Label.END_CONT);
+  identical1 = Shared.detect(datum1).map(o -> Few.of(false, -1));
+  identical2 = Shared.detect(datum2).map(o -> Few.of(false, -1));
+  cont = Few.of(Label.END_CONT);
   this.datum1 = datum1;
   this.datum2 = datum2;
   order = 0;
@@ -58,7 +58,7 @@ private String ofDatum() {
     return ofFew();
   }
   else if (datum1 instanceof Lot && datum2 instanceof Lot) {
-    cont = few(Label.ITER_LOT, cont, datum1, datum2);
+    cont = Few.of(Label.ITER_LOT, cont, datum1, datum2);
     r0 = true;
     return Label.APPLY_CONT;
   }
@@ -97,7 +97,7 @@ private String ofFew() {
         mark1.set(1, order);
         mark2.set(1, order);
         order += 1;
-        cont = few(Label.ITER_FEW, cont, length, 0, fw1, fw2);
+        cont = Few.of(Label.ITER_FEW, cont, length, 0, fw1, fw2);
         r0 = true;
       }
     }
@@ -106,7 +106,7 @@ private String ofFew() {
       r0 = false;
     }
     else {
-      cont = few(Label.ITER_FEW, cont, length, 0, fw1, fw2);
+      cont = Few.of(Label.ITER_FEW, cont, length, 0, fw1, fw2);
       r0 = true;
     }
   }

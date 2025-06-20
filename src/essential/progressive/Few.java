@@ -135,4 +135,36 @@ public Few sorted(Predicate2 compare) {
   Mate.quickSort(compare, fw);
   return fw;
 }
+
+/**
+ * Constructs a Few from the given arguments.
+ *
+ * @param args the elements to be included in the Few.
+ *             If no arguments are provided, an empty Few is returned.
+ * @return a Few containing the provided elements.
+ */
+public static @NotNull Few of(@NotNull Object @NotNull ... args) {
+  return new Few(args);
+}
+
+
+/**
+ * Constructs a Few with the specified length, initializing all elements with the given initial value.
+ *
+ * @param length the number of elements in the Few. Must be non-negative.
+ * @param initial the value to initialize each element in the Few.
+ * @return a Few with the specified length, filled with the initial value.
+ * @throws RuntimeException if the specified length is negative.
+ */
+public static @NotNull Few make(int length, @NotNull Object initial) {
+  if (0 <= length) {
+    Object[] arr = new Object[length];
+    Arrays.fill(arr, initial);
+    return new Few(arr);
+  }
+  else {
+    String msg = String.format(Msg.LEN_NON_NATURAL, length);
+    throw new RuntimeException(msg);
+  }
+}
 }

@@ -16,8 +16,8 @@ class EqualityTest {
 
 @Test
 void process() {
-  Few f1 = few(1, 2, 3, false);
-  Few f2 = few(1, 2, 3, false);
+  Few f1 = Few.of(1, 2, 3, false);
+  Few f2 = Few.of(1, 2, 3, false);
   Lot l1 = f1.toLot();
   Lot l2 = f2.toLot();
 

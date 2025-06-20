@@ -18,8 +18,8 @@ class EncodingTest {
 
 @Test
 void process() {
-  Few fw = few(1, 2, 3, false);
-  Lot lt = lot('a', lot('b'), 'c', true);
+  Few fw = Few.of(1, 2, 3, false);
+  Lot lt = Lot.of('a', Lot.of('b'), 'c', true);
 
   fw.set(2, fw);
   setCdr(lt.cddr().cdr(), lt);

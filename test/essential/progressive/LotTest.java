@@ -19,7 +19,7 @@ final Lot l2;
 final Lot l3;
 
 LotTest() {
-  l1 = lot(1, 2, 3);
+  l1 = Lot.of(1, 2, 3);
   l2 = l1.copy();
   setCdr(l2.cddr(), l2);
   l3 = l1.copy();
@@ -81,17 +81,17 @@ void cdr() {
 
 @Test
 void caar() {
-  assertEquals(1, lot(l1).caar());
+  assertEquals(1, Lot.of(l1).caar());
 }
 
 @Test
 void cddr() {
-  assertEquals(lot(3), l1.cddr());
+  assertEquals(Lot.of(3), l1.cddr());
 }
 
 @Test
 void cdar() {
-  assertEquals(lot(2, 3), lot(l1).cdar());
+  assertEquals(Lot.of(2, 3), Lot.of(l1).cdar());
 }
 
 @Test
@@ -106,7 +106,7 @@ void ref() {
 @Test
 void reverse() {
   Lot l1_r = l1.reverse();
-  assertTrue(equal(lot(3, 2, 1), l1_r));
+  assertTrue(equal(Lot.of(3, 2, 1), l1_r));
 }
 
 @Test
@@ -123,7 +123,7 @@ void head() {
 @Test
 void tail() {
   Lot l1_tail = l1.tail(1);
-  assertEquals(lot(2, 3), l1_tail);
+  assertEquals(Lot.of(2, 3), l1_tail);
 
   assertThrows(RuntimeException.class, () -> l1.tail(4));
   assertThrows(RuntimeException.class, () -> l1.tail(-1));
@@ -142,18 +142,18 @@ void copy() {
 @Test
 void toFew() {
   Few l1_few = l1.toFew();
-  assertEquals(few(1, 2, 3), l1_few);
+  assertEquals(Few.of(1, 2, 3), l1_few);
 }
 
 @Test
 void filter() {
   Lot l1_filtered = l1.filter(x -> (int) x % 2 == 0);
-  assertEquals(lot(2), l1_filtered);
+  assertEquals(Lot.of(2), l1_filtered);
 }
 
 @Test
 void map() {
   Lot l1_mapped = l1.map(x -> (int) x * 2);
-  assertEquals(lot(2, 4, 6), l1_mapped);
+  assertEquals(Lot.of(2, 4, 6), l1_mapped);
 }
 }

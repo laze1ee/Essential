@@ -7,6 +7,7 @@
 
 package essential.utilities;
 
+import essential.progressive.Few;
 import org.jetbrains.annotations.NotNull;
 import essential.progressive.Lot;
 
@@ -19,8 +20,8 @@ private Lot stack1;
 private Lot stack2;
 
 public Queue(@NotNull Object @NotNull ... args) {
-  stack1 = few(args).toLot();
-  stack2 = lot();
+  stack1 = Few.of(args).toLot();
+  stack2 = Lot.of();
 }
 
 /**
@@ -71,7 +72,7 @@ public Object dequeue() {
   else if (stack1.isEmpty()) {
     Lot ixx = stack2.reverse();
     stack1 = ixx.cdr();
-    stack2 = lot();
+    stack2 = Lot.of();
     return ixx.car();
   }
   else {

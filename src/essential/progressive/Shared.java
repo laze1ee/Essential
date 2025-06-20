@@ -9,8 +9,6 @@ package essential.progressive;
 
 import essential.utilities.RBTree;
 
-import static essential.progressive.Pr.few;
-
 
 public class Shared {
 
@@ -30,7 +28,7 @@ Shared(Object datum) {
                          (o1, o2) -> (int) o1 > (int) o2);
   identical = new RBTree((o1, o2) -> (int) o1 < (int) o2,
                          (o1, o2) -> (int) o1 > (int) o2);
-  cont = few(Label.END_CONT);
+  cont = Few.of(Label.END_CONT);
   this.datum = datum;
 }
 
@@ -55,7 +53,7 @@ private String ofDatum() {
       if (length == 0) {
         return Label.APPLY_CONT;
       }
-      cont = few(Label.ITER_FEW, cont, length, 1, fw);
+      cont = Few.of(Label.ITER_FEW, cont, length, 1, fw);
       datum = fw.ref(0);
       return Label.OF_DATUM;
     }
@@ -63,7 +61,7 @@ private String ofDatum() {
       if (lt.isEmpty()) {
         return Label.APPLY_CONT;
       }
-      cont = few(Label.ITER_LOT, cont, lt.cdr());
+      cont = Few.of(Label.ITER_LOT, cont, lt.cdr());
       datum = lt.car();
       return Label.OF_DATUM;
     }

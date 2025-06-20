@@ -14,8 +14,6 @@ import essential.progressive.Few;
 import essential.progressive.Lot;
 import org.jetbrains.annotations.NotNull;
 
-import static essential.progressive.Pr.lot;
-
 
 public class AVLTree {
 
@@ -192,7 +190,7 @@ public boolean delete(@NotNull Object key) {
  * @throws RuntimeException if the tree is empty.
  */
 public Object minimum() {
-  Lot path = AVLTreeMate.minimum(root(), lot());
+  Lot path = AVLTreeMate.minimum(root(), Lot.of());
   if (path.isEmpty()) {
     throw new RuntimeException(Msg.EMPTY_TREE);
   }
@@ -209,7 +207,7 @@ public Object minimum() {
  * @throws RuntimeException if the tree is empty.
  */
 public Object maximum() {
-  Lot path = AVLTreeMate.maximum(root(), lot());
+  Lot path = AVLTreeMate.maximum(root(), Lot.of());
   if (path.isEmpty()) {
     throw new RuntimeException(Msg.EMPTY_TREE);
   }
@@ -217,6 +215,14 @@ public Object maximum() {
     Few node = (Few) path.car();
     return AVLTreeMate.key(node);
   }
+}
+
+/**
+ * Creates a copy of the current AVL tree.
+ * @return a new AVL tree that is a copy of the current tree.
+ */
+public AVLTree copy() {
+  return AVLTreeMate.copy(this);
 }
 
 /**

@@ -20,7 +20,7 @@ final Few f1;
 final Few f2;
 
 FewTest() {
-  f1 = few(true, false, 1, 3);
+  f1 = Few.of(true, false, 1, 3);
   f2 = f1.copy();
   f2.set(1, f2);
 }
@@ -58,7 +58,7 @@ void ref() {
 
 @Test
 void set() {
-  Few fs = few(1, 2, 3);
+  Few fs = Few.of(1, 2, 3);
   fs.set(1, 4);
   assertEquals(4, fs.ref(1));
   assertThrows(RuntimeException.class, () -> fs.set(3, 5));
@@ -67,7 +67,7 @@ void set() {
 
 @Test
 void fill() {
-  Few fs = few(1, 2, 3, 4);
+  Few fs = Few.of(1, 2, 3, 4);
   fs.fill(5);
   assertEquals(5, fs.ref(0));
   assertEquals(5, fs.ref(1));
@@ -77,14 +77,14 @@ void fill() {
 
 @Test
 void copy() {
-  Few fs = few(1, 2, 3);
+  Few fs = Few.of(1, 2, 3);
   Few cp = fs.copy();
   assertTrue(equal(fs, cp));
 }
 
 @Test
 void map() {
-  Few f = few(1, 2, 3);
+  Few f = Few.of(1, 2, 3);
   Few fs = f.map(o -> (int) o * 2);
   assertEquals(2, fs.ref(0));
   assertEquals(4, fs.ref(1));
@@ -94,7 +94,7 @@ void map() {
 @Test
 void sort() {
   int length = 153;
-  Few fw = makeFew(length, 0);
+  Few fw = Few.make(length, 0);
   for (int i = 0; i < length; i += 1) {
     fw.set(i, ThreadLocalRandom.current().nextInt(1000) - 500);
   }

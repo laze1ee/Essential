@@ -13,8 +13,6 @@ import essential.progressive.Lot;
 
 import java.util.Arrays;
 
-import static essential.progressive.Pr.*;
-
 
 public class Binary {
 
@@ -119,7 +117,7 @@ public static byte @NotNull [] encodeChar(char c) {
 public static @NotNull Few decodeChar(byte @NotNull [] bin, int start) {
   int sz = BinaryMate.sizeofChar(bin, start);
   char c = BinaryMate.decodePureChar(bin, start, start + sz);
-  return few(start + sz, c);
+  return Few.of(start + sz, c);
 }
 
 public static byte @NotNull [] encodeString(@NotNull String str) {
@@ -139,7 +137,7 @@ public static @NotNull Few decodeString(byte @NotNull [] bin, int start) {
     builder.append(c);
     i += sz;
   }
-  return few(i + 1, builder.toString());
+  return Few.of(i + 1, builder.toString());
 }
 
 public static int sizeofBytes(@NotNull Lot bins) {

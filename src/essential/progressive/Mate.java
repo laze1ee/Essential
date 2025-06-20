@@ -21,7 +21,7 @@ class Mate {
 //region Few
 
 static void quickSort(Predicate2 compare, @NotNull Few fw) {
-  Lot stack = lot(0, fw.length());
+  Lot stack = Lot.of(0, fw.length());
   while (!stack.isEmpty()) {
     int start = (int) stack.car();
     int bound = (int) stack.ref(1);
@@ -41,29 +41,29 @@ private static int partition(@NotNull Predicate2 compare, @NotNull Few fw, int s
   int mid = (start + bound) / 2;
   bound -= 1;
   if (compare.apply(fw.ref(mid), fw.ref(start))) {
-    exchange(fw, start, mid);
+    swap(fw, start, mid);
   }
   if (compare.apply(fw.ref(bound), fw.ref(start))) {
-    exchange(fw, bound, start);
+    swap(fw, bound, start);
   }
   if (compare.apply(fw.ref(mid), fw.ref(bound))) {
-    exchange(fw, mid, bound);
+    swap(fw, mid, bound);
   }
   Object pivot = fw.ref(bound);
 
   int i = start;
   while (start < bound) {
     if (compare.apply(fw.ref(start), pivot)) {
-      exchange(fw, i, start);
+      swap(fw, i, start);
       i += 1;
     }
     start += 1;
   }
-  exchange(fw, i, bound);
+  swap(fw, i, bound);
   return i;
 }
 
-private static void exchange(@NotNull Few fw, int i, int j) {
+private static void swap(@NotNull Few fw, int i, int j) {
   Object tmp = fw.ref(i);
   fw.set(i, fw.ref(j));
   fw.set(j, tmp);

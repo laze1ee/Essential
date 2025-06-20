@@ -14,8 +14,6 @@ import essential.progressive.Few;
 import essential.progressive.Lot;
 import org.jetbrains.annotations.NotNull;
 
-import static essential.progressive.Pr.lot;
-
 
 public class RBTree {
 
@@ -190,7 +188,7 @@ public boolean delete(@NotNull Object key) {
  * @throws RuntimeException if the tree is empty.
  */
 public Object minimum() {
-  Lot path = RBTreeMate.minimum(root(), lot());
+  Lot path = RBTreeMate.minimum(root(), Lot.of());
   if (path.isEmpty()) {
     throw new RuntimeException(Msg.EMPTY_TREE);
   }
@@ -207,7 +205,7 @@ public Object minimum() {
  * @throws RuntimeException if the tree is empty.
  */
 public Object maximum() {
-  Lot path = RBTreeMate.maximum(root(), lot());
+  Lot path = RBTreeMate.maximum(root(), Lot.of());
   if (path.isEmpty()) {
     throw new RuntimeException(Msg.EMPTY_TREE);
   }
@@ -215,6 +213,14 @@ public Object maximum() {
     Few node = (Few) path.car();
     return RBTreeMate.key(node);
   }
+}
+
+/**
+ * Creates a copy of the current Red-Black tree.
+ * @return a new Red-Black tree that is a copy of the current tree.
+ */
+public RBTree copy() {
+  return RBTreeMate.copy(this);
 }
 
 /**

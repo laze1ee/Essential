@@ -189,7 +189,7 @@ public @NotNull Lot tail(int index) {
 
 public @NotNull Lot copy() {
   if (this.isEmpty()) {
-    return Pr.lot();
+    return new Lot();
   }
   else if (this.isBreadthCircle()) {
     String msg = String.format(Msg.CIRCULAR_BREADTH, this);
@@ -214,7 +214,7 @@ public @NotNull Few toFew() {
     throw new RuntimeException(msg);
   }
   int length = Mate.length(this);
-  Few fw = Pr.makeFew(length, 0);
+  Few fw = Few.make(length, 0);
   Lot lt = this;
   for (int i = 0; i < length; i += 1) {
     fw.set(i, lt.car());
@@ -273,5 +273,26 @@ public Lot sorted(Predicate2 compare) {
   Few fw = this.toFew();
   Mate.quickSort(compare, fw);
   return fw.toLot();
+}
+
+/**
+ * Constructs a Lot from the given arguments.
+ *
+ * @param args the elements to be included in the Lot.
+ *             If no arguments are provided, an empty Lot is returned.
+ * @return a Lot containing the provided elements.
+ */
+public static Lot of(@NotNull Object @NotNull ... args) {
+  int length = args.length;
+  if (length == 0) {
+    return new Lot();
+  }
+  else {
+    Lot lt = new Lot();
+    for (int i = length - 1; 0 <= i; i -= 1) {
+      lt = new Lot(args[i], lt);
+    }
+    return lt;
+  }
 }
 }

@@ -20,7 +20,7 @@ import static essential.progressive.Pr.*;
 class RBTreeMate {
 
 static @NotNull Few makeNode() {
-  return few(false, false, false, false, false);
+  return Few.of(false, false, false, false, false);
 }
 
 static @NotNull Object key(@NotNull Few node) {
@@ -95,7 +95,7 @@ private static class NodeChecker {
   private boolean r0;
 
   private NodeChecker(Few node) {
-    cont = few(Label.END_CONT);
+    cont = Few.of(Label.END_CONT);
     this.node = node;
   }
 
@@ -116,7 +116,7 @@ private static class NodeChecker {
         node.ref(2) instanceof Boolean) {
       if (node.ref(3) instanceof Few &&
           node.ref(4) instanceof Few) {
-        cont = few(Label.RIGHT_NODE, cont, node.ref(4));
+        cont = Few.of(Label.RIGHT_NODE, cont, node.ref(4));
         node = (Few) node.ref(3);
         return Label.OF_NODE;
       }
@@ -175,7 +175,7 @@ private static class ToString {
   private final StringBuilder builder;
 
   private ToString(Few node) {
-    cont = few(Label.END_CONT);
+    cont = Few.of(Label.END_CONT);
     this.node = node;
     builder = new StringBuilder();
   }
@@ -203,7 +203,7 @@ private static class ToString {
       builder.append(" ");
       builder.append(stringOf(value(node)));
       builder.append(" ");
-      cont = few(Label.RIGHT_NODE, cont, right(node));
+      cont = Few.of(Label.RIGHT_NODE, cont, right(node));
       node = (Few) left(node);
       return Label.OF_NODE;
     }
@@ -217,7 +217,7 @@ private static class ToString {
       case Label.RIGHT_NODE -> {
         builder.append(" ");
         node = (Few) cont.ref(2);
-        cont = few(Label.END_NODE, cont.ref(1));
+        cont = Few.of(Label.END_NODE, cont.ref(1));
         return Label.OF_NODE;
       }
       case Label.END_NODE -> {
@@ -232,7 +232,7 @@ private static class ToString {
 
 static @NotNull Lot pathOf(@NotNull RBTree tree, Object key) {
   Few node = tree.root();
-  Lot path = lot();
+  Lot path = Lot.of();
   while (!isNil(node)) {
     if (tree.less().apply(key, key(node))) {
       path = cons(node, path);
@@ -393,7 +393,7 @@ static boolean delete(@NotNull RBTree tree, Object key) {
       path = cons(x, path.cdr());
     }
     else {
-      Lot min_path = minimum((Few) right(deleted), lot());
+      Lot min_path = minimum((Few) right(deleted), Lot.of());
       Few replace = (Few) min_path.car();
       color = color(replace);
       x = (Few) right(replace);
@@ -508,9 +508,23 @@ static int size(Few root) {
   return count;
 }
 
+static @NotNull RBTree copy(@NotNull RBTree tree) {
+  RBTree new_tree = new RBTree(tree.less(), tree.greater());
+  Queue que = new Queue(tree.root());
+  while (!que.isEmpty()) {
+    Few node = (Few) que.dequeue();
+    if (!isNil(node)) {
+      new_tree.insert(key(node), value(node));
+      que.enqueue(left(node));
+      que.enqueue(right(node));
+    }
+  }
+  return new_tree;
+}
+
 static Lot travel(Few root) {
-  Lot col = lot();
-  Lot stack = lot();
+  Lot col = Lot.of();
+  Lot stack = Lot.of();
   Few node = root;
   while (!isNil(node)) {
     stack = cons(node, stack);
@@ -518,7 +532,7 @@ static Lot travel(Few root) {
   }
   while (!stack.isEmpty()) {
     node = (Few) stack.car();
-    col = cons(lot(key(node), value(node)), col);
+    col = cons(Lot.of(key(node), value(node)), col);
     stack = stack.cdr();
     node = (Few) left(node);
     while (!isNil(node)) {
@@ -560,7 +574,7 @@ static @NotNull RBTree map(Do1 fn, @NotNull RBTree tree) {
 }
 
 static Lot depthStatistic(Few root) {
-  Lot col = lot();
+  Lot col = Lot.of();
   Queue lll = new Queue(root);
   Queue xxx = new Queue(1);
   int depth = 0;
@@ -578,7 +592,7 @@ static Lot depthStatistic(Few root) {
           count += 1;
         }
         else {
-          col = cons(lot(depth, count), col);
+          col = cons(Lot.of(depth, count), col);
           depth = n;
           count = 1;
         }

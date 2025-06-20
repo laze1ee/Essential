@@ -7,12 +7,36 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7eecb0c4-2d1d-4b73-bf14-df6f67da83cb" name="Changes" comment="feat(essential): add sorting functionality to Few and Lot&#10;&#10;- Add sort method to Few class for in-place sorting&#10;- Add sorted method to Few class for returning a new sorted Few&#10;- Add sorted method to Lot class for returning a new sorted Lot">
+    <list default="true" id="7eecb0c4-2d1d-4b73-bf14-df6f67da83cb" name="Changes" comment="- Rename 'exchange' method to 'swap' for better readability&#10;- Update related test files to use new static method">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/progressive/Equality.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progressive/Equality.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/progressive/Few.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progressive/Few.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/progressive/Lot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progressive/Lot.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/essential/progressive/Mate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progressive/Mate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/progressive/Pr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progressive/Pr.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/progressive/Shared.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progressive/Shared.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/progressive/ToString.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/progressive/ToString.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/AVLTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/AVLTree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/AVLTreeMate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/AVLTreeMate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/Binary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/Binary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/BinaryMate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/BinaryMate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/Decoding.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/Decoding.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/Encoding.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/Encoding.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/Queue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/Queue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/RBTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/RBTree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/RBTreeMate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/RBTreeMate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/essential/utilities/RandGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/essential/utilities/RandGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/progressive/EqualityTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/progressive/EqualityTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/essential/progressive/FewTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/progressive/FewTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/progressive/LotTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/progressive/LotTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/progressive/PrTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/progressive/PrTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/progressive/ToStringTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/progressive/ToStringTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/utilities/AVLTreeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/AVLTreeTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/utilities/BinaryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/BinaryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/utilities/DecodingTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/DecodingTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/utilities/EncodingTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/EncodingTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/utilities/RBTreeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/RBTreeTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/essential/utilities/RandGeneratorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/essential/utilities/RandGeneratorTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,7 +123,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "Code Search",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -276,7 +300,9 @@
       <workItem from="1749092312775" duration="1228000" />
       <workItem from="1749093894279" duration="314000" />
       <workItem from="1749216449836" duration="13019000" />
-      <workItem from="1749281813113" duration="1531000" />
+      <workItem from="1749281813113" duration="1859000" />
+      <workItem from="1749620542799" duration="161000" />
+      <workItem from="1750378234840" duration="743000" />
     </task>
     <task id="LOCAL-00002" summary="simplify Lot">
       <option name="closed" value="true" />
@@ -342,7 +368,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749230861411</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Extract quick sort logic into a static method in Mate class">
+      <option name="closed" value="true" />
+      <created>1749285136801</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1749285136801</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -369,7 +403,8 @@
     <MESSAGE value="- Binary: add checksum validation and improve binary encoding/decoding&#10;- update CheckSum and add unit tests for adler32 and fletcher32" />
     <MESSAGE value="add checksum validation and improve binary encoding/decoding" />
     <MESSAGE value="feat(essential): add sorting functionality to Few and Lot&#10;&#10;- Add sort method to Few class for in-place sorting&#10;- Add sorted method to Few class for returning a new sorted Few&#10;- Add sorted method to Lot class for returning a new sorted Lot" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(essential): add sorting functionality to Few and Lot&#10;&#10;- Add sort method to Few class for in-place sorting&#10;- Add sorted method to Few class for returning a new sorted Few&#10;- Add sorted method to Lot class for returning a new sorted Lot" />
+    <MESSAGE value="Extract quick sort logic into a static method in Mate class" />
+    <option name="LAST_COMMIT_MESSAGE" value="Extract quick sort logic into a static method in Mate class" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

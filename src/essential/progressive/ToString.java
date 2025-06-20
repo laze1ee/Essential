@@ -28,8 +28,8 @@ private final StringBuilder builder;
 private int order;
 
 private ToString(Object datum) {
-  identical = Shared.detect(datum).map(o -> few(false, -1));
-  cont = few(Label.END_CONT);
+  identical = Shared.detect(datum).map(o -> Few.of(false, -1));
+  cont = Few.of(Label.END_CONT);
   this.datum = datum;
   builder = new StringBuilder();
   order = 0;
@@ -69,7 +69,7 @@ private String ofDatum() {
     }
     else {
       builder.append("#(");
-      cont = few(Label.ITER_FEW, cont, length, 1, fw);
+      cont = Few.of(Label.ITER_FEW, cont, length, 1, fw);
       datum = fw.ref(0);
       return Label.OF_DATUM;
     }
@@ -81,7 +81,7 @@ private String ofDatum() {
     }
     else {
       builder.append("(");
-      cont = few(Label.ITER_LOT, cont, lt.cdr());
+      cont = Few.of(Label.ITER_LOT, cont, lt.cdr());
       datum = lt.car();
       return Label.OF_DATUM;
     }
@@ -133,8 +133,8 @@ private String applyCont() {
             return Label.APPLY_CONT;
           }
           else {
-            cont.set(2, lot());
-            cont = few(Label.ITER_LOT, cont, lt.cdr());
+            cont.set(2, Lot.of());
+            cont = Few.of(Label.ITER_LOT, cont, lt.cdr());
             datum = lt.car();
             return Label.OF_DATUM;
           }

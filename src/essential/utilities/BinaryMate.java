@@ -15,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 
 import static essential.progressive.Pr.cons;
-import static essential.progressive.Pr.lot;
 
 
 class BinaryMate {
@@ -175,7 +174,7 @@ static byte @NotNull [] encodePureChar(int c) {
 }
 
 static byte @NotNull [] encodePureString(@NotNull String str) {
-  Lot col = lot();
+  Lot col = Lot.of();
   for (int i = str.length() - 1; i != -1; i -= 1) {
     byte[] bin = encodePureChar(str.charAt(i));
     col = cons(bin, col);

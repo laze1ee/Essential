@@ -44,8 +44,8 @@ private Object r0;
 Decoding(byte[] bin, int index) {
   this.bin = bin;
   this.index = index;
-  stack = few(Label.END_CONT);
-  cont = few(Label.END_CONT);
+  stack = Few.of(Label.END_CONT);
+  cont = Few.of(Label.END_CONT);
 }
 
 Object process() {
@@ -55,11 +55,11 @@ Object process() {
   index += sz;
 
   if (length != 0) {
-    shared = makeFew(length, false);
+    shared =  Few.make(length, false);
     for (int i = 0; i < length; i += 1) {
       shared.set(i, new Nothing(i));
     }
-    cont = few(Label.ITER_FEW, cont, length, 0, shared);
+    cont = Few.of(Label.ITER_FEW, cont, length, 0, shared);
     route();
     link();
   }
@@ -241,26 +241,26 @@ private String ofByte() {
       index += sz;
 
       if (length == 0) {
-        r0 = few();
+        r0 = Few.of();
         return Label.APPLY_CONT;
       }
-      r0 = makeFew(length, new Nothing(-1));
-      cont = few(Label.ITER_FEW, cont, length, 0, r0);
+      r0 =  Few.make(length, new Nothing(-1));
+      cont = Few.of(Label.ITER_FEW, cont, length, 0, r0);
       return Label.OF_BYTE;
     }
     case Binary.LOT_BEGIN -> {
       if (bin[index] == Binary.LOT_END) {
         index += 1;
-        r0 = lot();
+        r0 = Lot.of();
         return Label.APPLY_CONT;
       }
 
-      cont = few(Label.ITER_LOT, cont, lot());
+      cont = Few.of(Label.ITER_LOT, cont, Lot.of());
       return Label.OF_BYTE;
     }
     case Binary.LOT_END -> {
       Lot lll = (Lot) cont.ref(2);
-      Lot xxx = lot();
+      Lot xxx = Lot.of();
       return reverseLot(lll, xxx);
     }
     case Binary.NEXT_LOT -> {
@@ -286,7 +286,7 @@ private String applyCont() {
       fw.set(idx, r0);
 
       if (r0 instanceof Nothing nt) {
-        stack = few(Label.SET_FEW, stack, fw, idx, nt.index);
+        stack = Few.of(Label.SET_FEW, stack, fw, idx, nt.index);
       }
 
       if (idx + 1 == length) {
@@ -306,13 +306,13 @@ private String applyCont() {
     }
     case Label.NEXT_LOT -> {
       Lot lll = (Lot) cont.ref(2);
-      Lot xxx = lot(lll.car());
+      Lot xxx = Lot.of(lll.car());
       if (lll.car() instanceof Nothing nt) {
-        stack = few(Label.SET_CAR, stack, xxx, nt.index);
+        stack = Few.of(Label.SET_CAR, stack, xxx, nt.index);
       }
 
       if (r0 instanceof Nothing nt) {
-        stack = few(Label.SET_CDR, stack, xxx, nt.index);
+        stack = Few.of(Label.SET_CDR, stack, xxx, nt.index);
       }
       else {
         setCdr(xxx, (Lot) r0);
@@ -328,7 +328,7 @@ private String reverseLot(@NotNull Lot lll, Lot xxx) {
   while (!lll.isEmpty()) {
     xxx = cons(lll.car(), xxx);
     if (lll.car() instanceof Nothing nt) {
-      stack = few(Label.SET_CAR, stack, xxx, nt.index);
+      stack = Few.of(Label.SET_CAR, stack, xxx, nt.index);
     }
     lll = lll.cdr();
   }

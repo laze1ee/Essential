@@ -17,8 +17,8 @@ class ToStringTest {
 
 @Test
 void process() {
-  Few fw = few(1, 2, 3, false);
-  Lot lt = lot('a', 'b', 'c');
+  Few fw = Few.of(1, 2, 3, false);
+  Lot lt = Lot.of('a', 'b', 'c');
 
   // non-sharing
   assertEquals("#(1 2 3 #f)", ToString.process(fw));
@@ -47,7 +47,7 @@ void process() {
                ToString.process(lt));
 
   // test empty Lot
-  Lot l1 = lot();
+  Lot l1 = Lot.of();
   Lot l2 = cons(1, cons(l1, cons(3, l1)));
   assertEquals("(1 #0=() 3 . #0#)", ToString.process(l2));
 }

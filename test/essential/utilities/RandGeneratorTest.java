@@ -10,7 +10,6 @@ package essential.utilities;
 import essential.progressive.Lot;
 import org.junit.jupiter.api.Test;
 
-import static essential.progressive.Pr.lot;
 
 class RandGeneratorTest {
 
@@ -23,7 +22,7 @@ void string() {
 
 @Test
 void shuffle() {
-  Lot lt = lot(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+  Lot lt = Lot.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
   Lot ls = RandGenerator.shuffle(lt);
   System.out.println(ls);
 }

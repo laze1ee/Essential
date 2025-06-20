@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Random;
 
 import static essential.progressive.Pr.cons;
-import static essential.progressive.Pr.lot;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -28,12 +27,12 @@ private Lot keys;
 
 private RBTreeTest() {
   tree = new RBTree(Pr::less, Pr::greater);
-  keys = lot();
+  keys = Lot.of();
 }
 
 void insert() {
   Random random = new Random(Time.current().nanosecond());
-  Lot repeat = lot();
+  Lot repeat = Lot.of();
   for (int i = 0; i < SIZE; i += 1) {
     while (true) {
       String key = RandGenerator.ascii(random.nextInt(3, 8));
