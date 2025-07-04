@@ -38,7 +38,9 @@ public Time(long second, int nanosecond) {
   }
 }
 
-public @NotNull Time neg() {return new Time(-second, -nanosecond);}
+public @NotNull Time neg() {
+  return new Time(-second, -nanosecond);
+}
 
 public boolean less(@NotNull Time t) {
   if (this.second() < t.second()) {
@@ -54,9 +56,9 @@ public boolean less(@NotNull Time t) {
 
 @Override
 public boolean equals(Object datum) {
-  if (datum instanceof Time t) {
-    return second == t.second &&
-           nanosecond == t.nanosecond;
+  if (datum instanceof Time(long second1, int nanosecond1)) {
+    return second == second1 &&
+           nanosecond == nanosecond1;
   }
   else {
     return false;
@@ -81,32 +83,34 @@ public @NotNull Date toDate(int offset) {
 public static @NotNull Time current(@NotNull TimeType type) {
   switch (type) {
     case UTC -> {
-      ZonedDateTime utc = ZonedDateTime.now(ZoneOffset.UTC);
-      long second = utc.toEpochSecond();
-      int nanosecond = utc.getNano();
+      ZonedDateTime utc        = ZonedDateTime.now(ZoneOffset.UTC);
+      long          second     = utc.toEpochSecond();
+      int           nanosecond = utc.getNano();
       return new Time(second, nanosecond);
     }
     case Monotonic -> {
-      long stamp = System.nanoTime();
-      long second = stamp / Mate.POS_NANO_OF_SECOND;
-      int nanosecond = (int) (stamp % Mate.POS_NANO_OF_SECOND);
+      long stamp      = System.nanoTime();
+      long second     = stamp / Mate.POS_NANO_OF_SECOND;
+      int  nanosecond = (int) (stamp % Mate.POS_NANO_OF_SECOND);
       return new Time(second, nanosecond);
     }
     default -> {
-      ThreadMXBean bean = ManagementFactory.getThreadMXBean();
-      long stamp = bean.getCurrentThreadCpuTime();
-      long second = stamp / Mate.POS_NANO_OF_SECOND;
-      int nanosecond = (int) (stamp % Mate.POS_NANO_OF_SECOND);
+      ThreadMXBean bean       = ManagementFactory.getThreadMXBean();
+      long         stamp      = bean.getCurrentThreadCpuTime();
+      long         second     = stamp / Mate.POS_NANO_OF_SECOND;
+      int          nanosecond = (int) (stamp % Mate.POS_NANO_OF_SECOND);
       return new Time(second, nanosecond);
     }
   }
 }
 
-public static @NotNull Time current() {return current(TimeType.UTC);}
+public static @NotNull Time current() {
+  return current(TimeType.UTC);
+}
 
 public static @NotNull Time add(@NotNull Time t1, @NotNull Time t2) {
-  long second = t1.second + t2.second;
-  int nanosecond = t1.nanosecond + t2.nanosecond;
+  long second     = t1.second + t2.second;
+  int  nanosecond = t1.nanosecond + t2.nanosecond;
   if (nanosecond >= Mate.POS_NANO_OF_SECOND) {
     return new Time(second + 1, nanosecond - Mate.POS_NANO_OF_SECOND);
   }

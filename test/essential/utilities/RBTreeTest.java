@@ -15,7 +15,8 @@ import org.junit.jupiter.api.Test;
 import java.util.Random;
 
 import static essential.progressive.Pr.cons;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class RBTreeTest {
@@ -23,7 +24,7 @@ class RBTreeTest {
 private static final int SIZE = 10000;
 
 private final RBTree tree;
-private Lot keys;
+private       Lot    keys;
 
 private RBTreeTest() {
   tree = new RBTree(Pr::less, Pr::greater);
@@ -32,10 +33,10 @@ private RBTreeTest() {
 
 void insert() {
   Random random = new Random(Time.current().nanosecond());
-  Lot repeat = Lot.of();
+  Lot    repeat = Lot.of();
   for (int i = 0; i < SIZE; i += 1) {
     while (true) {
-      String key = RandGenerator.ascii(random.nextInt(3, 8));
+      String  key     = RandGenerator.ascii(random.nextInt(3, 8));
       boolean success = tree.insert(key, random.nextInt(SIZE));
       if (success) {
         keys = cons(key, keys);
@@ -53,11 +54,11 @@ void visit() {
 
   RBTree new_tree = tree.map(o -> ((int) o) * 3);
 
-  RBTree evens = new_tree.filter(o -> ((int) o % 2) == 0);
-  int even_size = evens.size();
+  RBTree evens     = new_tree.filter(o -> ((int) o % 2) == 0);
+  int    even_size = evens.size();
   System.out.println("even amount: " + even_size);
-  RBTree odds = new_tree.filter(o -> ((int) o % 2) != 0);
-  int odd_size = odds.size();
+  RBTree odds     = new_tree.filter(o -> ((int) o % 2) != 0);
+  int    odd_size = odds.size();
   System.out.println("odd amount: " + odd_size);
   assertEquals(even_size + odd_size, new_tree.size());
 

@@ -8,10 +8,11 @@
 package essential.utilities;
 
 import essential.progressive.Few;
-import org.jetbrains.annotations.NotNull;
 import essential.progressive.Lot;
+import org.jetbrains.annotations.NotNull;
 
-import static essential.progressive.Pr.*;
+import static essential.progressive.Pr.append;
+import static essential.progressive.Pr.cons;
 
 
 public class Queue {

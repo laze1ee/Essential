@@ -17,15 +17,15 @@ import java.time.ZonedDateTime;
 
 public class Date {
 
-private final int year;
+private final int  year;
 private final byte month;
 private final byte day_of_month;
 private final byte day_of_week;
 private final byte hour;
 private final byte minute;
 private final byte second;
-private final int nanosecond;
-private final int offset;
+private final int  nanosecond;
+private final int  offset;
 
 public Date(int year, int month, int day_of_month, int hour, int minute, int second,
             int nanosecond, int offset) {
@@ -73,28 +73,46 @@ public Date(int year, int month, int day_of_month, int hour, int minute, int sec
   this.offset = offset;
 }
 
-public int year() {return year;}
+public int year() {
+  return year;
+}
 
-public int month() {return month;}
+public int month() {
+  return month;
+}
 
-public int dayOfMonth() {return day_of_month;}
+public int dayOfMonth() {
+  return day_of_month;
+}
 
-public int dayOfWeek() {return day_of_month;}
+public int dayOfWeek() {
+  return day_of_month;
+}
 
-public int hour() {return hour;}
+public int hour() {
+  return hour;
+}
 
-public int minute() {return minute;}
+public int minute() {
+  return minute;
+}
 
-public int second() {return second;}
+public int second() {
+  return second;
+}
 
-public int nanosecond() {return nanosecond;}
+public int nanosecond() {
+  return nanosecond;
+}
 
-public int offset() {return offset;}
+public int offset() {
+  return offset;
+}
 
 public Time toTime() {
-  long days = Mate.sumOfDays(year, month, day_of_month);
+  long days     = Mate.sumOfDays(year, month, day_of_month);
   long secs_day = hour * 3600 + minute * 60 + second;
-  long seconds = days * 24 * 3600 + secs_day - offset - Mate.COMPLEMENT;
+  long seconds  = days * 24 * 3600 + secs_day - offset - Mate.COMPLEMENT;
   return new Time(seconds, nanosecond);
 }
 
@@ -124,7 +142,7 @@ public String toString() {
 
 
 public static @NotNull Date current(int offset) {
-  String id = ZoneOffset.ofTotalSeconds(offset).getId();
+  String        id   = ZoneOffset.ofTotalSeconds(offset).getId();
   ZonedDateTime zone = ZonedDateTime.now(ZoneId.of(id));
   return new Date(zone.getYear(),
                   zone.getMonthValue(),

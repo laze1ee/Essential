@@ -12,7 +12,7 @@ import essential.progressive.Lot;
 import org.junit.jupiter.api.Test;
 
 import static essential.progressive.Pr.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DecodingTest {
 
@@ -26,10 +26,10 @@ void process() {
   setCdr(lt.cdr().cddr(), lt);
   lt = cons(fw, lt);
 
-  Encoding en = new Encoding(lt);
-  byte[] bin = en.process();
-  Decoding de = new Decoding(bin, 0);
-  Object datum = de.process();
+  Encoding en    = new Encoding(lt);
+  byte[]   bin   = en.process();
+  Decoding de    = new Decoding(bin, 0);
+  Object   datum = de.process();
   System.out.println(datum);
   assertEquals(lt, datum);
 }

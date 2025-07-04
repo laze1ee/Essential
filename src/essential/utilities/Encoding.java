@@ -14,16 +14,16 @@ import essential.progressive.Lot;
 import essential.progressive.Shared;
 import org.jetbrains.annotations.NotNull;
 
-import static essential.progressive.Pr.*;
+import static essential.progressive.Pr.cons;
 
 
 class Encoding {
 
 private final RBTree shared_index;
-private final Few shared;
-private Few cont;
-private Object datum;
-private Lot col;
+private final Few    shared;
+private       Few    cont;
+private       Object datum;
+private       Lot    col;
 
 Encoding(Object datum) {
   shared_index = Shared.detect(datum);
@@ -46,7 +46,7 @@ Encoding(Object datum) {
 
 byte @NotNull [] process() {
   Object datum_bk = datum;
-  int length = shared.length();
+  int    length   = shared.length();
   cont = Few.of(Label.ITER_SHARED, cont, length, 0);
   col = cons(new byte[]{Binary.FEW}, col);
   col = cons(Binary.encodeVarI32(length), col);
@@ -65,7 +65,7 @@ private void route(@NotNull String next) {
       case Label.OF_DATUM -> next = ofDatum();
       case Label.OF_SHARED -> next = ofShared();
       case Label.APPLY_CONT -> next = applyCont();
-      case Label.EXIT -> {return;}
+      case Label.EXIT -> { return; }
     }
   }
 }
@@ -110,10 +110,10 @@ private String applyCont() {
   String label = (String) cont.ref(0);
 
   switch (label) {
-    case Label.END_CONT -> {return Label.EXIT;}
+    case Label.END_CONT -> { return Label.EXIT; }
     case Label.ITER_SHARED -> {
       int length = (int) cont.ref(2);
-      int index = (int) cont.ref(3);
+      int index  = (int) cont.ref(3);
       if (index == length) {
         cont = (Few) cont.ref(1);
         return Label.APPLY_CONT;
@@ -127,8 +127,8 @@ private String applyCont() {
     //noinspection DuplicatedCode
     case Label.ITER_FEW -> {
       int length = (int) cont.ref(2);
-      int index = (int) cont.ref(3);
-      Few fw = (Few) cont.ref(4);
+      int index  = (int) cont.ref(3);
+      Few fw     = (Few) cont.ref(4);
       if (index == length) {
         cont = (Few) cont.ref(1);
         return Label.APPLY_CONT;
@@ -166,57 +166,27 @@ private String applyCont() {
 }
 
 private byte[] encodeNonContainer() {
-  if (datum instanceof Boolean b) {
-    return Binary.encodeBoolean(b);
-  }
-  else if (datum instanceof Short s) {
-    return BinaryMate.encodeShort(s);
-  }
-  else if (datum instanceof Integer in) {
-    return BinaryMate.encodeInt(in);
-  }
-  else if (datum instanceof Long l) {
-    return BinaryMate.encodeLong(l);
-  }
-  else if (datum instanceof Float f) {
-    return BinaryMate.encodeFloat(f);
-  }
-  else if (datum instanceof Double d) {
-    return BinaryMate.encodeDouble(d);
-  }
-  else if (datum instanceof boolean[] bs) {
-    return BinaryMate.encodeBooleans(bs);
-  }
-  else if (datum instanceof short[] ss) {
-    return BinaryMate.encodeShorts(ss);
-  }
-  else if (datum instanceof int[] ins) {
-    return BinaryMate.encodeInts(ins);
-  }
-  else if (datum instanceof long[] ls) {
-    return BinaryMate.encodeLongs(ls);
-  }
-  else if (datum instanceof float[] fs) {
-    return BinaryMate.encodeFloats(fs);
-  }
-  else if (datum instanceof double[] ds) {
-    return BinaryMate.encodeDoubles(ds);
-  }
-  else if (datum instanceof Character c) {
-    return Binary.encodeChar(c);
-  }
-  else if (datum instanceof String str) {
-    return Binary.encodeString(str);
-  }
-  else if (datum instanceof Time t) {
-    return BinaryMate.encodeTime(t);
-  }
-  else if (datum instanceof Date d) {
-    return BinaryMate.encodeDate(d);
-  }
-  else {
-    String msg = String.format(Msg.UNSUPPORTED, datum.getClass().getName());
-    throw new RuntimeException(msg);
+  switch (datum) {
+    case Boolean b -> { return Binary.encodeBoolean(b); }
+    case Short s -> { return BinaryMate.encodeShort(s); }
+    case Integer in -> { return BinaryMate.encodeInt(in); }
+    case Long l -> { return BinaryMate.encodeLong(l); }
+    case Float f -> { return BinaryMate.encodeFloat(f); }
+    case Double d -> { return BinaryMate.encodeDouble(d); }
+    case boolean[] bs -> { return BinaryMate.encodeBooleans(bs); }
+    case short[] ss -> { return BinaryMate.encodeShorts(ss); }
+    case int[] ins -> { return BinaryMate.encodeInts(ins); }
+    case long[] ls -> { return BinaryMate.encodeLongs(ls); }
+    case float[] fs -> { return BinaryMate.encodeFloats(fs); }
+    case double[] ds -> { return BinaryMate.encodeDoubles(ds); }
+    case Character c -> { return Binary.encodeChar(c); }
+    case String str -> { return Binary.encodeString(str); }
+    case Time t -> { return BinaryMate.encodeTime(t); }
+    case Date d -> { return BinaryMate.encodeDate(d); }
+    default -> {
+      String msg = String.format(Msg.UNSUPPORTED, datum.getClass().getName());
+      throw new RuntimeException(msg);
+    }
   }
 }
 

@@ -15,8 +15,8 @@ public class CheckSum {
 
 // 0 < n and n * (n+1) / 2 * (2^8-1) < (2^31-1)
 // a group size of 4103
-private static final int GROUP_SIZE = 4103;
-private static final int ADLER_MOD = 65521;
+private static final int GROUP_SIZE   = 4103;
+private static final int ADLER_MOD    = 65521;
 private static final int FLETCHER_MOD = 65535;
 
 public static int adler32(byte @NotNull [] bin, int start, int bound) {

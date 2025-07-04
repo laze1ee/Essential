@@ -10,7 +10,7 @@ package essential.progressive;
 import org.junit.jupiter.api.Test;
 
 import static essential.progressive.Pr.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class EqualityTest {
 

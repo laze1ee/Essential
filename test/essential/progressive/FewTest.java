@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import static essential.progressive.Pr.*;
+import static essential.progressive.Pr.equal;
 import static org.junit.jupiter.api.Assertions.*;
 
 class FewTest {
@@ -84,7 +84,7 @@ void copy() {
 
 @Test
 void map() {
-  Few f = Few.of(1, 2, 3);
+  Few f  = Few.of(1, 2, 3);
   Few fs = f.map(o -> (int) o * 2);
   assertEquals(2, fs.ref(0));
   assertEquals(4, fs.ref(1));
@@ -94,7 +94,7 @@ void map() {
 @Test
 void sort() {
   int length = 153;
-  Few fw = Few.make(length, 0);
+  Few fw     = Few.make(length, 0);
   for (int i = 0; i < length; i += 1) {
     fw.set(i, ThreadLocalRandom.current().nextInt(1000) - 500);
   }

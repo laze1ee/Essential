@@ -58,8 +58,8 @@ public static @NotNull Lot append(@NotNull Lot lt1, @NotNull Lot lt2) {
   }
   else {
     Lot head = new Lot(lt1.car(), new Lot());
-    Lot lll = head;
-    Lot xxx = lt1.cdr();
+    Lot lll  = head;
+    Lot xxx  = lt1.cdr();
     while (!xxx.isEmpty()) {
       lll.setNext(new Lot(xxx.car(), new Lot()));
       lll = lll.cdr();
@@ -99,6 +99,7 @@ public static boolean isBelong(Predicate2 fn, Object datum, @NotNull Lot lt) {
 
 
 //region Comparison
+
 public static boolean eq(Object datum1, Object datum2) {
   if (datum1 == datum2) {
     return true;
@@ -128,36 +129,27 @@ public static boolean equal(Object datum1, Object datum2) {
            datum2.getClass().isArray()) {
     switch (datum1) {
       case boolean[] bs1 when datum2 instanceof boolean[] bs2 -> {
-        int r = Arrays.compare(bs1, bs2);
-        return r == 0;
+        return Arrays.compare(bs1, bs2) == 0;
       }
       case byte[] bs1 when datum2 instanceof byte[] bs2 -> {
-        int r = Arrays.compare(bs1, bs2);
-        return r == 0;
+        return Arrays.compare(bs1, bs2) == 0;
       }
       case short[] ss1 when datum2 instanceof short[] ss2 -> {
-        int r = Arrays.compare(ss1, ss2);
-        return r == 0;
+        return Arrays.compare(ss1, ss2) == 0;
       }
       case int[] ins1 when datum2 instanceof int[] ins2 -> {
-        int r = Arrays.compare(ins1, ins2);
-        return r == 0;
+        return Arrays.compare(ins1, ins2) == 0;
       }
       case long[] ls1 when datum2 instanceof long[] ls2 -> {
-        int r = Arrays.compare(ls1, ls2);
-        return r == 0;
+        return Arrays.compare(ls1, ls2) == 0;
       }
       case float[] fs1 when datum2 instanceof float[] fs2 -> {
-        int r = Arrays.compare(fs1, fs2);
-        return r == 0;
+        return Arrays.compare(fs1, fs2) == 0;
       }
       case double[] ds1 when datum2 instanceof double[] ds2 -> {
-        int r = Arrays.compare(ds1, ds2);
-        return r == 0;
+        return Arrays.compare(ds1, ds2) == 0;
       }
-      default -> {
-        return false;
-      }
+      default -> { return false; }
     }
   }
   else {
@@ -179,8 +171,7 @@ public static boolean less(Object datum1, Object datum2) {
   }
   else if (datum1 instanceof String s1 &&
            datum2 instanceof String s2) {
-    int r = s1.compareTo(s2);
-    return r < 0;
+    return s1.compareTo(s2) < 0;
   }
   else if (datum1 instanceof Time t1 &&
            datum2 instanceof Time t2) {
@@ -190,32 +181,25 @@ public static boolean less(Object datum1, Object datum2) {
            datum2.getClass().isArray()) {
     switch (datum1) {
       case boolean[] bs1 when datum2 instanceof boolean[] bs2 -> {
-        int r = Arrays.compare(bs1, bs2);
-        return r < 0;
+        return Arrays.compare(bs1, bs2) < 0;
       }
       case byte[] bs1 when datum2 instanceof byte[] bs2 -> {
-        int r = Arrays.compare(bs1, bs2);
-        return r < 0;
+        return Arrays.compare(bs1, bs2) < 0;
       }
       case short[] ss1 when datum2 instanceof short[] ss2 -> {
-        int r = Arrays.compare(ss1, ss2);
-        return r < 0;
+        return Arrays.compare(ss1, ss2) < 0;
       }
       case int[] ins1 when datum2 instanceof int[] ins2 -> {
-        int r = Arrays.compare(ins1, ins2);
-        return r < 0;
+        return Arrays.compare(ins1, ins2) < 0;
       }
       case long[] ls1 when datum2 instanceof long[] ls2 -> {
-        int r = Arrays.compare(ls1, ls2);
-        return r < 0;
+        return Arrays.compare(ls1, ls2) < 0;
       }
       case float[] fs1 when datum2 instanceof float[] fs2 -> {
-        int r = Arrays.compare(fs1, fs2);
-        return r < 0;
+        return Arrays.compare(fs1, fs2) < 0;
       }
       case double[] ds1 when datum2 instanceof double[] ds2 -> {
-        int r = Arrays.compare(ds1, ds2);
-        return r < 0;
+        return Arrays.compare(ds1, ds2) < 0;
       }
       default -> {
         String msg = String.format(Msg.UNDEFINED_ARR_COMPARE, stringOf(datum1), stringOf(datum2));
@@ -237,30 +221,17 @@ public static boolean greater(Object datum1, Object datum2) {
 
 
 //region To String
+
 public static @NotNull String stringOf(Object datum) {
-  if (datum == null) {
-    return "«null»";
-  }
+  if (datum == null) { return "«null»"; }
   else if (datum instanceof Boolean b) {
-    if (b) {
-      return "#t";
-    }
-    else {
-      return "#f";
-    }
+    if (b) { return "#t"; }
+    else { return "#f"; }
   }
-  else if (datum instanceof Character c) {
-    return Mate.stringOfChar(c);
-  }
-  else if (datum instanceof String str) {
-    return Mate.dataString(str);
-  }
-  else if (datum.getClass().isArray()) {
-    return Mate.stringOfArray(datum);
-  }
-  else {
-    return datum.toString();
-  }
+  else if (datum instanceof Character c) { return Mate.stringOfChar(c); }
+  else if (datum instanceof String str) { return Mate.dataString(str); }
+  else if (datum.getClass().isArray()) { return Mate.stringOfArray(datum); }
+  else { return datum.toString(); }
 }
 //endregion
 }

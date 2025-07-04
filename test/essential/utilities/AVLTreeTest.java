@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-import static essential.progressive.Pr.*;
+import static essential.progressive.Pr.cons;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -24,7 +24,7 @@ class AVLTreeTest {
 private static final int SIZE = 10000;
 
 private final AVLTree tree;
-private Lot keys;
+private       Lot     keys;
 
 private AVLTreeTest() {
   tree = new AVLTree(Pr::less, Pr::greater);
@@ -33,10 +33,10 @@ private AVLTreeTest() {
 
 void insert() {
   Random random = new Random(Time.current().nanosecond());
-  Lot repeat = Lot.of();
+  Lot    repeat = Lot.of();
   for (int i = 0; i < SIZE; i += 1) {
     while (true) {
-      String key = RandGenerator.ascii(random.nextInt(3, 8));
+      String  key     = RandGenerator.ascii(random.nextInt(3, 8));
       boolean success = tree.insert(key, random.nextInt(SIZE));
       if (success) {
         keys = cons(key, keys);
@@ -54,11 +54,11 @@ void visit() {
 
   AVLTree new_tree = tree.map(o -> ((int) o) * 3);
 
-  AVLTree evens = new_tree.filter(o -> ((int) o % 2) == 0);
-  int even_size = evens.size();
+  AVLTree evens     = new_tree.filter(o -> ((int) o % 2) == 0);
+  int     even_size = evens.size();
   System.out.println("even amount: " + even_size);
-  AVLTree odds = new_tree.filter(o -> ((int) o % 2) != 0);
-  int odd_size = odds.size();
+  AVLTree odds     = new_tree.filter(o -> ((int) o % 2) != 0);
+  int     odd_size = odds.size();
   System.out.println("odd amount: " + odd_size);
   assertEquals(even_size + odd_size, new_tree.size());
 

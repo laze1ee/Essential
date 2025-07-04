@@ -10,16 +10,16 @@ package essential.utilities;
 class Msg {
 
 // Binary
-static final String INVALID_RANGE = "invalid byte sequence range [%s %s]";
-static final String UNSUPPORTED = "unsupported type %s for encoding";
-static final String INVALID_BIN_SEQ = "invalid binary sequence";
+static final String INVALID_RANGE    = "invalid byte sequence range [%s %s]";
+static final String UNSUPPORTED      = "unsupported type %s for encoding";
+static final String INVALID_BIN_SEQ  = "invalid binary sequence";
 static final String INVALID_BIN_BYTE = "invalid binary byte %s in index %s";
 
 // Tree
-static final String INVALID_RB_NODE = "invalid red-black-tree node:\n%s";
+static final String INVALID_RB_NODE  = "invalid red-black-tree node:\n%s";
 static final String INVALID_AVL_NODE = "invalid AVL-tree node:\n%s";
-static final String EMPTY_TREE = "empty tree";
-static final String NOT_PRESENT = "key %s is not present in tree %s";
+static final String EMPTY_TREE       = "empty tree";
+static final String NOT_PRESENT      = "key %s is not present in tree %s";
 
 // Queue
 static final String EMPTY_QUEUE = "empty queue";

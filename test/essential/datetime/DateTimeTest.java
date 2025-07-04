@@ -38,7 +38,7 @@ void testTimeDateConvert() {
                        rd.nextInt(0, 60),
                        0,
                        0);
-    Time t = d1.toTime();
+    Time t  = d1.toTime();
     Date d2 = t.toDate(0);
     assertTrue(equal(d1, d2));
   }

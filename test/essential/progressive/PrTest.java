@@ -23,8 +23,8 @@ void testCons() {
 
 @Test
 void testAppend() {
-  Lot lt1 = Lot.of(1, 2, 3);
-  Lot lt2 = Lot.of(4, 5, 6);
+  Lot lt1    = Lot.of(1, 2, 3);
+  Lot lt2    = Lot.of(4, 5, 6);
   Lot result = append(lt1, lt2);
   assertEquals(Lot.of(1, 2, 3, 4, 5, 6), result);
 

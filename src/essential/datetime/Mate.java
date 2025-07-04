@@ -17,10 +17,10 @@ static final int NEG_NANO_OF_SECOND = -1_000_000_000;
 
 static final int DAYS_400Y = 146097;
 static final int DAYS_100Y = 36524;
-static final int DAYS_4Y = 1461;
-static final int DAYS_Y = 365;
+static final int DAYS_4Y   = 1461;
+static final int DAYS_Y    = 365;
 
-static final long SEC_DAY = 86400;
+static final long SEC_DAY    = 86400;
 static final long COMPLEMENT = 62167219200L;
 
 static final int[][] DAY_YEAR =
@@ -59,7 +59,7 @@ static int dayOfWeek(int year, int month, int day_of_month) {
 }
 
 static @NotNull String stringOfOffset(int offset) {
-  int n = offset;
+  int    n = offset;
   String sign;
   if (n == 0) {
     sign = "";
@@ -71,7 +71,7 @@ static @NotNull String stringOfOffset(int offset) {
   else {
     sign = "+";
   }
-  int hour = n / 3600;
+  int hour   = n / 3600;
   int minute = (n % 3600) % 60;
   return String.format("%s%02d:%02d", sign, hour, minute);
 }
@@ -110,8 +110,8 @@ static boolean checkTime(@NotNull Time t) {
 }
 
 static @NotNull Date timeToDate(@NotNull Time t, int offset) {
-  long seconds = t.second() + offset + COMPLEMENT;
-  long days = seconds / SEC_DAY;
+  long seconds     = t.second() + offset + COMPLEMENT;
+  long days        = seconds / SEC_DAY;
   long seconds_day = seconds % SEC_DAY;
 
   int[] d1 = trackDate(days);
@@ -126,13 +126,13 @@ private static int @NotNull [] trackDate(long days) {
 
   int mod_400y = daysOfMod400Y(degree, days);
   int mod_100y = daysOfMod100Y(degree, mod_400y);
-  int mod_4y = daysOfMod4Y(degree, mod_100y);
-  int mod_1y = daysOfMod1Y(degree, mod_4y);
+  int mod_4y   = daysOfMod4Y(degree, mod_100y);
+  int mod_1y   = daysOfMod1Y(degree, mod_4y);
 
-  int year = trackYear(degree);
-  int[] moo = trackMonthDay(mod_1y + 1, isLeapYear(year));
-  int month = moo[0];
-  int day_of_month = moo[1];
+  int   year         = trackYear(degree);
+  int[] moo          = trackMonthDay(mod_1y + 1, isLeapYear(year));
+  int   month        = moo[0];
+  int   day_of_month = moo[1];
   return new int[]{year, month, day_of_month};
 }
 
@@ -219,7 +219,7 @@ private static int traceDayOfWeek(long days) {
 }
 
 private static int @NotNull [] trackTime(int seconds) {
-  int hour = seconds / 3600;
+  int hour   = seconds / 3600;
   int minute = seconds % 3600 / 60;
   int second = seconds % 3600 % 60;
   return new int[]{hour, minute, second};
@@ -230,7 +230,7 @@ private static int @NotNull [] trackTime(int seconds) {
 //region Date to Time
 static long sumOfDays(int year, int month, int day_of_month) {
   int[] degree = new int[4];
-  int y = year;
+  int   y      = year;
   degree[0] = y / 400;
   y = y % 400;
   degree[1] = y / 100;

@@ -19,9 +19,9 @@ public static RBTree detect(Object datum) {
 }
 
 private final RBTree collector;
-final RBTree identical;
-private Few cont;
-private Object datum;
+private final RBTree identical;
+private       Few    cont;
+private       Object datum;
 
 Shared(Object datum) {
   collector = new RBTree((o1, o2) -> (int) o1 < (int) o2,
@@ -39,13 +39,13 @@ void route() {
     switch (next) {
       case Label.OF_DATUM -> next = ofDatum();
       case Label.APPLY_CONT -> next = applyCont();
-      case Label.EXIT -> {return;}
+      case Label.EXIT -> { return; }
     }
   }
 }
 
 private String ofDatum() {
-  int key = System.identityHashCode(datum);
+  int     key     = System.identityHashCode(datum);
   boolean success = collector.insert(key, false);
   if (success) {
     if (datum instanceof Few fw) {
@@ -77,12 +77,12 @@ private String ofDatum() {
 private String applyCont() {
   String token = (String) cont.ref(0);
   switch (token) {
-    case Label.END_CONT -> {return Label.EXIT;}
+    case Label.END_CONT -> { return Label.EXIT; }
     //noinspection DuplicatedCode
     case Label.ITER_FEW -> {
       int length = (int) cont.ref(2);
-      int index = (int) cont.ref(3);
-      Few fw = (Few) cont.ref(4);
+      int index  = (int) cont.ref(3);
+      Few fw     = (Few) cont.ref(4);
       if (index == length) {
         cont = (Few) cont.ref(1);
         return Label.APPLY_CONT;
@@ -94,8 +94,8 @@ private String applyCont() {
       }
     }
     case Label.ITER_LOT -> {
-      Lot lt = (Lot) cont.ref(2);
-      int key = System.identityHashCode(lt);
+      Lot     lt      = (Lot) cont.ref(2);
+      int     key     = System.identityHashCode(lt);
       boolean success = collector.insert(key, false);
       if (success) {
         if (lt.isEmpty()) {

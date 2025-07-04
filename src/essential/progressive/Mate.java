@@ -13,7 +13,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Array;
 
-import static essential.progressive.Pr.*;
+import static essential.progressive.Pr.cons;
+import static essential.progressive.Pr.eq;
 
 
 class Mate {
@@ -72,7 +73,7 @@ private static void swap(@NotNull Few fw, int i, int j) {
 private static void insertionSort(Predicate2 compare, @NotNull Few fw, int start, int bound) {
   for (int i = start + 1; i < bound; i += 1) {
     Object key = fw.ref(i);
-    int j = i - 1;
+    int    j   = i - 1;
     while (start <= j && compare.apply(key, fw.ref(j))) {
       fw.set(j + 1, fw.ref(j));
       j -= 1;
@@ -112,9 +113,9 @@ static int theHareAndTortoise(@NotNull Lot lt) {
     return 1;
   }
   else {
-    Lot hare = lt.cddr();
+    Lot hare     = lt.cddr();
     Lot tortoise = lt;
-    int count = 1;
+    int count    = 1;
     while (true) {
       if (hare.isEmpty()) {
         return count * 2;
@@ -140,11 +141,11 @@ static int theHareAndTortoise(@NotNull Lot lt) {
 
 static @NotNull String stringOfChar(char c) {
   switch (c) {
-    case 8 -> {return "#\\backspace";}
-    case 9 -> {return "#\\tab";}
-    case 0xA -> {return "#\\newline";}
-    case 0xD -> {return "#\\return";}
-    case 0x20 -> {return "#\\space";}
+    case 8 -> { return "#\\backspace"; }
+    case 9 -> { return "#\\tab"; }
+    case 0xA -> { return "#\\newline"; }
+    case 0xD -> { return "#\\return"; }
+    case 0x20 -> { return "#\\space"; }
     default -> {
       if (Character.isISOControl(c)) {
         return String.format("#\\u%X", (int) c);
@@ -157,7 +158,7 @@ static @NotNull String stringOfChar(char c) {
 }
 
 static @NotNull String dataString(@NotNull String str) {
-  int bound = str.length();
+  int           bound   = str.length();
   StringBuilder builder = new StringBuilder("\"");
   for (int i = 0; i < bound; i += 1) {
     char c = str.charAt(i);
@@ -183,30 +184,18 @@ private static @NotNull String hexOfByte(byte b) {
 }
 
 static @NotNull String stringOfArray(@NotNull Object arr) {
-  if (arr instanceof boolean[] bs) {
-    return String.format("#1(%s)", serializeArray(Pr::stringOf, bs, bs.length));
-  }
-  else if (arr instanceof byte[] bs) {
-    return String.format("#u8(%s)", serializeArray(o -> hexOfByte((byte) o), bs, bs.length));
-  }
-  else if (arr instanceof short[] ss) {
-    return String.format("#i16(%s)", serializeArray(Object::toString, ss, ss.length));
-  }
-  else if (arr instanceof int[] ins) {
-    return String.format("#i32(%s)", serializeArray(Object::toString, ins, ins.length));
-  }
-  else if (arr instanceof long[] ls) {
-    return String.format("#i64(%s)", serializeArray(Object::toString, ls, ls.length));
-  }
-  else if (arr instanceof float[] fs) {
-    return String.format("#r32(%s)", serializeArray(Object::toString, fs, fs.length));
-  }
-  else if (arr instanceof double[] ds) {
-    return String.format("#r64(%s)", serializeArray(Object::toString, ds, ds.length));
-  }
-  else {
-    throw new RuntimeException(String.format("unsupported array type %s for printing", arr));
-  }
+  return switch (arr) {
+    case boolean[] bs -> String.format("#1(%s)", serializeArray(Pr::stringOf, bs, bs.length));
+    case byte[] bs ->
+        String.format("#u8(%s)", serializeArray(o -> hexOfByte((byte) o), bs, bs.length));
+    case short[] ss -> String.format("#i16(%s)", serializeArray(Object::toString, ss, ss.length));
+    case int[] ins -> String.format("#i32(%s)", serializeArray(Object::toString, ins, ins.length));
+    case long[] ls -> String.format("#i64(%s)", serializeArray(Object::toString, ls, ls.length));
+    case float[] fs -> String.format("#r32(%s)", serializeArray(Object::toString, fs, fs.length));
+    case double[] ds -> String.format("#r64(%s)", serializeArray(Object::toString, ds, ds.length));
+    default ->
+        throw new RuntimeException(String.format("unsupported array type %s for printing", arr));
+  };
 }
 
 static @NotNull String serializeArray(Do1 fn, Object arr, int bound) {
@@ -230,63 +219,27 @@ static @NotNull String serializeArray(Do1 fn, Object arr, int bound) {
 //region Comparison
 
 static boolean numberEq(Number n1, Number n2) {
-  if (n1 instanceof Byte b1 &&
-      n2 instanceof Byte b2) {
-    return (byte) b1 == b2;
-  }
-  else if (n1 instanceof Short s1 &&
-           n2 instanceof Short s2) {
-    return (short) s1 == s2;
-  }
-  else if (n1 instanceof Integer i1 &&
-           n2 instanceof Integer i2) {
-    return (int) i1 == i2;
-  }
-  else if (n1 instanceof Long l1 &&
-           n2 instanceof Long l2) {
-    return (long) l1 == l2;
-  }
-  else if (n1 instanceof Float f1 &&
-           n2 instanceof Float f2) {
-    return (float) f1 == f2;
-  }
-  else if (n1 instanceof Double d1 &&
-           n2 instanceof Double d2) {
-    return (double) d1 == d2;
-  }
-  else {
-    return false;
-  }
+  return switch (n1) {
+    case Byte b1 when n2 instanceof Byte b2 -> (byte) b1 == b2;
+    case Short s1 when n2 instanceof Short s2 -> (short) s1 == s2;
+    case Integer i1 when n2 instanceof Integer i2 -> (int) i1 == i2;
+    case Long l1 when n2 instanceof Long l2 -> (long) l1 == l2;
+    case Float f1 when n2 instanceof Float f2 -> (float) f1 == f2;
+    case Double d1 when n2 instanceof Double d2 -> (double) d1 == d2;
+    case null, default -> false;
+  };
 }
 
-static boolean numberLess(Number n1, Number n2) {
-  if (n1 instanceof Byte b1 &&
-      n2 instanceof Byte b2) {
-    return (byte) b1 < b2;
-  }
-  else if (n1 instanceof Short s1 &&
-           n2 instanceof Short s2) {
-    return (short) s1 < s2;
-  }
-  else if (n1 instanceof Integer i1 &&
-           n2 instanceof Integer i2) {
-    return (int) i1 < i2;
-  }
-  else if (n1 instanceof Long l1 &&
-           n2 instanceof Long l2) {
-    return (long) l1 < l2;
-  }
-  else if (n1 instanceof Float f1 &&
-           n2 instanceof Float f2) {
-    return (float) f1 < f2;
-  }
-  else if (n1 instanceof Double d1 &&
-           n2 instanceof Double d2) {
-    return (double) d1 < d2;
-  }
-  else {
-    return false;
-  }
+static boolean numberLess(@NotNull Number n1, Number n2) {
+  return switch (n1) {
+    case Byte b1 when n2 instanceof Byte b2 -> (byte) b1 < b2;
+    case Short s1 when n2 instanceof Short s2 -> (short) s1 < s2;
+    case Integer i1 when n2 instanceof Integer i2 -> (int) i1 < i2;
+    case Long l1 when n2 instanceof Long l2 -> (long) l1 < l2;
+    case Float f1 when n2 instanceof Float f2 -> (float) f1 < f2;
+    case Double d1 when n2 instanceof Double d2 -> (double) d1 < d2;
+    default -> false;
+  };
 }
 //endregion
 }

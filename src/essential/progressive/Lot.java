@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 public class Lot {
 
 private Object data;
-private Lot next;
+private Lot    next;
 
 protected Lot() {
   this.data = null;
@@ -113,7 +113,7 @@ public @NotNull Lot cdar() {
 
 public @NotNull Object ref(int index) {
   Lot lt = this;
-  int i = index;
+  int i  = index;
   while (i >= 0) {
     if (lt.isEmpty()) {
       String msg = String.format(Msg.INDEX_OUT, index, this);
@@ -153,10 +153,10 @@ public @NotNull Lot head(int index) {
     return new Lot();
   }
   else if (this.isBreadthCircle() || (0 <= index && index <= Mate.length(this))) {
-    int i = index - 1;
+    int i    = index - 1;
     Lot head = new Lot(this.car(), new Lot());
-    Lot lll = head;
-    Lot xxx = this.cdr();
+    Lot lll  = head;
+    Lot xxx  = this.cdr();
     while (i > 0) {
       lll.next = new Lot(xxx.car(), new Lot());
       lll = lll.cdr();
@@ -174,7 +174,7 @@ public @NotNull Lot head(int index) {
 public @NotNull Lot tail(int index) {
   if (this.isBreadthCircle() || (0 <= index && index <= Mate.length(this))) {
     Lot lt = this;
-    int i = index;
+    int i  = index;
     while (i > 0) {
       lt = lt.cdr();
       i -= 1;
@@ -197,8 +197,8 @@ public @NotNull Lot copy() {
   }
   else {
     Lot head = new Lot(this.car(), new Lot());
-    Lot lll = head;
-    Lot xxx = this.cdr();
+    Lot lll  = head;
+    Lot xxx  = this.cdr();
     while (!xxx.isEmpty()) {
       lll.next = new Lot(xxx.car(), new Lot());
       lll = lll.cdr();
@@ -214,8 +214,8 @@ public @NotNull Few toFew() {
     throw new RuntimeException(msg);
   }
   int length = Mate.length(this);
-  Few fw = Few.make(length, 0);
-  Lot lt = this;
+  Few fw     = Few.make(length, 0);
+  Lot lt     = this;
   for (int i = 0; i < length; i += 1) {
     fw.set(i, lt.car());
     lt = lt.cdr();
@@ -232,8 +232,8 @@ public @NotNull Lot filter(Predicate1 fn) {
     throw new RuntimeException(msg);
   }
   Lot head = new Lot(false, new Lot());
-  Lot lll = head;
-  Lot xxx = this;
+  Lot lll  = head;
+  Lot xxx  = this;
   while (!xxx.isEmpty()) {
     if (fn.apply(xxx.car())) {
       lll.next = new Lot(xxx.car(), new Lot());
@@ -253,8 +253,8 @@ public @NotNull Lot map(Do1 fn) {
     throw new RuntimeException(msg);
   }
   Lot head = new Lot(fn.apply(this.car()), new Lot());
-  Lot lll = head;
-  Lot xxx = this.cdr();
+  Lot lll  = head;
+  Lot xxx  = this.cdr();
   while (!xxx.isEmpty()) {
     lll.next = new Lot(fn.apply(xxx.car()), new Lot());
     lll = lll.cdr();

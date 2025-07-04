@@ -14,15 +14,15 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
-import static essential.progressive.Pr.*;
+import static essential.progressive.Pr.cons;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class RandGenerator {
 
-private static final String ASCII = "0123456789" +
-                                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" +
-                                    "!#$%&()*+,-.;=@[]^_{}~";
-private static final String DIGITS = "0123456789";
+private static final String ASCII      = "0123456789" +
+                                         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+                                         "!#$%&()*+,-.;=@[]^_{}~";
+private static final String DIGITS     = "0123456789";
 private static final String HEX_DIGITS = "0123456789ABCDEF";
 
 private static final Random random = new Random(Time.current().nanosecond());
@@ -30,7 +30,7 @@ private static final Random random = new Random(Time.current().nanosecond());
 
 public static @NotNull String ascii(int length) {
   StringBuilder builder = new StringBuilder();
-  int bound = ASCII.length();
+  int           bound   = ASCII.length();
   for (int i = 0; i < length; i++) {
     int index = random.nextInt(bound);
     builder.append(ASCII.charAt(index));
@@ -40,7 +40,7 @@ public static @NotNull String ascii(int length) {
 
 public static @NotNull String digits(int length) {
   StringBuilder builder = new StringBuilder();
-  int bound = DIGITS.length();
+  int           bound   = DIGITS.length();
   for (int i = 0; i < length; i++) {
     int index = random.nextInt(bound);
     builder.append(DIGITS.charAt(index));
@@ -50,7 +50,7 @@ public static @NotNull String digits(int length) {
 
 public static @NotNull String hexDigits(int length) {
   StringBuilder builder = new StringBuilder();
-  int bound = HEX_DIGITS.length();
+  int           bound   = HEX_DIGITS.length();
   for (int i = 0; i < length; i++) {
     int index = random.nextInt(bound);
     builder.append(HEX_DIGITS.charAt(index));
@@ -72,7 +72,7 @@ public static @NotNull String shuffle(@NotNull String text) {
     return "";
   }
 
-  boolean[] used = new boolean[length];
+  boolean[]     used    = new boolean[length];
   StringBuilder builder = new StringBuilder();
   for (int i = 0; i < length; i += 1) {
     int index = random.nextInt(length);
@@ -101,7 +101,7 @@ public static @NotNull Few shuffle(@NotNull Few fw) {
   }
 
   boolean[] used = new boolean[length];
-  Lot col = Lot.of();
+  Lot       col  = Lot.of();
   for (int i = 0; i < length; i += 1) {
     int index = random.nextInt(length);
     if (!used[index]) {

@@ -45,18 +45,18 @@ static byte @NotNull [] encodeLong(long n) {
 }
 
 static byte @NotNull [] encodeFloat(float n) {
-  int bits = Float.floatToIntBits(n);
-  byte[] lll = Binary.encodeI64(bits);
-  byte[] xxx = new byte[5];
+  int    bits = Float.floatToIntBits(n);
+  byte[] lll  = Binary.encodeI64(bits);
+  byte[] xxx  = new byte[5];
   xxx[0] = Binary.FLOAT;
   System.arraycopy(lll, 4, xxx, 1, 4);
   return xxx;
 }
 
 static byte @NotNull [] encodeDouble(double n) {
-  long bits = Double.doubleToLongBits(n);
-  byte[] lll = Binary.encodeI64(bits);
-  byte[] xxx = new byte[9];
+  long   bits = Double.doubleToLongBits(n);
+  byte[] lll  = Binary.encodeI64(bits);
+  byte[] xxx  = new byte[9];
   xxx[0] = Binary.DOUBLE;
   System.arraycopy(lll, 0, xxx, 1, 8);
   return xxx;
@@ -120,8 +120,8 @@ static byte @NotNull [] encodeFloats(float @NotNull [] fs) {
   bin[0] = Binary.FLOATS;
   System.arraycopy(len, 0, bin, 1, len.length);
   for (int i = 0; i < fs.length; i += 1) {
-    long bits = Float.floatToRawIntBits(fs[i]);
-    byte[] lll = Binary.encodeI64(bits);
+    long   bits = Float.floatToRawIntBits(fs[i]);
+    byte[] lll  = Binary.encodeI64(bits);
     System.arraycopy(lll, 4, bin, 1 + len.length + 4 * i, 4);
   }
   return bin;
@@ -133,8 +133,8 @@ static byte @NotNull [] encodeDoubles(double @NotNull [] ds) {
   bin[0] = Binary.DOUBLES;
   System.arraycopy(len, 0, bin, 1, len.length);
   for (int i = 0; i < ds.length; i += 1) {
-    long bits = Double.doubleToLongBits(ds[i]);
-    byte[] lll = Binary.encodeI64(bits);
+    long   bits = Double.doubleToLongBits(ds[i]);
+    byte[] lll  = Binary.encodeI64(bits);
     System.arraycopy(lll, 0, bin, 1 + len.length + 8 * i, 8);
   }
   return bin;
@@ -251,8 +251,8 @@ static long @NotNull [] decodeLongs(byte[] bin, int start, int len) {
 static float @NotNull [] decodeFloats(byte[] bin, int start, int len) {
   float[] fs = new float[len];
   for (int i = 0, j = start; i < len; i += 1, j += 4) {
-    byte[] lll = Arrays.copyOfRange(bin, j, j + 4);
-    int bits = 0;
+    byte[] lll  = Arrays.copyOfRange(bin, j, j + 4);
+    int    bits = 0;
     for (int k = 0; k < 4; k += 1) {
       bits = (bits << 8) | (lll[k] & 0xFF);
     }
@@ -264,8 +264,8 @@ static float @NotNull [] decodeFloats(byte[] bin, int start, int len) {
 static double @NotNull [] decodeDoubles(byte[] bin, int start, int sz) {
   double[] ds = new double[sz];
   for (int i = 0, j = start; i < sz; i += 1, j += 8) {
-    byte[] lll = Arrays.copyOfRange(bin, j, j + 8);
-    long bits = 0;
+    byte[] lll  = Arrays.copyOfRange(bin, j, j + 8);
+    long   bits = 0;
     for (int k = 0; k < 8; k += 1) {
       bits = (bits << 8) | (lll[k] & 0xFF);
     }
@@ -275,16 +275,16 @@ static double @NotNull [] decodeDoubles(byte[] bin, int start, int sz) {
 }
 
 static @NotNull Time decodeTime(byte[] bin, int start) {
-  byte[] lll = Binary.extendTo64Bits(bin, start, start + 8);
-  long second = Binary.decodeI64(lll);
+  byte[] lll    = Binary.extendTo64Bits(bin, start, start + 8);
+  long   second = Binary.decodeI64(lll);
   lll = Binary.extendTo64Bits(bin, start + 8, start + 12);
   int nanosecond = (int) Binary.decodeI64(lll);
   return new Time(second, nanosecond);
 }
 
 static @NotNull Date decodeDate(byte[] bin, int start) {
-  byte[] lll = Binary.extendTo64Bits(bin, start, start + 4);
-  int year = (int) Binary.decodeI64(lll);
+  byte[] lll  = Binary.extendTo64Bits(bin, start, start + 4);
+  int    year = (int) Binary.decodeI64(lll);
   lll = Binary.extendTo64Bits(bin, start + 10, start + 14);
   int nanosecond = (int) Binary.decodeI64(lll);
   lll = Binary.extendTo64Bits(bin, start + 14, start + 18);

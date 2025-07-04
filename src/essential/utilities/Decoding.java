@@ -35,11 +35,11 @@ private static @NotNull String hexOfByte(byte b) {
 }
 
 private final byte[] bin;
-private int index;
-private Few shared;
-private Few stack;
-private Few cont;
-private Object r0;
+private       int    index;
+private       Few    shared;
+private       Few    stack;
+private       Few    cont;
+private       Object r0;
 
 Decoding(byte[] bin, int index) {
   this.bin = bin;
@@ -50,12 +50,12 @@ Decoding(byte[] bin, int index) {
 
 Object process() {
   index += 1;
-  int sz = Binary.sizeofVarI32(bin, index);
+  int sz     = Binary.sizeofVarI32(bin, index);
   int length = Binary.decodeVarI32(bin, index, index + sz);
   index += sz;
 
   if (length != 0) {
-    shared =  Few.make(length, false);
+    shared = Few.make(length, false);
     for (int i = 0; i < length; i += 1) {
       shared.set(i, new Nothing(i));
     }
@@ -71,23 +71,23 @@ Object process() {
 private void link() {
   while (true) {
     switch ((String) stack.ref(0)) {
-      case Label.END_CONT -> {return;}
+      case Label.END_CONT -> { return; }
       case Label.SET_FEW -> {
         Few fw = (Few) stack.ref(2);
-        int i = (int) stack.ref(3);
-        int j = (int) stack.ref(4);
+        int i  = (int) stack.ref(3);
+        int j  = (int) stack.ref(4);
         fw.set(i, shared.ref(j));
         stack = (Few) stack.ref(1);
       }
       case Label.SET_CAR -> {
         Lot lt = (Lot) stack.ref(2);
-        int j = (int) stack.ref(3);
+        int j  = (int) stack.ref(3);
         setCar(lt, shared.ref(j));
         stack = (Few) stack.ref(1);
       }
       case Label.SET_CDR -> {
         Lot lt = (Lot) stack.ref(2);
-        int j = (int) stack.ref(3);
+        int j  = (int) stack.ref(3);
         setCdr(lt, (Lot) shared.ref(j));
         stack = (Few) stack.ref(1);
       }
@@ -101,7 +101,7 @@ private void route() {
     switch (next) {
       case Label.OF_BYTE -> next = ofByte();
       case Label.APPLY_CONT -> next = applyCont();
-      case Label.EXIT -> {return;}
+      case Label.EXIT -> { return; }
     }
   }
 }
@@ -157,49 +157,49 @@ private String ofByte() {
       return Label.APPLY_CONT;
     }
     case Binary.BOOLEANS -> {
-      int sz = Binary.sizeofVarI32(bin, index);
+      int sz     = Binary.sizeofVarI32(bin, index);
       int length = Binary.decodeVarI32(bin, index, index + sz);
-      int start = index + sz;
+      int start  = index + sz;
       index = start + length;
       r0 = BinaryMate.decodeBooleans(bin, start, length);
       return Label.APPLY_CONT;
     }
     case Binary.SHORTS -> {
-      int sz = Binary.sizeofVarI32(bin, index);
+      int sz     = Binary.sizeofVarI32(bin, index);
       int length = Binary.decodeVarI32(bin, index, index + sz);
-      int start = index + sz;
+      int start  = index + sz;
       index = start + length * 2;
       r0 = BinaryMate.decodeShorts(bin, start, length);
       return Label.APPLY_CONT;
     }
     case Binary.INTS -> {
-      int sz = Binary.sizeofVarI32(bin, index);
+      int sz     = Binary.sizeofVarI32(bin, index);
       int length = Binary.decodeVarI32(bin, index, index + sz);
-      int start = index + sz;
+      int start  = index + sz;
       index = start + length * 4;
       r0 = BinaryMate.decodeInts(bin, start, length);
       return Label.APPLY_CONT;
     }
     case Binary.LONGS -> {
-      int sz = Binary.sizeofVarI32(bin, index);
+      int sz     = Binary.sizeofVarI32(bin, index);
       int length = Binary.decodeVarI32(bin, index, index + sz);
-      int start = index + sz;
+      int start  = index + sz;
       index = start + length * 8;
       r0 = BinaryMate.decodeLongs(bin, start, length);
       return Label.APPLY_CONT;
     }
     case Binary.FLOATS -> {
-      int sz = Binary.sizeofVarI32(bin, index);
+      int sz     = Binary.sizeofVarI32(bin, index);
       int length = Binary.decodeVarI32(bin, index, index + sz);
-      int start = index + sz;
+      int start  = index + sz;
       index = start + length * 4;
       r0 = BinaryMate.decodeFloats(bin, start, length);
       return Label.APPLY_CONT;
     }
     case Binary.DOUBLES -> {
-      int sz = Binary.sizeofVarI32(bin, index);
+      int sz     = Binary.sizeofVarI32(bin, index);
       int length = Binary.decodeVarI32(bin, index, index + sz);
-      int start = index + sz;
+      int start  = index + sz;
       index = start + length * 8;
       r0 = BinaryMate.decodeDoubles(bin, start, length);
       return Label.APPLY_CONT;
@@ -229,14 +229,14 @@ private String ofByte() {
       return Label.APPLY_CONT;
     }
     case Binary.SHARE_INDEX -> {
-      int sz = Binary.sizeofVarI32(bin, index);
+      int sz  = Binary.sizeofVarI32(bin, index);
       int idx = Binary.decodeVarI32(bin, index, index + sz);
       index += sz;
       r0 = shared.ref(idx);
       return Label.APPLY_CONT;
     }
     case Binary.FEW -> {
-      int sz = Binary.sizeofVarI32(bin, index);
+      int sz     = Binary.sizeofVarI32(bin, index);
       int length = Binary.decodeVarI32(bin, index, index + sz);
       index += sz;
 
@@ -244,7 +244,7 @@ private String ofByte() {
         r0 = Few.of();
         return Label.APPLY_CONT;
       }
-      r0 =  Few.make(length, new Nothing(-1));
+      r0 = Few.make(length, new Nothing(-1));
       cont = Few.of(Label.ITER_FEW, cont, length, 0, r0);
       return Label.OF_BYTE;
     }
@@ -278,15 +278,15 @@ private String applyCont() {
   String label = (String) cont.ref(0);
 
   switch (label) {
-    case Label.END_CONT -> {return Label.EXIT;}
+    case Label.END_CONT -> { return Label.EXIT; }
     case Label.ITER_FEW -> {
       int length = (int) cont.ref(2);
-      int idx = (int) cont.ref(3);
-      Few fw = (Few) cont.ref(4);
+      int idx    = (int) cont.ref(3);
+      Few fw     = (Few) cont.ref(4);
       fw.set(idx, r0);
 
-      if (r0 instanceof Nothing nt) {
-        stack = Few.of(Label.SET_FEW, stack, fw, idx, nt.index);
+      if (r0 instanceof Nothing(int index1)) {
+        stack = Few.of(Label.SET_FEW, stack, fw, idx, index1);
       }
 
       if (idx + 1 == length) {
@@ -307,12 +307,12 @@ private String applyCont() {
     case Label.NEXT_LOT -> {
       Lot lll = (Lot) cont.ref(2);
       Lot xxx = Lot.of(lll.car());
-      if (lll.car() instanceof Nothing nt) {
-        stack = Few.of(Label.SET_CAR, stack, xxx, nt.index);
+      if (lll.car() instanceof Nothing(int index1)) {
+        stack = Few.of(Label.SET_CAR, stack, xxx, index1);
       }
 
-      if (r0 instanceof Nothing nt) {
-        stack = Few.of(Label.SET_CDR, stack, xxx, nt.index);
+      if (r0 instanceof Nothing(int index1)) {
+        stack = Few.of(Label.SET_CDR, stack, xxx, index1);
       }
       else {
         setCdr(xxx, (Lot) r0);
@@ -327,8 +327,8 @@ private String applyCont() {
 private String reverseLot(@NotNull Lot lll, Lot xxx) {
   while (!lll.isEmpty()) {
     xxx = cons(lll.car(), xxx);
-    if (lll.car() instanceof Nothing nt) {
-      stack = Few.of(Label.SET_CAR, stack, xxx, nt.index);
+    if (lll.car() instanceof Nothing(int index1)) {
+      stack = Few.of(Label.SET_CAR, stack, xxx, index1);
     }
     lll = lll.cdr();
   }

@@ -9,9 +9,9 @@ package essential.progressive;
 
 class Label {
 
-static final String OF_DATUM = "of-datum";
+static final String OF_DATUM   = "of-datum";
 static final String APPLY_CONT = "apply-cont";
-static final String EXIT = "exit";
+static final String EXIT       = "exit";
 
 static final String END_CONT = "end-cont";
 static final String ITER_FEW = "iter-few";

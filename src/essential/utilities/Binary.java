@@ -8,38 +8,38 @@
 package essential.utilities;
 
 import essential.progressive.Few;
-import org.jetbrains.annotations.NotNull;
 import essential.progressive.Lot;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
 
 public class Binary {
 
-public static final byte BOOLEAN_TRUE = (byte) 0x80;
+public static final byte BOOLEAN_TRUE  = (byte) 0x80;
 public static final byte BOOLEAN_FALSE = (byte) 0x8F;
 
-static final byte SHORT = (byte) 0x90;
-static final byte INT = (byte) 0x91;
-static final byte LONG = (byte) 0x92;
-static final byte FLOAT = (byte) 0x93;
+static final byte SHORT  = (byte) 0x90;
+static final byte INT    = (byte) 0x91;
+static final byte LONG   = (byte) 0x92;
+static final byte FLOAT  = (byte) 0x93;
 static final byte DOUBLE = (byte) 0x94;
 
 static final byte BOOLEANS = (byte) 0x95;
-static final byte SHORTS = (byte) 0x96;
-static final byte INTS = (byte) 0x97;
-static final byte LONGS = (byte) 0x98;
-static final byte FLOATS = (byte) 0x99;
-static final byte DOUBLES = (byte) 0x9A;
+static final byte SHORTS   = (byte) 0x96;
+static final byte INTS     = (byte) 0x97;
+static final byte LONGS    = (byte) 0x98;
+static final byte FLOATS   = (byte) 0x99;
+static final byte DOUBLES  = (byte) 0x9A;
 
-public static final byte CHAR = (byte) 0xA0;
+public static final byte CHAR   = (byte) 0xA0;
 public static final byte STRING = (byte) 0xA1;
 
 public static final byte SHARE_INDEX = (byte) 0xB0;
-public static final byte FEW = (byte) 0xB1;
-public static final byte LOT_BEGIN = (byte) 0xB2;
-public static final byte LOT_END = (byte) 0xB3;
-public static final byte NEXT_LOT = (byte) 0xB4;
+public static final byte FEW         = (byte) 0xB1;
+public static final byte LOT_BEGIN   = (byte) 0xB2;
+public static final byte LOT_END     = (byte) 0xB3;
+public static final byte NEXT_LOT    = (byte) 0xB4;
 
 static final byte TIME = (byte) 0xC0;
 static final byte DATE = (byte) 0xC1;
@@ -115,8 +115,8 @@ public static byte @NotNull [] encodeChar(char c) {
 }
 
 public static @NotNull Few decodeChar(byte @NotNull [] bin, int start) {
-  int sz = BinaryMate.sizeofChar(bin, start);
-  char c = BinaryMate.decodePureChar(bin, start, start + sz);
+  int  sz = BinaryMate.sizeofChar(bin, start);
+  char c  = BinaryMate.decodePureChar(bin, start, start + sz);
   return Few.of(start + sz, c);
 }
 
@@ -130,10 +130,10 @@ public static byte @NotNull [] encodeString(@NotNull String str) {
 
 public static @NotNull Few decodeString(byte @NotNull [] bin, int start) {
   StringBuilder builder = new StringBuilder();
-  int i = start;
+  int           i       = start;
   while (bin[i] != 0) {
-    int sz = BinaryMate.sizeofChar(bin, i);
-    char c = BinaryMate.decodePureChar(bin, i, i + sz);
+    int  sz = BinaryMate.sizeofChar(bin, i);
+    char c  = BinaryMate.decodePureChar(bin, i, i + sz);
     builder.append(c);
     i += sz;
   }
@@ -151,9 +151,9 @@ public static int sizeofBytes(@NotNull Lot bins) {
 }
 
 public static byte @NotNull [] connectBytes(@NotNull Lot lt) {
-  int bytes = sizeofBytes(lt);
-  byte[] bin = new byte[bytes];
-  int i = 0;
+  int    bytes = sizeofBytes(lt);
+  byte[] bin   = new byte[bytes];
+  int    i     = 0;
   while (!lt.isEmpty()) {
     byte[] elem = (byte[]) lt.car();
     System.arraycopy(elem, 0, bin, i, elem.length);
@@ -286,11 +286,11 @@ public static int decodeVarI32(byte @NotNull [] bin, int start, int bound) {
 
 
 public static byte @NotNull [] encode(Object datum) {
-  Encoding inst = new Encoding(datum);
-  byte[] bin = inst.process();
-  int sum = CheckSum.fletcher32(bin);
-  byte[] bin_sum = Binary.encodeI64(sum);
-  byte[] xxx = new byte[4 + bin.length];
+  Encoding inst    = new Encoding(datum);
+  byte[]   bin     = inst.process();
+  int      sum     = CheckSum.fletcher32(bin);
+  byte[]   bin_sum = Binary.encodeI64(sum);
+  byte[]   xxx     = new byte[4 + bin.length];
   System.arraycopy(bin_sum, 4, xxx, 0, 4);
   System.arraycopy(bin, 0, xxx, 4, bin.length);
   return xxx;
@@ -300,9 +300,9 @@ public static Object decode(byte @NotNull [] bin) {
   if (bin.length < 7) {
     throw new RuntimeException(Msg.INVALID_BIN_SEQ);
   }
-  byte[] bin_sum = Binary.extendTo64Bits(bin, 0, 4);
-  int read_sum = (int) Binary.decodeI64(bin_sum);
-  int calc_sum = CheckSum.fletcher32(bin, 4, bin.length);
+  byte[] bin_sum  = Binary.extendTo64Bits(bin, 0, 4);
+  int    read_sum = (int) Binary.decodeI64(bin_sum);
+  int    calc_sum = CheckSum.fletcher32(bin, 4, bin.length);
   if (read_sum != calc_sum) {
     throw new RuntimeException(Msg.INVALID_BIN_SEQ);
   }
@@ -311,7 +311,7 @@ public static Object decode(byte @NotNull [] bin) {
 }
 
 public static int hashcode(Object datum) {
-  byte[] bin = encode(datum);
+  byte[] bin     = encode(datum);
   byte[] bin_sum = Binary.extendTo64Bits(bin, 0, 4);
   return (int) Binary.decodeI64(bin_sum);
 }

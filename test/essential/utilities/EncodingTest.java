@@ -25,7 +25,7 @@ void process() {
   setCdr(lt.cddr().cdr(), lt);
   lt = cons(fw, lt);
   Encoding inst = new Encoding(lt);
-  byte[] bin = inst.process();
+  byte[]   bin  = inst.process();
   System.out.println(stringOf(bin));
 }
 }

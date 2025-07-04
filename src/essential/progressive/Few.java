@@ -75,15 +75,15 @@ public void fill(@NotNull Object datum) {
 }
 
 public @NotNull Few copy() {
-  int length = this.data.length;
-  Object[] arr = new Object[length];
+  int      length = this.data.length;
+  Object[] arr    = new Object[length];
   System.arraycopy(this.data, 0, arr, 0, length);
   return new Few(arr);
 }
 
 public Lot toLot() {
   int length = this.data.length;
-  Lot lt = new Lot();
+  Lot lt     = new Lot();
   for (int i = length - 1; 0 <= i; i -= 1) {
     lt = new Lot(this.data[i], lt);
   }
@@ -91,8 +91,8 @@ public Lot toLot() {
 }
 
 public @NotNull Few map(Do1 fn) {
-  int length = this.data.length;
-  Object[] arr = new Object[length];
+  int      length = this.data.length;
+  Object[] arr    = new Object[length];
   for (int i = 0; i < length; i += 1) {
     arr[i] = fn.apply(this.data[i]);
   }

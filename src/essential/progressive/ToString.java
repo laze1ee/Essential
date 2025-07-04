@@ -10,7 +10,7 @@ package essential.progressive;
 import essential.utilities.RBTree;
 import org.jetbrains.annotations.NotNull;
 
-import static essential.progressive.Pr.*;
+import static essential.progressive.Pr.stringOf;
 
 
 class ToString {
@@ -21,11 +21,11 @@ static @NotNull String process(Object datum) {
   return inst.builder.toString();
 }
 
-private final RBTree identical;
-private Few cont;
-private Object datum;
+private final RBTree        identical;
+private       Few           cont;
+private       Object        datum;
 private final StringBuilder builder;
-private int order;
+private       int           order;
 
 private ToString(Object datum) {
   identical = Shared.detect(datum).map(o -> Few.of(false, -1));
@@ -42,7 +42,7 @@ private void route() {
     switch (next) {
       case Label.OF_DATUM -> next = ofDatum();
       case Label.APPLY_CONT -> next = applyCont();
-      case Label.EXIT -> {return;}
+      case Label.EXIT -> { return; }
     }
   }
 }
@@ -95,11 +95,11 @@ private String ofDatum() {
 private String applyCont() {
   String label = (String) cont.ref(0);
   switch (label) {
-    case Label.END_CONT -> {return Label.EXIT;}
+    case Label.END_CONT -> { return Label.EXIT; }
     case Label.ITER_FEW -> {
       int length = (int) cont.ref(2);
-      int index = (int) cont.ref(3);
-      Few fw = (Few) cont.ref(4);
+      int index  = (int) cont.ref(3);
+      Few fw     = (Few) cont.ref(4);
       if (index == length) {
         builder.append(")");
         cont = (Few) cont.ref(1);
@@ -113,7 +113,7 @@ private String applyCont() {
       }
     }
     case Label.ITER_LOT -> {
-      Lot lt = (Lot) cont.ref(2);
+      Lot lt  = (Lot) cont.ref(2);
       int key = System.identityHashCode(lt);
       if (identical.isPresent(key)) {
         Few mark = (Few) identical.ref(key);

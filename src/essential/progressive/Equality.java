@@ -9,7 +9,7 @@ package essential.progressive;
 
 import essential.utilities.RBTree;
 
-import static essential.progressive.Pr.*;
+import static essential.progressive.Pr.equal;
 
 
 class Equality {
@@ -20,13 +20,13 @@ static boolean process(Object datum1, Object datum2) {
   return inst.r0;
 }
 
-private final RBTree identical1;
-private final RBTree identical2;
-private Few cont;
-private Object datum1;
-private Object datum2;
-private int order;
-private boolean r0;
+private final RBTree  identical1;
+private final RBTree  identical2;
+private       Few     cont;
+private       Object  datum1;
+private       Object  datum2;
+private       int     order;
+private       boolean r0;
 
 private Equality(Object datum1, Object datum2) {
   identical1 = Shared.detect(datum1).map(o -> Few.of(false, -1));
@@ -44,7 +44,7 @@ private void route() {
     switch (next) {
       case Label.OF_DATUM -> next = ofDatum();
       case Label.APPLY_CONT -> next = applyCont();
-      case Label.EXIT -> {return;}
+      case Label.EXIT -> { return; }
     }
   }
 }
@@ -75,6 +75,7 @@ private String ofFew() {
   int length = fw1.length();
   if (length != fw2.length()) {
     r0 = false;
+    return Label.APPLY_CONT;
   }
   else {
     int key1 = System.identityHashCode(fw1);
@@ -86,10 +87,12 @@ private String ofFew() {
       if ((boolean) mark1.ref(0) &&
           (boolean) mark2.ref(0)) {
         r0 = mark1.ref(1) == mark2.ref(1);
+        return Label.APPLY_CONT;
       }
       else if ((boolean) mark1.ref(0) ||
                (boolean) mark2.ref(0)) {
         r0 = false;
+        return Label.APPLY_CONT;
       }
       else {
         mark1.set(0, true);
@@ -99,31 +102,32 @@ private String ofFew() {
         order += 1;
         cont = Few.of(Label.ITER_FEW, cont, length, 0, fw1, fw2);
         r0 = true;
+        return Label.APPLY_CONT;
       }
     }
     else if (identical1.isPresent(key1) ||
              identical2.isPresent(key2)) {
       r0 = false;
+      return Label.APPLY_CONT;
     }
     else {
       cont = Few.of(Label.ITER_FEW, cont, length, 0, fw1, fw2);
       r0 = true;
+      return Label.APPLY_CONT;
     }
   }
-
-  return Label.APPLY_CONT;
 }
 
 private String applyCont() {
   String label = (String) cont.ref(0);
 
   switch (label) {
-    case Label.END_CONT -> {return Label.EXIT;}
+    case Label.END_CONT -> { return Label.EXIT; }
     case Label.ITER_FEW -> {
       int length = (int) cont.ref(2);
-      int index = (int) cont.ref(3);
-      Few fw1 = (Few) cont.ref(4);
-      Few fw2 = (Few) cont.ref(5);
+      int index  = (int) cont.ref(3);
+      Few fw1    = (Few) cont.ref(4);
+      Few fw2    = (Few) cont.ref(5);
       if (!r0 || index == length) {
         cont = (Few) cont.ref(1);
         return Label.APPLY_CONT;

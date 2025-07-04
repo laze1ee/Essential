@@ -90,8 +90,8 @@ static boolean isValidNode(Few node) {
 }
 
 private static class NodeChecker {
-  private Few cont;
-  private Few node;
+  private Few     cont;
+  private Few     node;
   private boolean r0;
 
   private NodeChecker(Few node) {
@@ -106,7 +106,7 @@ private static class NodeChecker {
       switch (next) {
         case Label.OF_NODE -> next = ofNode();
         case Label.APPLY_CONT -> next = applyCont();
-        case Label.EXIT -> {return;}
+        case Label.EXIT -> { return; }
       }
     }
   }
@@ -147,7 +147,7 @@ private static class NodeChecker {
     String label = (String) cont.ref(0);
 
     switch (label) {
-      case Label.END_CONT -> {return Label.EXIT;}
+      case Label.END_CONT -> { return Label.EXIT; }
       case Label.RIGHT_NODE -> {
         if (r0) {
           node = (Few) cont.ref(2);
@@ -171,8 +171,8 @@ static @NotNull String toString(Few node) {
 }
 
 private static class ToString {
-  private Few cont;
-  private Few node;
+  private       Few           cont;
+  private       Few           node;
   private final StringBuilder builder;
 
   private ToString(Few node) {
@@ -188,7 +188,7 @@ private static class ToString {
       switch (next) {
         case Label.OF_NODE -> next = ofNode();
         case Label.APPLY_CONT -> next = applyCont();
-        case Label.EXIT -> {return;}
+        case Label.EXIT -> { return; }
       }
     }
   }
@@ -214,7 +214,7 @@ private static class ToString {
     String label = (String) cont.ref(0);
 
     switch (label) {
-      case Label.END_CONT -> {return Label.EXIT;}
+      case Label.END_CONT -> { return Label.EXIT; }
       case Label.RIGHT_NODE -> {
         builder.append(" ");
         node = (Few) cont.ref(2);
@@ -251,7 +251,7 @@ static @NotNull Lot pathOf(@NotNull AVLTree tree, Object key) {
 }
 
 private static void leftRotate(AVLTree tree, @NotNull Lot path) {
-  Few x = (Few) path.car();
+  Few x  = (Few) path.car();
   Few up = (Few) right(x);
   if (balance(up) == -1) {
     rightRotate(tree, cons(up, path));
@@ -264,7 +264,7 @@ private static void leftRotate(AVLTree tree, @NotNull Lot path) {
 }
 
 private static void rightRotate(AVLTree tree, @NotNull Lot path) {
-  Few x = (Few) path.car();
+  Few x  = (Few) path.car();
   Few up = (Few) left(x);
   if (balance(up) == 1) {
     leftRotate(tree, cons(up, path));
@@ -296,7 +296,7 @@ private static void reconnect(AVLTree tree, @NotNull Lot path, Few x, Few up) {
 static void update(AVLTree tree, @NotNull Lot path) {
   while (!path.isEmpty()) {
     Few node = (Few) path.car();
-    int b = height((Few) right(node)) - height((Few) left(node));
+    int b    = height((Few) right(node)) - height((Few) left(node));
     if (b == 2) {
       leftRotate(tree, path);
       return;
@@ -345,7 +345,7 @@ private static void transplant(AVLTree tree, @NotNull Lot path, Few node) {
 }
 
 static boolean delete(@NotNull AVLTree tree, Object key) {
-  Lot path = pathOf(tree, key);
+  Lot path    = pathOf(tree, key);
   Few deleted = (Few) path.car();
   if (isNil(deleted)) {
     return false;
@@ -364,7 +364,7 @@ static boolean delete(@NotNull AVLTree tree, Object key) {
     }
     else {
       Lot min_path = minimum((Few) right(deleted), Lot.of());
-      Few replace = (Few) min_path.car();
+      Few replace  = (Few) min_path.car();
       x = (Few) right(replace);
       if (!isRightOf(replace, deleted)) {
         transplant(tree, min_path, x);
@@ -385,8 +385,8 @@ static boolean delete(@NotNull AVLTree tree, Object key) {
 }
 
 static int size(Few root) {
-  int count = 0;
-  Queue que = new Queue(root);
+  int   count = 0;
+  Queue que   = new Queue(root);
   while (!que.isEmpty()) {
     Few node = (Few) que.dequeue();
     if (!isNil(node)) {
@@ -400,7 +400,7 @@ static int size(Few root) {
 
 static @NotNull AVLTree copy(@NotNull AVLTree tree) {
   AVLTree new_tree = new AVLTree(tree.less(), tree.greater());
-  Queue que = new Queue(tree.root());
+  Queue   que      = new Queue(tree.root());
   while (!que.isEmpty()) {
     Few node = (Few) que.dequeue();
     if (!isNil(node)) {
@@ -413,9 +413,9 @@ static @NotNull AVLTree copy(@NotNull AVLTree tree) {
 }
 
 static Lot travel(Few root) {
-  Lot col = Lot.of();
+  Lot col   = Lot.of();
   Lot stack = Lot.of();
-  Few node = root;
+  Few node  = root;
   while (!isNil(node)) {
     stack = cons(node, stack);
     node = (Few) right(node);
@@ -435,7 +435,7 @@ static Lot travel(Few root) {
 
 static @NotNull AVLTree filter(Predicate1 fn, @NotNull AVLTree tree) {
   AVLTree new_tree = new AVLTree(tree.less(), tree.greater());
-  Queue que = new Queue(tree.root());
+  Queue   que      = new Queue(tree.root());
   while (!que.isEmpty()) {
     Few node = (Few) que.dequeue();
     if (!isNil(node)) {
@@ -451,7 +451,7 @@ static @NotNull AVLTree filter(Predicate1 fn, @NotNull AVLTree tree) {
 
 static @NotNull AVLTree map(Do1 fn, @NotNull AVLTree tree) {
   AVLTree new_tree = new AVLTree(tree.less(), tree.greater());
-  Queue que = new Queue(tree.root());
+  Queue   que      = new Queue(tree.root());
   while (!que.isEmpty()) {
     Few node = (Few) que.dequeue();
     if (!isNil(node)) {
@@ -464,14 +464,14 @@ static @NotNull AVLTree map(Do1 fn, @NotNull AVLTree tree) {
 }
 
 static Lot depthStatistic(Few root) {
-  Lot col = Lot.of();
-  Queue lll = new Queue(root);
-  Queue xxx = new Queue(1);
-  int depth = 0;
-  int count = 0;
+  Lot   col   = Lot.of();
+  Queue lll   = new Queue(root);
+  Queue xxx   = new Queue(1);
+  int   depth = 0;
+  int   count = 0;
   while (!lll.isEmpty()) {
     Few node = (Few) lll.dequeue();
-    int n = (int) xxx.dequeue();
+    int n    = (int) xxx.dequeue();
     if (!isNil(node)) {
       if (isNil((Few) left(node)) && isNil((Few) right(node))) {
         if (depth == 0) {

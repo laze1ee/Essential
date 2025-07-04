@@ -8,10 +8,10 @@
 package essential.utilities;
 
 import essential.functional.Do1;
-import essential.progressive.Few;
-import org.jetbrains.annotations.NotNull;
 import essential.functional.Predicate1;
+import essential.progressive.Few;
 import essential.progressive.Lot;
+import org.jetbrains.annotations.NotNull;
 
 import static essential.progressive.Pr.*;
 
@@ -90,8 +90,8 @@ static boolean isValidNode(Few node) {
 }
 
 private static class NodeChecker {
-  private Few cont;
-  private Few node;
+  private Few     cont;
+  private Few     node;
   private boolean r0;
 
   private NodeChecker(Few node) {
@@ -106,7 +106,7 @@ private static class NodeChecker {
       switch (next) {
         case Label.OF_NODE -> next = ofNode();
         case Label.APPLY_CONT -> next = applyCont();
-        case Label.EXIT -> {return;}
+        case Label.EXIT -> { return; }
       }
     }
   }
@@ -146,7 +146,7 @@ private static class NodeChecker {
     String label = (String) cont.ref(0);
 
     switch (label) {
-      case Label.END_CONT -> {return Label.EXIT;}
+      case Label.END_CONT -> { return Label.EXIT; }
       case Label.RIGHT_NODE -> {
         if (r0) {
           node = (Few) cont.ref(2);
@@ -170,8 +170,8 @@ static @NotNull String toString(Few node) {
 }
 
 private static class ToString {
-  private Few cont;
-  private Few node;
+  private       Few           cont;
+  private       Few           node;
   private final StringBuilder builder;
 
   private ToString(Few node) {
@@ -187,7 +187,7 @@ private static class ToString {
       switch (next) {
         case Label.OF_NODE -> next = ofNode();
         case Label.APPLY_CONT -> next = applyCont();
-        case Label.EXIT -> {return;}
+        case Label.EXIT -> { return; }
       }
     }
   }
@@ -213,7 +213,7 @@ private static class ToString {
     String label = (String) cont.ref(0);
 
     switch (label) {
-      case Label.END_CONT -> {return Label.EXIT;}
+      case Label.END_CONT -> { return Label.EXIT; }
       case Label.RIGHT_NODE -> {
         builder.append(" ");
         node = (Few) cont.ref(2);
@@ -250,7 +250,7 @@ static @NotNull Lot pathOf(@NotNull RBTree tree, Object key) {
 }
 
 private static void leftRotate(RBTree tree, @NotNull Lot path) {
-  Few x = (Few) path.car();
+  Few x  = (Few) path.car();
   Few up = (Few) right(x);
   setRight(x, left(up));
   setLeft(up, x);
@@ -270,7 +270,7 @@ private static void leftRotate(RBTree tree, @NotNull Lot path) {
 }
 
 private static void rightRotate(RBTree tree, @NotNull Lot path) {
-  Few x = (Few) path.car();
+  Few x  = (Few) path.car();
   Few up = (Few) left(x);
   setLeft(x, right(up));
   setRight(up, x);
@@ -314,7 +314,7 @@ record InsertFixing(RBTree tree, Lot path) {
 
   private void process(@NotNull Lot path) {
     while (2 < path.length() && isRed((Few) path.ref(1))) {
-      Few p = (Few) path.ref(1);
+      Few p  = (Few) path.ref(1);
       Few pp = (Few) path.ref(2);
       if (isLeftOf(p, pp)) {
         Few u = (Few) right(pp);
@@ -374,14 +374,14 @@ private static void transplant(RBTree tree, @NotNull Lot path, Few node) {
 }
 
 static boolean delete(@NotNull RBTree tree, Object key) {
-  Lot path = pathOf(tree, key);
+  Lot path    = pathOf(tree, key);
   Few deleted = (Few) path.car();
   if (isNil(deleted)) {
     return false;
   }
   else {
     boolean color = color(deleted);
-    Few x;
+    Few     x;
     if (isNil((Few) left(deleted))) {
       x = (Few) right(deleted);
       transplant(tree, path, x);
@@ -394,7 +394,7 @@ static boolean delete(@NotNull RBTree tree, Object key) {
     }
     else {
       Lot min_path = minimum((Few) right(deleted), Lot.of());
-      Few replace = (Few) min_path.car();
+      Few replace  = (Few) min_path.car();
       color = color(replace);
       x = (Few) right(replace);
       if (!isRightOf(replace, deleted)) {
@@ -417,7 +417,7 @@ static boolean delete(@NotNull RBTree tree, Object key) {
 private static class DeleteFixing {
 
   final RBTree tree;
-  final Lot path;
+  final Lot    path;
   Few x;
 
   DeleteFixing(RBTree tree, Lot path) {
@@ -495,8 +495,8 @@ private static class DeleteFixing {
 }
 
 static int size(Few root) {
-  int count = 0;
-  Queue que = new Queue(root);
+  int   count = 0;
+  Queue que   = new Queue(root);
   while (!que.isEmpty()) {
     Few node = (Few) que.dequeue();
     if (!isNil(node)) {
@@ -510,7 +510,7 @@ static int size(Few root) {
 
 static @NotNull RBTree copy(@NotNull RBTree tree) {
   RBTree new_tree = new RBTree(tree.less(), tree.greater());
-  Queue que = new Queue(tree.root());
+  Queue  que      = new Queue(tree.root());
   while (!que.isEmpty()) {
     Few node = (Few) que.dequeue();
     if (!isNil(node)) {
@@ -523,9 +523,9 @@ static @NotNull RBTree copy(@NotNull RBTree tree) {
 }
 
 static Lot travel(Few root) {
-  Lot col = Lot.of();
+  Lot col   = Lot.of();
   Lot stack = Lot.of();
-  Few node = root;
+  Few node  = root;
   while (!isNil(node)) {
     stack = cons(node, stack);
     node = (Few) right(node);
@@ -545,7 +545,7 @@ static Lot travel(Few root) {
 
 static @NotNull RBTree filter(Predicate1 fn, @NotNull RBTree tree) {
   RBTree new_tree = new RBTree(tree.less(), tree.greater());
-  Queue que = new Queue(tree.root());
+  Queue  que      = new Queue(tree.root());
   while (!que.isEmpty()) {
     Few node = (Few) que.dequeue();
     if (!isNil(node)) {
@@ -561,7 +561,7 @@ static @NotNull RBTree filter(Predicate1 fn, @NotNull RBTree tree) {
 
 static @NotNull RBTree map(Do1 fn, @NotNull RBTree tree) {
   RBTree new_tree = new RBTree(tree.less(), tree.greater());
-  Queue que = new Queue(tree.root());
+  Queue  que      = new Queue(tree.root());
   while (!que.isEmpty()) {
     Few node = (Few) que.dequeue();
     if (!isNil(node)) {
@@ -574,14 +574,14 @@ static @NotNull RBTree map(Do1 fn, @NotNull RBTree tree) {
 }
 
 static Lot depthStatistic(Few root) {
-  Lot col = Lot.of();
-  Queue lll = new Queue(root);
-  Queue xxx = new Queue(1);
-  int depth = 0;
-  int count = 0;
+  Lot   col   = Lot.of();
+  Queue lll   = new Queue(root);
+  Queue xxx   = new Queue(1);
+  int   depth = 0;
+  int   count = 0;
   while (!lll.isEmpty()) {
     Few node = (Few) lll.dequeue();
-    int n = (int) xxx.dequeue();
+    int n    = (int) xxx.dequeue();
     if (!isNil(node)) {
       if (isNil((Few) left(node)) && isNil((Few) right(node))) {
         if (depth == 0) {

@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 class CheckSumTest {
@@ -23,7 +23,7 @@ private final byte[] bin;
 
 CheckSumTest() {
   String current_dir = System.getProperty("user.dir");
-  Path file = Path.of(current_dir, "test/essential/utilities/test-checksum.txt");
+  Path   file        = Path.of(current_dir, "test/essential/utilities/test-checksum.txt");
   String text;
   try {
     text = Files.readString(file);
