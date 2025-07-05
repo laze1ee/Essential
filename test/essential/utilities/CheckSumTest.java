@@ -23,7 +23,7 @@ private final byte[] bin;
 
 CheckSumTest() {
   String current_dir = System.getProperty("user.dir");
-  Path   file        = Path.of(current_dir, "test/essential/utilities/test-checksum.txt");
+  Path   file        = Path.of(current_dir, "test/essential/utilities/checksum-test.txt");
   String text;
   try {
     text = Files.readString(file);

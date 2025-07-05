@@ -9,6 +9,7 @@ package essential.utilities;
 
 import essential.progressive.Few;
 import essential.progressive.Lot;
+import essential.progressive.Pr;
 import org.junit.jupiter.api.Test;
 
 import static essential.progressive.Pr.*;
@@ -26,6 +27,6 @@ void process() {
   lt = cons(fw, lt);
   Encoding inst = new Encoding(lt);
   byte[]   bin  = inst.process();
-  System.out.println(stringOf(bin));
+  System.out.println(Pr.toString(bin));
 }
 }

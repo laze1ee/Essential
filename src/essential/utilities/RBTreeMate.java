@@ -11,6 +11,7 @@ import essential.functional.Do1;
 import essential.functional.Predicate1;
 import essential.progressive.Few;
 import essential.progressive.Lot;
+import essential.progressive.Pr;
 import org.jetbrains.annotations.NotNull;
 
 import static essential.progressive.Pr.*;
@@ -199,9 +200,9 @@ private static class ToString {
     }
     else {
       builder.append("(");
-      builder.append(stringOf(key(node)));
+      builder.append(Pr.toString(key(node)));
       builder.append(" ");
-      builder.append(stringOf(value(node)));
+      builder.append(Pr.toString(value(node)));
       builder.append(" ");
       cont = Few.of(Label.RIGHT_NODE, cont, right(node));
       node = (Few) left(node);

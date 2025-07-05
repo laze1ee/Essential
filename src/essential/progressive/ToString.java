@@ -10,8 +10,6 @@ package essential.progressive;
 import essential.utilities.RBTree;
 import org.jetbrains.annotations.NotNull;
 
-import static essential.progressive.Pr.stringOf;
-
 
 class ToString {
 
@@ -87,7 +85,7 @@ private String ofDatum() {
     }
   }
   else {
-    builder.append(stringOf(datum));
+    builder.append(Pr.toString(datum));
     return Label.APPLY_CONT;
   }
 }

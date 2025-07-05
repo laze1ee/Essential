@@ -139,7 +139,7 @@ static int theHareAndTortoise(@NotNull Lot lt) {
 
 //region To String
 
-static @NotNull String stringOfChar(char c) {
+static @NotNull String charToString(char c) {
   switch (c) {
     case 8 -> { return "#\\backspace"; }
     case 9 -> { return "#\\tab"; }
@@ -183,22 +183,22 @@ private static @NotNull String hexOfByte(byte b) {
   return new String(new char[]{HEX_STR[(b >> 4) & 0xF], HEX_STR[b & 0xF]});
 }
 
-static @NotNull String stringOfArray(@NotNull Object arr) {
-  return switch (arr) {
-    case boolean[] bs -> String.format("#1(%s)", serializeArray(Pr::stringOf, bs, bs.length));
+static @NotNull String arrayToString(@NotNull Object array) {
+  return switch (array) {
+    case boolean[] bs -> String.format("#1(%s)", arrayToStringMate(Pr::toString, bs, bs.length));
     case byte[] bs ->
-        String.format("#u8(%s)", serializeArray(o -> hexOfByte((byte) o), bs, bs.length));
-    case short[] ss -> String.format("#i16(%s)", serializeArray(Object::toString, ss, ss.length));
-    case int[] ins -> String.format("#i32(%s)", serializeArray(Object::toString, ins, ins.length));
-    case long[] ls -> String.format("#i64(%s)", serializeArray(Object::toString, ls, ls.length));
-    case float[] fs -> String.format("#r32(%s)", serializeArray(Object::toString, fs, fs.length));
-    case double[] ds -> String.format("#r64(%s)", serializeArray(Object::toString, ds, ds.length));
+        String.format("#u8(%s)", arrayToStringMate(o -> hexOfByte((byte) o), bs, bs.length));
+    case short[] ss -> String.format("#i16(%s)", arrayToStringMate(Object::toString, ss, ss.length));
+    case int[] ins -> String.format("#i32(%s)", arrayToStringMate(Object::toString, ins, ins.length));
+    case long[] ls -> String.format("#i64(%s)", arrayToStringMate(Object::toString, ls, ls.length));
+    case float[] fs -> String.format("#f32(%s)", arrayToStringMate(Object::toString, fs, fs.length));
+    case double[] ds -> String.format("#f64(%s)", arrayToStringMate(Object::toString, ds, ds.length));
     default ->
-        throw new RuntimeException(String.format("unsupported array type %s for printing", arr));
+        throw new RuntimeException(String.format("unsupported array type %s for printing", array));
   };
 }
 
-static @NotNull String serializeArray(Do1 fn, Object arr, int bound) {
+static @NotNull String arrayToStringMate(Do1 fn, Object array, int bound) {
   if (bound == 0) {
     return "";
   }
@@ -206,10 +206,10 @@ static @NotNull String serializeArray(Do1 fn, Object arr, int bound) {
     StringBuilder builder = new StringBuilder();
     bound = bound - 1;
     for (int i = 0; i < bound; i = i + 1) {
-      builder.append(fn.apply(Array.get(arr, i)));
+      builder.append(fn.apply(Array.get(array, i)));
       builder.append(" ");
     }
-    builder.append(fn.apply(Array.get(arr, bound)));
+    builder.append(fn.apply(Array.get(array, bound)));
     return builder.toString();
   }
 }

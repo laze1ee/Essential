@@ -202,7 +202,7 @@ public static boolean less(Object datum1, Object datum2) {
         return Arrays.compare(ds1, ds2) < 0;
       }
       default -> {
-        String msg = String.format(Msg.UNDEFINED_ARR_COMPARE, stringOf(datum1), stringOf(datum2));
+        String msg = String.format(Msg.UNDEFINED_ARR_COMPARE, toString(datum1), toString(datum2));
         throw new RuntimeException(msg);
       }
     }
@@ -222,15 +222,15 @@ public static boolean greater(Object datum1, Object datum2) {
 
 //region To String
 
-public static @NotNull String stringOf(Object datum) {
+public static @NotNull String toString(Object datum) {
   if (datum == null) { return "«null»"; }
   else if (datum instanceof Boolean b) {
     if (b) { return "#t"; }
     else { return "#f"; }
   }
-  else if (datum instanceof Character c) { return Mate.stringOfChar(c); }
+  else if (datum instanceof Character c) { return Mate.charToString(c); }
   else if (datum instanceof String str) { return Mate.dataString(str); }
-  else if (datum.getClass().isArray()) { return Mate.stringOfArray(datum); }
+  else if (datum.getClass().isArray()) { return Mate.arrayToString(datum); }
   else { return datum.toString(); }
 }
 //endregion

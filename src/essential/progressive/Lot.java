@@ -15,8 +15,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class Lot {
 
-private Object data;
-private Lot    next;
+protected Object data;
+protected Lot    next;
 
 protected Lot() {
   this.data = null;

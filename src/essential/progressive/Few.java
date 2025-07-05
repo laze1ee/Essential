@@ -17,7 +17,7 @@ import java.util.Arrays;
 
 public class Few {
 
-private final Object[] data;
+protected final Object[] data;
 
 protected Few(Object[] data) {
   this.data = data;
@@ -75,10 +75,7 @@ public void fill(@NotNull Object datum) {
 }
 
 public @NotNull Few copy() {
-  int      length = this.data.length;
-  Object[] arr    = new Object[length];
-  System.arraycopy(this.data, 0, arr, 0, length);
-  return new Few(arr);
+  return new Few(data.clone());
 }
 
 public Lot toLot() {
@@ -146,7 +143,6 @@ public Few sorted(Predicate2 compare) {
 public static @NotNull Few of(@NotNull Object @NotNull ... args) {
   return new Few(args);
 }
-
 
 /**
  * Constructs a Few with the specified length, initializing all elements with the given initial value.
